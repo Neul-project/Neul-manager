@@ -19,6 +19,7 @@ import { UserManageStyled } from "./styled";
 import type { SearchProps } from "antd/es/input";
 import { GreenTheme } from "@/utill/antdtheme";
 import { formatPhoneNumber } from "@/utill/formatter";
+import { useAuthStore } from "@/stores/useAuthStore";
 const { Search } = Input;
 
 const UserManage = () => {
@@ -30,10 +31,7 @@ const UserManage = () => {
   const [sortKey, setSortKey] = useState("created_at");
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
   const [selectSearch, setSelectSearch] = useState<string>("user_id");
-  // const adminId = useAuthStore((state) => state.user?.id);
-
-  // 임의의 id
-  const adminId = 1;
+  const adminId = useAuthStore((state) => state.user?.id);
 
   const getUserList = async () => {
     try {
