@@ -37,12 +37,16 @@ export const sidebarMenus = createSidebarMenus([
     label: "회원 관리",
     children: [
       {
+        key: "/users/application",
+        label: "도우미 등록",
+      },
+      {
         key: "/users/manage",
-        label: "전체 회원 정보",
+        label: "전체 도우미 정보",
       },
       {
         key: "/users/helpermanage",
-        label: "담당 회원 정보",
+        label: "담당 도우미 정보",
       },
     ],
   },
