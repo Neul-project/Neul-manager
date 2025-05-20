@@ -17,6 +17,15 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/types/*",
+    "src/*",
+    "src/lib/enum",
+    "src/lib/util",
+    "src/lib/interface"
+  ],
   "exclude": ["node_modules"]
 }
