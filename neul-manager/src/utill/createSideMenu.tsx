@@ -38,11 +38,11 @@ export const sidebarMenus = createSidebarMenus([
     children: [
       {
         key: "/users/manage",
-        label: "도우미",
+        label: "전체 회원 정보",
       },
       {
-        key: "/users/user",
-        label: "보호자",
+        key: "/users/helpermanage",
+        label: "담당 회원 정보",
       },
     ],
   },

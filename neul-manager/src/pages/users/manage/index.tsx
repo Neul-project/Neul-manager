@@ -1,4 +1,7 @@
-const UserManage = () => {
-  return <div>회원 정보</div>;
+import UserManage from "@/features/UserManage";
+
+const ManagePage = () => {
+  return <UserManage />;
 };
-export default UserManage;
+
+export default ManagePage;
