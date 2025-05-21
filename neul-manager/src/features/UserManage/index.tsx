@@ -17,13 +17,15 @@ import axiosInstance from "@/lib/axios";
 import { UserManageStyled } from "./styled";
 // import { useAuthStore } from "@/stores/useAuthStore";
 import type { SearchProps } from "antd/es/input";
-import { GreenTheme } from "@/utill/antdtheme";
+import { AntdGlobalTheme, GreenTheme } from "@/utill/antdtheme";
 import { formatPhoneNumber } from "@/utill/formatter";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { dummy } from "./dummy";
 const { Search } = Input;
 
 /*
-1.번호 / 이름 / 전화번호 / 성별 / 일당 / 생년월일 / 상세 
+tabel 행
+번호 / 이름 / 전화번호 / 성별 / 일당 / 생년월일 / 상세 (해당 어드민에 대한 내용 상세사항, 도우미가 맡은 보호자 정보)
 */
 
 //전체 도우미 정보 컴포넌트
@@ -155,136 +157,64 @@ const UserManage = () => {
     {
       key: "number",
       title: "번호",
-      render: (_: any, __: any, index: number) => index + 1,
+      dataIndex: "number",
     },
     {
-      key: "email",
-      title: "아이디",
-      dataIndex: "email",
-    },
-    {
-      key: "user",
-      title: "보호자명 (ID)",
-      render: (record: any) =>
-        record.name
-          ? `${record.name} (${record.id})`
-          : `없음 (${record.id || "없음"})`,
+      key: "name",
+      title: "이름",
+      dataIndex: "name",
     },
     {
       key: "phone",
       title: "전화번호",
-      render: (record: any) => formatPhoneNumber(record.phone),
+      dataIndex: "phone",
     },
     {
-      key: "patient_name",
-      title: "피보호자명 (ID)",
-      render: (record: any) =>
-        record.patient_name
-          ? `${record.patient_name} (${record.patient_id})`
-          : `없음 (${record.patient_id || "없음"})`,
-    },
-    {
-      key: "patient_gender",
+      key: "gender",
       title: "성별",
-      dataIndex: "patient_gender",
+      dataIndex: "gender",
     },
     {
-      key: "patient_birth",
-      title: "생년월일",
-      dataIndex: "patient_birth",
+      key: "desiredPay",
+      title: "일당",
+      dataIndex: "desiredPay",
     },
     {
-      key: "matching",
-      title: "담당",
-      render: (data: any) =>
-        data.admin_id === null ? (
-          // 담당 관리자 없을경우
-          <Button
-            onClick={(e) => {
-              e.stopPropagation();
+      key: "detail",
+      title: "도우미 상세 정보",
+      dataIndex: "detail",
+      render: (_: any, record: any) => {
+        return (
+          <ConfigProvider theme={AntdGlobalTheme}>
+            <Button
+              onClick={() => {
+                console.log("record", record);
+              }}
+            >
+              상세보기
+            </Button>
+          </ConfigProvider>
+        );
+      },
+    },
 
-              Modal.confirm({
-                title: "해당 유저와 매칭하시겠습니까?",
-                content: "해당 유저의 담당 관리자가 됩니다.",
-                okText: "매칭",
-                cancelText: "취소",
-                okButtonProps: {
-                  style: { backgroundColor: "#5DA487" },
-                },
-                cancelButtonProps: {
-                  style: { color: "#5DA487" },
-                },
-                async onOk() {
-                  try {
-                    await axiosInstance.post(`/matching/user`, {
-                      adminId,
-                      userId: data.id,
-                      patientId: data.patient_id,
-                    });
-                    notification.success({
-                      message: `매칭 성공`,
-                      description: `해당 유저와 매칭되었습니다.`,
-                    });
-                    getUserList();
-                  } catch (e) {
-                    console.error("해당 유저와의 매칭 실패: ", e);
-                    notification.error({
-                      message: `매칭 실패`,
-                      description: `해당 유저와의 매칭에 실패했습니다.`,
-                    });
-                  }
-                },
-              });
-            }}
-          >
-            매칭
-          </Button>
-        ) : data.admin_id === adminId ? (
-          // 본인이 담당 관리자인 경우
-          <Button
-            onClick={(e) => {
-              e.stopPropagation();
-
-              Modal.confirm({
-                title: "해당 유저와 매칭 취소하시겠습니까?",
-                content: "해당 유저의 담당이 취소됩니다.",
-                okText: "예",
-                cancelText: "아니요",
-                okButtonProps: {
-                  style: { backgroundColor: "#5DA487" },
-                },
-                cancelButtonProps: {
-                  style: { color: "#5DA487" },
-                },
-                async onOk() {
-                  try {
-                    await axiosInstance.patch(`/matching/cancel`, {
-                      adminId,
-                      userId: data.id,
-                      patientId: data.patient_id,
-                    });
-                    notification.success({
-                      message: `매칭 취소 성공`,
-                      description: `해당 유저와의 매칭이 취소되었습니다.`,
-                    });
-                    getUserList();
-                  } catch (e) {
-                    console.error("해당 유저와의 매칭 취소 실패: ", e);
-                    notification.error({
-                      message: `매칭 취소 실패`,
-                      description: `해당 유저와의 매칭 취소에 실패했습니다.`,
-                    });
-                  }
-                },
-              });
-            }}
-          >
-            매칭취소
-          </Button>
-        ) : (
-          // 다른 사람이 담당 관리자인 경우
-          <>{data.admin_name}</>
-        ),
+    {
+      key: "detail",
+      title: "담당 피보호자 정보",
+      dataIndex: "detail",
+      render: (_: any, record: any) => {
+        return (
+          <ConfigProvider theme={AntdGlobalTheme}>
+            <Button
+              onClick={() => {
+                console.log("record", record);
+              }}
+            >
+              상세보기
+            </Button>
+          </ConfigProvider>
+        );
+      },
     },
   ];
 
@@ -387,7 +317,7 @@ const UserManage = () => {
         <Table
           rowSelection={rowSelection}
           columns={columns}
-          dataSource={sortedUsers}
+          dataSource={dummy} //**추후 변경
           rowKey="key"
           onRow={(record) => ({
             onClick: () => {

@@ -48,7 +48,7 @@ const ApplicationMember = () => {
       dataIndex: "experience",
     },
     {
-      title: "상세",
+      title: "상세 정보",
       dataIndex: "detail",
       render: (_: any, record: any) => {
         return (
@@ -67,7 +67,7 @@ const ApplicationMember = () => {
                 //router.push(`/users/appli/detail/${record.origin.id}`);
               }}
             >
-              상세
+              상세보기
             </Button>
           </ConfigProvider>
         );

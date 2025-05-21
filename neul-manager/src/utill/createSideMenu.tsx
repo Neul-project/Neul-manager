@@ -42,11 +42,7 @@ export const sidebarMenus = createSidebarMenus([
       },
       {
         key: "/users/manage",
-        label: "전체 도우미 정보",
-      },
-      {
-        key: "/users/helpermanage",
-        label: "담당 도우미 정보",
+        label: "도우미 정보",
       },
     ],
   },
