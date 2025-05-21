@@ -7,7 +7,7 @@ import clsx from "clsx";
 import { Button, Modal, notification } from "antd";
 import StateModal from "../StateModal";
 //어드민 상세 페이지
-const AdminDetail = (props: { id: string }) => {
+const AdminDetail = (props: { id: number }) => {
   //변수 선언
   const { id } = props;
 
