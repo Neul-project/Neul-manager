@@ -29,7 +29,10 @@ const AdminDetail = (props: { id: string }) => {
 
   const admindatalist = async () => {
     //id에 해당하는 도우미 전체 데이터 가져오기 요청
-    const res = await axiosInstance.get(`/admin/userlist/${Number(id)}`);
+    //console.log("id", id);
+    const res = await axiosInstance.get(`/admin/userlist`, {
+      params: { id: id },
+    });
     const data = res.data;
     setInfo(data);
   };
@@ -50,21 +53,25 @@ const AdminDetail = (props: { id: string }) => {
 
   //등록 취소
   const DeleteAdmin = () => {
-    notification.success({
-      message: `도우미 등록 취소`,
-      description: "도우미 취소 요청을 성공하였습니다.",
+    //백엔드 삭제 요청 - 도우미 등록 반려 요쳥
+    axiosInstance.post("/admin/return", { id: id }).then((res) => {
+      notification.success({
+        message: `도우미 등록 반려`,
+        description: "도우미 취소 요청을 성공하였습니다.",
+      });
+      setIsCanCleModalOpen(false);
     });
-    setIsCanCleModalOpen(false);
-    //이후 백엔드 삭제 요청?
   };
 
   const YesAdmin = () => {
-    notification.success({
-      message: `도우미 등록`,
-      description: "성공적으로 도우미를 등록하였습니다.",
+    //백엔드 등록 요청 - 정식 도우미 등록(승인 완료 상태로 변환)
+    axiosInstance.post("/admin/registration", { id: id }).then((res) => {
+      notification.success({
+        message: `도우미 등록`,
+        description: "성공적으로 도우미를 등록하였습니다.",
+      });
+      setIsYesModalOpen(false);
     });
-    setIsYesModalOpen(false);
-    //이후 백엔드 삭제 요청?
   };
 
   return (
