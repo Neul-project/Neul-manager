@@ -91,7 +91,7 @@ const UserManage = () => {
     sortUsers();
   }, [userOrder, sortKey, users]);
 
-  // 엑셀 다운
+  // 엑셀 다운 //**추후수정
   const handleDownloadExcel = () => {
     const excelData = users.map((user) => ({
       보호자ID: user.id,
@@ -125,7 +125,7 @@ const UserManage = () => {
       return;
     }
     try {
-      await axiosInstance.delete("/matching/userdelete", {
+      await axiosInstance.delete("/admin/userdelete", {
         data: { ids: selectedRowKeys },
       });
       notification.success({
