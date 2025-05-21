@@ -3,6 +3,9 @@ import styled from "styled-components";
 
 export const UserManageStyled = styled.div`
   &.usermanage_wrap {
+    .ant-table-cell {
+      text-align: center;
+    }
     .usermanage_title_box {
       display: flex;
       justify-content: end;

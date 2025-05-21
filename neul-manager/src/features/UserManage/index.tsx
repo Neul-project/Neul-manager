@@ -39,6 +39,8 @@ const UserManage = () => {
   const [HelperId, setHelperId] = useState(); //클릭한 행의 도우미 아이디
   const [isHelperDetailModal, setIsHelperDetailModal] = useState(false); //도우미 상세 정보 모달 오픈 여부
   const [isTargetDetailModal, setIsTargetDetailModal] = useState(false); // 담당 피보호자 정보
+  const [searchValue, setSearchValue] = useState(""); //search 검색 내용
+  const [allUsers, setAllUsers] = useState<any[]>([]); //서치용 유저리스트
   const adminId = useAuthStore((state) => state.user?.id);
 
   //useEffect
@@ -71,6 +73,7 @@ const UserManage = () => {
       }));
 
       setUsers(mapped);
+      setAllUsers(mapped);
     } catch (err) {
       console.error("유저 불러오기 실패", err);
     }
@@ -255,8 +258,9 @@ const UserManage = () => {
 
   //검색 함수
   const onSearch: SearchProps["onSearch"] = async (value) => {
-    const filteredUsers = users.filter((user) => user.name.includes(value));
+    const filteredUsers = allUsers.filter((user) => user.name.includes(value));
     setUsers(filteredUsers);
+    setSearchValue("");
   };
 
   return (
@@ -265,7 +269,7 @@ const UserManage = () => {
         <TitleCompo title="도우미 관리" />
         <div className="usermanage_info">
           <div className="usermanage_left">
-            <div className="usermanage_total_num">총 {users.length}명</div>
+            <div className="usermanage_total_num">총 {allUsers.length}명</div>
             <Select
               className="usermanage_order"
               value={userOrder}
@@ -282,6 +286,8 @@ const UserManage = () => {
               allowClear
               onSearch={onSearch}
               style={{ width: 220 }}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
             <Button onClick={handleDownloadExcel}>엑셀 다운로드</Button>
             <Button className="usermanage_delete_button" onClick={WithdrawUser}>

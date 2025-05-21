@@ -1,5 +1,5 @@
 import TitleCompo from "@/components/TitleCompo";
-import { ApplicationMemberStyled } from "./styled";
+import { ApplicationMemberStyled, EllipsisText } from "./styled";
 
 import { useEffect, useState } from "react";
 import { AdminType, DataType, data } from "./tableinfo";
@@ -13,6 +13,7 @@ import type { TableColumnsType, TableProps } from "antd";
 import AdminDetail from "../AdminDetail";
 import { matchgender } from "@/utill/dataformat";
 import { StyledModal } from "../Programlist/styled";
+import { formatPrice } from "@/utill/formatter";
 
 //행 선택 함수
 const rowSelection: TableProps<DataType>["rowSelection"] = {
@@ -54,6 +55,9 @@ const ApplicationMember = () => {
     {
       title: "경력",
       dataIndex: "experience",
+      render: (text: string) => (
+        <EllipsisText title={text}>{text}</EllipsisText>
+      ),
     },
     {
       title: "상세 정보",
@@ -115,7 +119,7 @@ const ApplicationMember = () => {
       key: index,
       name: item.user.name,
       gender: matchgender(item.gender),
-      desiredPay: item.desiredPay,
+      desiredPay: formatPrice(item.desiredPay),
       experience: item.experience,
       origin: item,
     }));
