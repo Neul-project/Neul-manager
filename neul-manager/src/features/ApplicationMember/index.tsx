@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { Button, ConfigProvider, Table, Modal } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import AdminDetail from "../AdminDetail";
+import { matchgender } from "@/utill/dataformat";
 
 //행 선택 함수
 const rowSelection: TableProps<DataType>["rowSelection"] = {
@@ -30,10 +31,10 @@ const ApplicationMember = () => {
 
   //useState
   const [selectionType, setSelectionType] = useState<"checkbox">("checkbox"); //테이블 체크박스
-  const [dataSorce, setDataSorce] = useState<AdminType>(); //도우미 승인 대기 유저 리스트
+  const [dataSorce, setDataSorce] = useState<DataType[]>(); //도우미 승인 대기 유저 리스트
   const [admincontent, setAdminContent] = useState(); //선택한 어드민 정보
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false); //상세 모달
-
+  const [helperId, setHelperId] = useState();
   const [helperName, setHelperName] = useState(""); //도우미 이름
   //테이블 열
   const columns: TableColumnsType<DataType> = [
@@ -68,9 +69,10 @@ const ApplicationMember = () => {
                 2.페이지 이동 후 상세 내역 확인
                 3.등록하기 
                 */
-                  console.log("record", record);
+                  //console.log("record", record);
                   setIsDetailModalOpen(true); //상세보기 모달 열기
                   setHelperName(record.name);
+                  setHelperId(record.origin.user.id);
                   //setAdminContent(record.origin);
                   //router.push(`/users/appli/detail/${record.origin.id}`);
                 }}
@@ -85,23 +87,16 @@ const ApplicationMember = () => {
               onCancel={handleCancel}
               footer={null}
             >
-              <AdminDetail id={1} />
+              <AdminDetail
+                id={helperId!}
+                setIsDetailModalOpen={setIsDetailModalOpen}
+              />
             </Modal>
           </>
         );
       },
     },
   ];
-
-  //상세 모달 열기
-  const showModal = () => {
-    setIsDetailModalOpen(true);
-  };
-
-  //상세 모달 확인 버튼
-  const handleOk = () => {
-    setIsDetailModalOpen(false);
-  };
 
   //상세 모달 취소 버튼
   const handleCancel = () => {
@@ -112,11 +107,12 @@ const ApplicationMember = () => {
   const FilterTableAdmin = async () => {
     //도우미 승인 대기 유저만 가져오기 요청 - 행 전체
     const res = await axiosInstance.get("/helper/applylist");
+    //console.log("res", res.data);
     const adminlist = res.data;
     const mapped = adminlist.map((item: any, index: number) => ({
       key: index,
-      name: item.name,
-      gender: item.gender,
+      name: item.user.name,
+      gender: matchgender(item.gender),
       desiredPay: item.desiredPay,
       experience: item.experience,
       origin: item,
@@ -125,8 +121,12 @@ const ApplicationMember = () => {
   };
 
   useEffect(() => {
-    //FilterTableAdmin();
+    FilterTableAdmin();
   }, []);
+
+  useEffect(() => {
+    FilterTableAdmin();
+  }, [dataSorce]);
 
   return (
     <ApplicationMemberStyled>
@@ -135,7 +135,7 @@ const ApplicationMember = () => {
         <Table<DataType>
           rowSelection={{ type: selectionType, ...rowSelection }}
           columns={columns}
-          dataSource={data} // 이후 dataSorce로 변경
+          dataSource={dataSorce}
         />
       </div>
     </ApplicationMemberStyled>

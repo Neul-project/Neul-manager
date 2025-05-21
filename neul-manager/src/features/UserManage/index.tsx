@@ -21,6 +21,7 @@ import { AntdGlobalTheme, GreenTheme } from "@/utill/antdtheme";
 import { formatPhoneNumber } from "@/utill/formatter";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { dummy } from "./dummy";
+import AdminDetail from "../AdminDetail";
 const { Search } = Input;
 
 /*
@@ -38,6 +39,8 @@ const UserManage = () => {
   const [sortKey, setSortKey] = useState("created_at");
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
   const [selectSearch, setSelectSearch] = useState<string>("user_id");
+
+  const [isHelperDetailModal, setIsHelperDetailModal] = useState(false); //도우미 상세 정보 모달 오픈 여부
   const adminId = useAuthStore((state) => state.user?.id);
 
   //도우미 정보 가지고 오기 요청
@@ -73,6 +76,10 @@ const UserManage = () => {
   useEffect(() => {
     //getUserList();
   }, []);
+
+  const handleHelperCancel = () => {
+    setIsHelperDetailModal(false);
+  };
 
   // 유저 정렬하기
   const sortUsers = () => {
@@ -189,10 +196,20 @@ const UserManage = () => {
             <Button
               onClick={() => {
                 console.log("record", record);
+                setIsHelperDetailModal(true);
               }}
             >
               상세보기
             </Button>
+            <Modal
+              title=""
+              closable={{ "aria-label": "Custom Close Button" }}
+              open={isHelperDetailModal}
+              onCancel={handleHelperCancel}
+              footer={null}
+            >
+              <AdminDetail id={1} state={"상세보기"} />
+            </Modal>
           </ConfigProvider>
         );
       },
@@ -319,26 +336,7 @@ const UserManage = () => {
           columns={columns}
           dataSource={dummy} //**추후 변경
           rowKey="key"
-          onRow={(record) => ({
-            onClick: () => {
-              setSelectedUser(record); // 클릭한 유저 데이터
-              setModalOpen(true); // 모달 열기
-            },
-          })}
         />
-        <Modal
-          title="특이사항"
-          open={modalOpen}
-          onCancel={() => setModalOpen(false)}
-          footer={null}
-          centered
-        >
-          {selectedUser && (
-            <div>
-              <p>{selectedUser.patient_note}</p>
-            </div>
-          )}
-        </Modal>
       </UserManageStyled>
     </ConfigProvider>
   );
