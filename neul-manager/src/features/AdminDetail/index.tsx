@@ -30,7 +30,7 @@ const AdminDetail = (props: { id: string }) => {
   const admindatalist = async () => {
     //id에 해당하는 도우미 전체 데이터 가져오기 요청
     //console.log("id", id);
-    const res = await axiosInstance.get(`/admin/userlist`, {
+    const res = await axiosInstance.get(`/user/admin/userlist`, {
       params: { id: id },
     });
     const data = res.data;
@@ -54,7 +54,7 @@ const AdminDetail = (props: { id: string }) => {
   //등록 취소
   const DeleteAdmin = () => {
     //백엔드 삭제 요청 - 도우미 등록 반려 요쳥
-    axiosInstance.post("/admin/return", { id: id }).then((res) => {
+    axiosInstance.post("/user/admin/return", { id: id }).then((res) => {
       notification.success({
         message: `도우미 등록 반려`,
         description: "도우미 취소 요청을 성공하였습니다.",
@@ -65,7 +65,7 @@ const AdminDetail = (props: { id: string }) => {
 
   const YesAdmin = () => {
     //백엔드 등록 요청 - 정식 도우미 등록(승인 완료 상태로 변환)
-    axiosInstance.post("/admin/registration", { id: id }).then((res) => {
+    axiosInstance.post("/user/admin/registration", { id: id }).then((res) => {
       notification.success({
         message: `도우미 등록`,
         description: "성공적으로 도우미를 등록하였습니다.",

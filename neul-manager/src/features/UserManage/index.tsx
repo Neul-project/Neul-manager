@@ -42,7 +42,7 @@ const UserManage = () => {
   const getUserList = async () => {
     try {
       //상태가 승인 완료인 모든 도우미 유저 모든 정보 불러오기
-      const res = await axiosInstance.get("/admin/approveduser");
+      const res = await axiosInstance.get("/user/admin/approveduser");
       const data = res.data;
       //console.log(data);
 
@@ -125,7 +125,7 @@ const UserManage = () => {
       return;
     }
     try {
-      await axiosInstance.delete("/admin/userdelete", {
+      await axiosInstance.delete("/user/admin/userdelete", {
         data: { ids: selectedRowKeys },
       });
       notification.success({
