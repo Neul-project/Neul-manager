@@ -25,6 +25,7 @@ const AdminDetail = (props: { id: number }) => {
   const handleCancleModle = () => {
     setIsCanCleModalOpen(false);
     setIsYesModalOpen(false);
+    setResonText("");
   };
 
   const admindatalist = async () => {
@@ -53,7 +54,7 @@ const AdminDetail = (props: { id: number }) => {
 
   //등록 취소
   const DeleteAdmin = () => {
-    //console.log("text", resontext);
+    console.log("text", resontext);
 
     //백엔드 삭제 요청 - 도우미 등록 반려 요쳥
     axiosInstance
@@ -64,6 +65,7 @@ const AdminDetail = (props: { id: number }) => {
           description: "도우미 취소 요청을 성공하였습니다.",
         });
         setIsCanCleModalOpen(false);
+        setResonText("");
       });
   };
 
