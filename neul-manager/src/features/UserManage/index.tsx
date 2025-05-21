@@ -1,28 +1,32 @@
 import { useEffect, useState } from "react";
+import clsx from "clsx";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import axiosInstance from "@/lib/axios";
+
+//component & files
+import { formatPhoneNumber, formatPrice } from "@/utill/formatter";
+import { useAuthStore } from "@/stores/useAuthStore";
+import AdminDetail from "../AdminDetail";
+import { matchgender } from "@/utill/dataformat";
+import TargetDetail from "../TargetDetail";
+import TitleCompo from "@/components/TitleCompo";
+
+//style
+import { StyledModal, UserManageStyled } from "./styled";
+import { AntdGlobalTheme, GreenTheme } from "@/utill/antdtheme";
+
+//antd
+import type { SearchProps } from "antd/es/input";
 import {
   Button,
   message,
-  Modal,
   Select,
   Table,
   Input,
   notification,
   ConfigProvider,
 } from "antd";
-import clsx from "clsx";
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
-import TitleCompo from "@/components/TitleCompo";
-import axiosInstance from "@/lib/axios";
-import { StyledModal, UserManageStyled } from "./styled";
-// import { useAuthStore } from "@/stores/useAuthStore";
-import type { SearchProps } from "antd/es/input";
-import { AntdGlobalTheme, GreenTheme } from "@/utill/antdtheme";
-import { formatPhoneNumber, formatPrice } from "@/utill/formatter";
-import { useAuthStore } from "@/stores/useAuthStore";
-import AdminDetail from "../AdminDetail";
-import { matchgender } from "@/utill/dataformat";
-import TargetDetail from "../TargetDetail";
 const { Search } = Input;
 
 //전체 도우미 정보 컴포넌트
@@ -32,7 +36,6 @@ const UserManage = () => {
   const [userOrder, setUserOrder] = useState("ASC");
   const [sortKey, setSortKey] = useState("created_at");
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
-  const [selectSearch, setSelectSearch] = useState<string>("user_id");
   const [HelperId, setHelperId] = useState(); //클릭한 행의 도우미 아이디
   const [isHelperDetailModal, setIsHelperDetailModal] = useState(false); //도우미 상세 정보 모달 오픈 여부
   const [isTargetDetailModal, setIsTargetDetailModal] = useState(false); // 담당 피보호자 정보
@@ -250,55 +253,18 @@ const UserManage = () => {
     { value: "ASC", label: "오래된순" },
   ];
 
-  const searchOption = [
-    { value: "user_id", label: "보호자 ID" },
-    { value: "user_name", label: "보호자 이름" },
-    { value: "patient_name", label: "피보호자 이름" },
-  ];
-
-  const handleChange = (value: string) => {
-    // 선택된 검색 셀렉트
-    setSelectSearch(value);
-  };
-
+  //검색 함수
   const onSearch: SearchProps["onSearch"] = async (value) => {
-    console.log("검색 기준", selectSearch);
-    console.log("검색 단어", value);
-    try {
-      const res = await axiosInstance.get("/matching/searchuser", {
-        params: {
-          search: selectSearch, // 어떤 기준으로 검색하는지(user_id->보호자ID, user_name->보호자 이름, patient_name->피보호자 이름)
-          word: value, // 검색 단어
-        },
-      });
-      const searchData = res.data;
-      console.log("검색된 유저들", searchData);
-
-      const mapped = searchData.map((item: any, index: number) => ({}));
-
-      setUsers(mapped);
-    } catch (e) {
-      console.error("검색 실패: ", e);
-      notification.error({
-        message: `검색 실패`,
-        description: `검색에 실패하였습니다.`,
-      });
-    }
+    const filteredUsers = users.filter((user) => user.name.includes(value));
+    setUsers(filteredUsers);
   };
 
   return (
     <ConfigProvider theme={GreenTheme}>
       <UserManageStyled className={clsx("usermanage_wrap")}>
         <TitleCompo title="도우미 관리" />
-        <div className="usermanage_title_box">
-          <Button className="usermanage_delete_button" onClick={WithdrawUser}>
-            회원삭제
-          </Button>
-          <Button onClick={handleDownloadExcel}>엑셀 다운로드</Button>
-        </div>
-
         <div className="usermanage_info">
-          <div className="usermanage_sort_box">
+          <div className="usermanage_left">
             <div className="usermanage_total_num">총 {users.length}명</div>
             <Select
               className="usermanage_order"
@@ -310,19 +276,17 @@ const UserManage = () => {
               }}
             />
           </div>
-          <div>
-            <Select
-              className="usermanage_search_select"
-              value={selectSearch}
-              options={searchOption}
-              onChange={handleChange}
-            />
+          <div className="usermanage_right">
             <Search
-              placeholder="선택한 기준으로 검색"
+              placeholder="이름을 입력해 주세요"
               allowClear
               onSearch={onSearch}
-              style={{ width: 200 }}
+              style={{ width: 220 }}
             />
+            <Button onClick={handleDownloadExcel}>엑셀 다운로드</Button>
+            <Button className="usermanage_delete_button" onClick={WithdrawUser}>
+              회원삭제
+            </Button>
           </div>
         </div>
         <Table

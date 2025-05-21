@@ -17,30 +17,33 @@ export const UserManageStyled = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 5px;
+      margin-bottom: 10px;
+      margin-top: 13px;
 
-      .usermanage_sort_box {
+      .usermanage_left {
         display: flex;
         align-items: center;
-        .usermanage_order {
-          width: 140px;
-        }
-        .usermanage_total_num {
-          font-weight: 600;
-          margin-right: 10px;
-        }
+      }
+      .usermanage_right {
+        display: flex;
+        gap: 5px;
+      }
+      .usermanage_order {
+        width: 140px;
+      }
+      .usermanage_total_num {
+        font-weight: 600;
+        margin-right: 10px;
       }
     }
-    .usermanage_delete_button {
-      margin-right: 3px;
-    }
-    tr:hover {
-      cursor: pointer;
-    }
+  }
 
-    .ant-table-cell {
-      text-align: center;
-    }
+  tr:hover {
+    cursor: pointer;
+  }
+
+  .ant-table-cell {
+    text-align: center;
   }
 `;
 
