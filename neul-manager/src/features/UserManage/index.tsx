@@ -99,8 +99,24 @@ const UserManage = () => {
 
   // 엑셀 다운
   const handleDownloadExcel = () => {
-    //console.log("users", users);
-    const excelData = users.map((user) => ({
+    console.log("users", users);
+    console.log("selectedRowKeys", selectedRowKeys);
+
+    //선택한 도우미만 출력하기
+    const filteredUsers = users.filter((user) =>
+      selectedRowKeys.includes(user.origin.user.id)
+    );
+
+    if (filteredUsers.length === 0) {
+      notification.error({
+        message: "엑셀 다운로드",
+        description: "선택한 도우미가 없습니다.",
+      });
+
+      return;
+    }
+
+    const excelData = filteredUsers.map((user) => ({
       이름: user.origin.user.name,
       생년월일: user.origin.birth,
       전화번호: user.phone,
