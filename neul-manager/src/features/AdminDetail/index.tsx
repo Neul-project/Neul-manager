@@ -41,7 +41,7 @@ const AdminDetail = (props: {
 
   const admindatalist = async () => {
     //id에 해당하는 도우미 전체 데이터 가져오기 요청
-    console.log("id", id);
+    //console.log("id", id);
     const res = await axiosInstance.get(`/helper/userlist`, {
       params: { id: id },
     });
@@ -119,7 +119,7 @@ const AdminDetail = (props: {
       link.remove();
       window.URL.revokeObjectURL(downloadUrl);
     } catch (err) {
-      console.error("다운로드 실패", err);
+      //console.error("다운로드 실패", err);
     }
   };
 

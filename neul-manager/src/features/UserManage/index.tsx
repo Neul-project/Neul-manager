@@ -25,16 +25,11 @@ import { matchgender } from "@/utill/dataformat";
 import TargetDetail from "../TargetDetail";
 const { Search } = Input;
 
-/*
-tabel 행
-번호 / 이름 / 전화번호 / 성별 / 일당 / 생년월일 / 상세 (해당 어드민에 대한 내용 상세사항, 도우미가 맡은 보호자 정보)
-*/
-
 //전체 도우미 정보 컴포넌트
 const UserManage = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [userOrder, setUserOrder] = useState("DESC");
+  const [userOrder, setUserOrder] = useState("ASC");
   const [sortKey, setSortKey] = useState("created_at");
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
   const [selectSearch, setSelectSearch] = useState<string>("user_id");
@@ -333,7 +328,7 @@ const UserManage = () => {
         <Table
           rowSelection={rowSelection}
           columns={columns}
-          dataSource={users}
+          dataSource={sortedUsers}
           rowKey="key"
         />
 
@@ -353,6 +348,7 @@ const UserManage = () => {
           open={isTargetDetailModal}
           onCancel={hadleTargetCancel}
           footer={null}
+          width={1000}
         >
           {HelperId && <TargetDetail id={HelperId!} />}
         </StyledModal>
