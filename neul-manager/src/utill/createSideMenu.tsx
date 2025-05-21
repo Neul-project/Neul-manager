@@ -21,7 +21,7 @@ export const createSidebarMenus = (menus: MenuProps["items"]): any => {
   });
 };
 
-/**
+/*
  * 에시 : key는 연결될 url, label은 이름입니다.
  * 만약 아래에 하나 더 만들어야 하는 경우에
  * children생성 후 object형식으로 넣으시면 됩니다~

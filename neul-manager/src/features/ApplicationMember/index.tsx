@@ -86,7 +86,7 @@ const ApplicationMember = () => {
               </Button>
             </ConfigProvider>
             <StyledModal
-              title="" //**추후 이름 변경
+              title=""
               closable={{ "aria-label": "Custom Close Button" }}
               open={isDetailModalOpen}
               onCancel={handleCancel}

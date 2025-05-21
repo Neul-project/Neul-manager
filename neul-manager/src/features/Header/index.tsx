@@ -78,7 +78,9 @@ const Header = ({ className }: HeaderProps) => {
           menu={{ items, onClick: handleMenuClick }}
           trigger={["click"]}
         >
-          <a onClick={(e) => e.preventDefault()}>{user?.name}님</a>
+          <a className="username" onClick={(e) => e.preventDefault()}>
+            {user?.name}님
+          </a>
         </Dropdown>
         <Modal
           title="로그아웃"

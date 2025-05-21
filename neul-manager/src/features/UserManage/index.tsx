@@ -87,7 +87,7 @@ const UserManage = () => {
     setIsTargetDetailModal(false);
   };
 
-  //유저 정렬하기***
+  //유저 정렬하기
   const sortUsers = () => {
     let sorted = [...users];
 

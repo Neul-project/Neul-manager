@@ -20,4 +20,8 @@ export const HeaderStyled = styled.div`
       display: flex;
     }
   }
+
+  .username {
+    cursor: pointer;
+  }
 `;
