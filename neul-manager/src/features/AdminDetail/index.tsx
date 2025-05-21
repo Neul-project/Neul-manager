@@ -3,7 +3,7 @@ import { AdminDetailtStyled } from "./styled";
 import { useEffect, useState } from "react";
 import TitleCompo from "@/components/TitleCompo";
 import clsx from "clsx";
-import { Button, Divider, Modal, notification } from "antd";
+import { Button, Modal, notification } from "antd";
 import StateModal from "../StateModal";
 import { matchgender } from "@/utill/dataformat";
 import {

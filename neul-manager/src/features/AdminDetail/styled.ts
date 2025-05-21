@@ -1,6 +1,11 @@
+import { Modal } from "antd";
 import styled from "styled-components";
 
 export const AdminDetailtStyled = styled.div`
+  max-height: 80vh;
+  min-height: 350px;
+  overflow-y: auto;
+
   &.AdminDetail_main_wrap {
     width: 100%;
     height: 100%;

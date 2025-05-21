@@ -54,6 +54,11 @@ export const StyledModal = styled(Modal)`
   .ant-modal-content {
     padding: 0px 10px 20px 20px;
 
+    .ant-modal-close-x {
+      margin-top: 10px;
+      margin-left: -50px;
+    }
+
     .ActivityList_Modal {
       max-height: 70vh;
       min-height: 300px;
