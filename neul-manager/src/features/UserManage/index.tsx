@@ -14,7 +14,7 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import TitleCompo from "@/components/TitleCompo";
 import axiosInstance from "@/lib/axios";
-import { UserManageStyled } from "./styled";
+import { StyledModal, UserManageStyled } from "./styled";
 // import { useAuthStore } from "@/stores/useAuthStore";
 import type { SearchProps } from "antd/es/input";
 import { AntdGlobalTheme, GreenTheme } from "@/utill/antdtheme";
@@ -22,6 +22,7 @@ import { formatPhoneNumber, formatPrice } from "@/utill/formatter";
 import { useAuthStore } from "@/stores/useAuthStore";
 import AdminDetail from "../AdminDetail";
 import { matchgender } from "@/utill/dataformat";
+import TargetDetail from "../TargetDetail";
 const { Search } = Input;
 
 /*
@@ -31,18 +32,18 @@ tabel 행
 
 //전체 도우미 정보 컴포넌트
 const UserManage = () => {
-  const [selectedUser, setSelectedUser] = useState<any>(null);
-  const [modalOpen, setModalOpen] = useState(false);
   const [users, setUsers] = useState<any[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [userOrder, setUserOrder] = useState("DESC");
   const [sortKey, setSortKey] = useState("created_at");
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
   const [selectSearch, setSelectSearch] = useState<string>("user_id");
-  const [HelperId, setHelperId] = useState();
+  const [HelperId, setHelperId] = useState(); //클릭한 행의 도우미 아이디
   const [isHelperDetailModal, setIsHelperDetailModal] = useState(false); //도우미 상세 정보 모달 오픈 여부
+  const [isTargetDetailModal, setIsTargetDetailModal] = useState(false); // 담당 피보호자 정보
   const adminId = useAuthStore((state) => state.user?.id);
 
+  //useEffect
   useEffect(() => {
     getUserList();
   }, []);
@@ -58,7 +59,7 @@ const UserManage = () => {
       //상태가 승인 완료인 모든 도우미 유저 모든 정보 불러오기
       const res = await axiosInstance.get("/helper/approveduser");
       const data = res.data;
-      console.log(data);
+      //console.log(data);
 
       const mapped = data.map((item: any, index: number) => ({
         key: item.user.id,
@@ -81,7 +82,11 @@ const UserManage = () => {
     setIsHelperDetailModal(false);
   };
 
-  //유저 정렬하기
+  const hadleTargetCancel = () => {
+    setIsTargetDetailModal(false);
+  };
+
+  //유저 정렬하기***
   const sortUsers = () => {
     let sorted = [...users];
 
@@ -93,14 +98,14 @@ const UserManage = () => {
       );
     }
 
-    console.log("sord", sorted);
+    //console.log("sord", sorted);
     setSortedUsers(sorted);
   };
 
   // 엑셀 다운
   const handleDownloadExcel = () => {
-    console.log("users", users);
-    console.log("selectedRowKeys", selectedRowKeys);
+    //console.log("users", users);
+    //console.log("selectedRowKeys", selectedRowKeys);
 
     //선택한 도우미만 출력하기
     const filteredUsers = users.filter((user) =>
@@ -140,6 +145,7 @@ const UserManage = () => {
 
     const file = new Blob([excelBuffer], { type: "application/octet-stream" });
     saveAs(file, "도우미목록.xlsx");
+    setSelectedRowKeys([]);
   };
 
   // 회원삭제(userId들 보냄)
@@ -198,7 +204,7 @@ const UserManage = () => {
     },
     {
       key: "desiredPay",
-      title: "일당",
+      title: "일급",
       dataIndex: "desiredPay",
     },
     {
@@ -211,22 +217,12 @@ const UserManage = () => {
             <Button
               onClick={() => {
                 //console.log("record", record);
-
                 setIsHelperDetailModal(true);
                 setHelperId(record.origin.user.id);
               }}
             >
               상세보기
             </Button>
-            <Modal
-              title=""
-              closable={{ "aria-label": "Custom Close Button" }}
-              open={isHelperDetailModal}
-              onCancel={handleHelperCancel}
-              footer={null}
-            >
-              <AdminDetail id={HelperId!} state={"상세보기"} />
-            </Modal>
           </ConfigProvider>
         );
       },
@@ -241,7 +237,8 @@ const UserManage = () => {
           <ConfigProvider theme={AntdGlobalTheme}>
             <Button
               onClick={() => {
-                console.log("record", record);
+                setIsTargetDetailModal(true);
+                setHelperId(record.origin.user.id);
               }}
             >
               상세보기
@@ -339,6 +336,26 @@ const UserManage = () => {
           dataSource={users}
           rowKey="key"
         />
+
+        <StyledModal
+          title=""
+          closable={{ "aria-label": "Custom Close Button" }}
+          open={isHelperDetailModal}
+          onCancel={handleHelperCancel}
+          footer={null}
+          width={1000}
+        >
+          {HelperId && <AdminDetail id={HelperId} state="상세보기" />}
+        </StyledModal>
+        <StyledModal
+          title=""
+          closable={{ "aria-label": "Custom Close Button" }}
+          open={isTargetDetailModal}
+          onCancel={hadleTargetCancel}
+          footer={null}
+        >
+          {HelperId && <TargetDetail id={HelperId!} />}
+        </StyledModal>
       </UserManageStyled>
     </ConfigProvider>
   );

@@ -1,3 +1,4 @@
+import { Modal } from "antd";
 import styled from "styled-components";
 
 export const UserManageStyled = styled.div`
@@ -39,6 +40,20 @@ export const UserManageStyled = styled.div`
 
     .ant-table-cell {
       text-align: center;
+    }
+  }
+`;
+
+export const StyledModal = styled(Modal)`
+  .ant-modal-content {
+    padding: 0px 10px 20px 20px;
+
+    .ActivityList_Modal {
+      max-height: 70vh;
+      min-height: 300px;
+      overflow-y: auto;
+      margin-top: 0px;
+      padding-right: 10px;
     }
   }
 `;

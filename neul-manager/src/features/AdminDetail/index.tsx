@@ -6,6 +6,12 @@ import clsx from "clsx";
 import { Button, Divider, Modal, notification } from "antd";
 import StateModal from "../StateModal";
 import { matchgender } from "@/utill/dataformat";
+import {
+  formatPhoneNumber,
+  formatPrice,
+  getKoreanAge,
+} from "@/utill/formatter";
+
 //어드민 상세 페이지
 const AdminDetail = (props: {
   id: number;
@@ -16,7 +22,7 @@ const AdminDetail = (props: {
   const { id, state, setIsDetailModalOpen } = props;
 
   //useState
-  const [info, setInfo] = useState<AdminUser | undefined>(); //현재 dummy사용 백엔드 받고 info로 변경 //어드민id에 해당하는 유저 정보
+  const [info, setInfo] = useState<AdminUser | undefined>(); //어드민id에 해당하는 유저 정보
   const [isCanCleModalOpen, setIsCanCleModalOpen] = useState(false); //취소 모달
   const [isYesModalOpen, setIsYesModalOpen] = useState(false); //수락 모달
   const [resontext, setResonText] = useState(""); // 취소 모달 반려 이유
@@ -47,7 +53,7 @@ const AdminDetail = (props: {
 
   useEffect(() => {
     admindatalist();
-  }, []);
+  }, [id]);
 
   //취소 버튼 클릭
   const AdminCancle = () => {
@@ -91,7 +97,7 @@ const AdminDetail = (props: {
 
   //첨부파일 다운로드 클릭 함수
   const filedownload = async () => {
-    console.log("info", info);
+    //console.log("info", info);
 
     try {
       const response = await fetch(
@@ -123,11 +129,32 @@ const AdminDetail = (props: {
       <div className="AdminDetail_main_info">
         <div className="AdminDetail_info">
           <div className="AdminDetail_content">
-            <div>이름 {info?.user.name}</div>
-            <div>생년월일 {info?.birth}</div>
-            <div>만 22세 / {matchgender(info?.gender)}</div>
-            <div>전화번호 : {info?.user.phone}</div>
-            <div>email : {info?.user.email}</div>
+            <div className="AdminDetail_text">
+              <div className="AdminDetail_title">이름</div>
+              <div className="AdminDetail_sub_title">
+                {info?.user.name}
+                <div className="AdminDetail_small_font">
+                  ({matchgender(info?.gender)})
+                </div>
+              </div>
+            </div>
+            <div className="AdminDetail_text">
+              <div className="AdminDetail_title">생년월일</div>
+              <div className="AdminDetail_sub_title">
+                {info?.birth}
+                <div className="AdminDetail_small_font">
+                  (만{getKoreanAge(info?.birth!)}세)
+                </div>
+              </div>
+            </div>
+            <div className="AdminDetail_text">
+              <div className="AdminDetail_title">전화번호</div>
+              {formatPhoneNumber(info?.user.phone!)}
+            </div>
+            <div className="AdminDetail_text">
+              <div className="AdminDetail_title">E-mail</div>
+              {info?.user.email}
+            </div>
           </div>
           <div className="AdminDetail_Profileimg">
             <img
@@ -142,13 +169,30 @@ const AdminDetail = (props: {
           </div>
         </div>
         <div className="AdminDetail_subContent">
-          <div>자격증 : {info?.certificateName}</div>
-          <div>자격증 : {info?.certificateName2}</div>
-          <div>자격증 : {info?.certificateName3}</div>
-          <div>일급 : {info?.desiredPay}</div>
-          <div>경력 : {info?.experience}</div>
+          <div className="AdminDetail_text">
+            <div className="AdminDetail_title">자격증</div>
+            {info?.certificateName}
+          </div>
+          <div className="AdminDetail_text">
+            <div className="AdminDetail_title"></div>
+            {info?.certificateName2}
+          </div>
+          <div className="AdminDetail_text">
+            <div className="AdminDetail_title"></div> {info?.certificateName3}
+          </div>
+
+          <div className="AdminDetail_text">
+            <div className="AdminDetail_title">일급</div>
+            {formatPrice(info?.desiredPay!)}
+          </div>
+          <div className="AdminDetail_text">
+            <div className="AdminDetail_title">경력</div>
+            <div className="AdminDetail_experience">{info?.experience}</div>
+          </div>
         </div>
-        <Button onClick={filedownload}>첨부파일</Button>
+        <div className="AdminDetail_download">
+          <Button onClick={filedownload}>첨부파일 다운로드</Button>
+        </div>
       </div>
 
       {state !== "상세보기" ? (

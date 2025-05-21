@@ -9,3 +9,22 @@ export function formatPrice(value: number) {
   if (typeof value !== "number" || isNaN(value)) return "";
   return value.toLocaleString() + "원";
 }
+
+//만나이 구하기
+export function getKoreanAge(birthDateString: string): number {
+  const today = new Date();
+  const birthDate = new Date(birthDateString);
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+
+  const hasBirthdayPassedThisYear =
+    today.getMonth() > birthDate.getMonth() ||
+    (today.getMonth() === birthDate.getMonth() &&
+      today.getDate() >= birthDate.getDate());
+
+  if (!hasBirthdayPassedThisYear) {
+    age--;
+  }
+
+  return age;
+}

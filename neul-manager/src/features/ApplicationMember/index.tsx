@@ -12,6 +12,7 @@ import { Button, ConfigProvider, Table, Modal } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import AdminDetail from "../AdminDetail";
 import { matchgender } from "@/utill/dataformat";
+import { StyledModal } from "../Programlist/styled";
 
 //행 선택 함수
 const rowSelection: TableProps<DataType>["rowSelection"] = {
@@ -80,18 +81,19 @@ const ApplicationMember = () => {
                 상세보기
               </Button>
             </ConfigProvider>
-            <Modal
+            <StyledModal
               title="" //**추후 이름 변경
               closable={{ "aria-label": "Custom Close Button" }}
               open={isDetailModalOpen}
               onCancel={handleCancel}
               footer={null}
+              width={1000}
             >
               <AdminDetail
                 id={helperId!}
                 setIsDetailModalOpen={setIsDetailModalOpen}
               />
-            </Modal>
+            </StyledModal>
           </>
         );
       },
