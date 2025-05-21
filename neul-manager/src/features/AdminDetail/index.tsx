@@ -15,7 +15,7 @@ const AdminDetail = (props: { id: number }) => {
   const [info, setInfo] = useState(); //현재 dummy사용 백엔드 받고 info로 변경 //어드민id에 해당하는 유저 정보
   const [isCanCleModalOpen, setIsCanCleModalOpen] = useState(false); //취소 모달
   const [isYesModalOpen, setIsYesModalOpen] = useState(false); //수락 모달
-
+  const [resontext, setResonText] = useState(""); // 취소 모달 반려 이유
   //취소모달 yes 선택
   const handleCancleOk = () => {
     setIsCanCleModalOpen(false);
@@ -53,14 +53,18 @@ const AdminDetail = (props: { id: number }) => {
 
   //등록 취소
   const DeleteAdmin = () => {
+    //console.log("text", resontext);
+
     //백엔드 삭제 요청 - 도우미 등록 반려 요쳥
-    axiosInstance.post("/helper/return", { id: id }).then((res) => {
-      notification.success({
-        message: `도우미 등록 반려`,
-        description: "도우미 취소 요청을 성공하였습니다.",
+    axiosInstance
+      .post("/helper/return", { id: id, content: resontext })
+      .then((res) => {
+        notification.success({
+          message: `도우미 등록 반려`,
+          description: "도우미 취소 요청을 성공하였습니다.",
+        });
+        setIsCanCleModalOpen(false);
       });
-      setIsCanCleModalOpen(false);
-    });
   };
 
   const YesAdmin = () => {
@@ -90,7 +94,7 @@ const AdminDetail = (props: { id: number }) => {
       </div>
       <div className="AdminDetail_btns">
         <Button className="AdminDetail_btn" onClick={AdminCancle}>
-          취소
+          반려
         </Button>
         <Modal
           title="취소 모달"
@@ -105,7 +109,7 @@ const AdminDetail = (props: { id: number }) => {
             </>
           }
         >
-          <StateModal type={"취소"} />
+          <StateModal type={"취소"} setResonText={setResonText} />
         </Modal>
         <Button className="AdminDetail_btn" onClick={AdminYes}>
           수락
