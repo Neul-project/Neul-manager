@@ -22,6 +22,11 @@ import { formatPhoneNumber } from "@/utill/formatter";
 import { useAuthStore } from "@/stores/useAuthStore";
 const { Search } = Input;
 
+/*
+1.번호 / 이름 / 전화번호 / 성별 / 일당 / 생년월일 / 상세 
+*/
+
+//전체 도우미 정보 컴포넌트
 const UserManage = () => {
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -33,12 +38,13 @@ const UserManage = () => {
   const [selectSearch, setSelectSearch] = useState<string>("user_id");
   const adminId = useAuthStore((state) => state.user?.id);
 
+  //도우미 정보 가지고 오기 요청
   const getUserList = async () => {
     try {
-      // 모든 user불러오기
-      const res = await axiosInstance.get("/matching/alluser");
+      //상태가 승인 완료인 모든 도우미 유저 모든 정보 불러오기
+      const res = await axiosInstance.get("/admin/approveduser");
       const data = res.data;
-      console.log(data);
+      //console.log(data);
 
       const mapped = data.map((x: any) => ({
         key: x.user_id,
@@ -63,7 +69,7 @@ const UserManage = () => {
   };
 
   useEffect(() => {
-    getUserList();
+    //getUserList();
   }, []);
 
   // 유저 정렬하기
