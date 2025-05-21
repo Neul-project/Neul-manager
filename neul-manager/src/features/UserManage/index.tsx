@@ -22,6 +22,7 @@ import { formatPhoneNumber } from "@/utill/formatter";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { dummy } from "./dummy";
 import AdminDetail from "../AdminDetail";
+import { matchgender } from "@/utill/dataformat";
 const { Search } = Input;
 
 /*
@@ -39,7 +40,7 @@ const UserManage = () => {
   const [sortKey, setSortKey] = useState("created_at");
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
   const [selectSearch, setSelectSearch] = useState<string>("user_id");
-
+  const [HelperId, setHelperId] = useState();
   const [isHelperDetailModal, setIsHelperDetailModal] = useState(false); //도우미 상세 정보 모달 오픈 여부
   const adminId = useAuthStore((state) => state.user?.id);
 
@@ -49,22 +50,17 @@ const UserManage = () => {
       //상태가 승인 완료인 모든 도우미 유저 모든 정보 불러오기
       const res = await axiosInstance.get("/helper/approveduser");
       const data = res.data;
-      //console.log(data);
+      console.log(data);
 
-      const mapped = data.map((x: any) => ({
-        key: x.user_id,
-        admin_id: x.admin_id,
-        admin_name: x.admin_name,
-        id: x.user_id,
-        email: x.user_email,
-        name: x.user_name,
-        phone: x.user_phone,
-        patient_id: x.patient_id,
-        patient_name: x.patient_name,
-        patient_gender: x.patient_gender === "male" ? "남" : "여",
-        patient_birth: x.patient_birth || "없음",
-        patient_note: x.patient_note || "없음",
-        created_at: x.user_create,
+      const mapped = data.map((item: any, index: number) => ({
+        key: index + 1,
+        number: index + 1,
+        id: item.user.id,
+        name: item.user.name,
+        gender: matchgender(item.gender),
+        desiredPay: item.desiredPay,
+        phone: item.user.phone,
+        origin: item,
       }));
 
       setUsers(mapped);
@@ -74,7 +70,7 @@ const UserManage = () => {
   };
 
   useEffect(() => {
-    //getUserList();
+    getUserList();
   }, []);
 
   const handleHelperCancel = () => {
@@ -196,7 +192,9 @@ const UserManage = () => {
             <Button
               onClick={() => {
                 console.log("record", record);
+
                 setIsHelperDetailModal(true);
+                setHelperId(record.origin.user.id);
               }}
             >
               상세보기
@@ -208,7 +206,7 @@ const UserManage = () => {
               onCancel={handleHelperCancel}
               footer={null}
             >
-              <AdminDetail id={1} state={"상세보기"} />
+              <AdminDetail id={HelperId!} state={"상세보기"} />
             </Modal>
           </ConfigProvider>
         );
@@ -264,21 +262,7 @@ const UserManage = () => {
       const searchData = res.data;
       console.log("검색된 유저들", searchData);
 
-      const mapped = searchData.map((x: any) => ({
-        key: x.user_id,
-        admin_id: x.admin_id,
-        admin_name: x.admin_name,
-        id: x.user_id,
-        email: x.user_email,
-        name: x.user_name,
-        phone: x.user_phone,
-        patient_id: x.patient_id,
-        patient_name: x.patient_name,
-        patient_gender: x.patient_gender === "male" ? "남" : "여",
-        patient_birth: x.patient_birth || "없음",
-        patient_note: x.patient_note || "없음",
-        created_at: x.user_create,
-      }));
+      const mapped = searchData.map((item: any, index: number) => ({}));
 
       setUsers(mapped);
     } catch (e) {
@@ -334,7 +318,7 @@ const UserManage = () => {
         <Table
           rowSelection={rowSelection}
           columns={columns}
-          dataSource={dummy} //**추후 변경
+          dataSource={users}
           rowKey="key"
         />
       </UserManageStyled>

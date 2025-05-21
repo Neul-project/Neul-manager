@@ -79,7 +79,7 @@ const AdminDetail = (props: {
 
   const YesAdmin = () => {
     //백엔드 등록 요청 - 정식 도우미 등록(승인 완료 상태로 변환)
-    axiosInstance.post("/helper/registration", { id: id }).then((res) => {
+    axiosInstance.post("/helper/registration", { userId: id }).then((res) => {
       notification.success({
         message: `도우미 등록`,
         description: "성공적으로 도우미를 등록하였습니다.",
