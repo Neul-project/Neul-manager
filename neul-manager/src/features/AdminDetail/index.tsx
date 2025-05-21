@@ -89,6 +89,34 @@ const AdminDetail = (props: {
     });
   };
 
+  //첨부파일 다운로드 클릭 함수
+  const filedownload = async () => {
+    console.log("info", info);
+
+    try {
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_API_URL + "/uploads/file/" + info?.certificate,
+        {
+          method: "GET",
+        }
+      );
+      //console.log("response", response);
+
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = info?.certificate; // 다운로드 시 파일명
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (err) {
+      console.error("다운로드 실패", err);
+    }
+  };
+
   return (
     <AdminDetailtStyled className={clsx("AdminDetail_main_wrap")}>
       <TitleCompo title={`이름 상세정보`} />
@@ -106,12 +134,11 @@ const AdminDetail = (props: {
               className="AdminDetail_imgstyle"
               src={
                 process.env.NEXT_PUBLIC_API_URL +
-                "/uploads/file/" +
+                "/uploads/image/" +
                 info?.profileImage
               }
               alt="profilimg"
             />
-            {/* **추후 이미지 경로 변경할 것 */}
           </div>
         </div>
         <div className="AdminDetail_subContent">
@@ -120,7 +147,11 @@ const AdminDetail = (props: {
           <div>자격증 : {info?.certificateName3}</div>
           <div>일급 : {info?.desiredPay}</div>
           <div>경력 : {info?.experience}</div>
+          <a href="http://localhost:5000/uploads/file/report.pdf" download>
+            ㄴㄴ
+          </a>
         </div>
+        <Button onClick={filedownload}>첨부파일</Button>
       </div>
 
       {state !== "상세보기" ? (

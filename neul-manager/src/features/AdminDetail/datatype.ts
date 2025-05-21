@@ -12,4 +12,5 @@ interface AdminUser {
   certificateName3?: string;
   desiredPay: number;
   experience: string;
+  certificate: any;
 }
