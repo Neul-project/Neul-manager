@@ -147,9 +147,6 @@ const AdminDetail = (props: {
           <div>자격증 : {info?.certificateName3}</div>
           <div>일급 : {info?.desiredPay}</div>
           <div>경력 : {info?.experience}</div>
-          <a href="http://localhost:5000/uploads/file/report.pdf" download>
-            ㄴㄴ
-          </a>
         </div>
         <Button onClick={filedownload}>첨부파일</Button>
       </div>

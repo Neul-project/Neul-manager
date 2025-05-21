@@ -53,7 +53,7 @@ const UserManage = () => {
       console.log(data);
 
       const mapped = data.map((item: any, index: number) => ({
-        key: index + 1,
+        key: item.user.id,
         number: index + 1,
         id: item.user.id,
         name: item.user.name,
@@ -77,7 +77,7 @@ const UserManage = () => {
     setIsHelperDetailModal(false);
   };
 
-  // 유저 정렬하기
+  //유저 정렬하기
   const sortUsers = () => {
     let sorted = [...users];
 
