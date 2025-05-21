@@ -78,7 +78,7 @@ const ApplicationMember = () => {
   //테이블 행에 맞춘 필터링 함수
   const FilterTableAdmin = async () => {
     //도우미 승인 대기 유저만 가져오기 요청 - 행 전체
-    const res = await axiosInstance.get("/user/admin/applylist");
+    const res = await axiosInstance.get("/helper/applylist");
     const adminlist = res.data;
     const mapped = adminlist.map((item: any, index: number) => ({
       key: index,
