@@ -18,9 +18,8 @@ import { UserManageStyled } from "./styled";
 // import { useAuthStore } from "@/stores/useAuthStore";
 import type { SearchProps } from "antd/es/input";
 import { AntdGlobalTheme, GreenTheme } from "@/utill/antdtheme";
-import { formatPhoneNumber } from "@/utill/formatter";
+import { formatPhoneNumber, formatPrice } from "@/utill/formatter";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { dummy } from "./dummy";
 import AdminDetail from "../AdminDetail";
 import { matchgender } from "@/utill/dataformat";
 const { Search } = Input;
@@ -44,6 +43,15 @@ const UserManage = () => {
   const [isHelperDetailModal, setIsHelperDetailModal] = useState(false); //도우미 상세 정보 모달 오픈 여부
   const adminId = useAuthStore((state) => state.user?.id);
 
+  useEffect(() => {
+    getUserList();
+  }, []);
+
+  // 유저정렬
+  useEffect(() => {
+    sortUsers();
+  }, [userOrder, sortKey, users]);
+
   //도우미 정보 가지고 오기 요청
   const getUserList = async () => {
     try {
@@ -58,8 +66,8 @@ const UserManage = () => {
         id: item.user.id,
         name: item.user.name,
         gender: matchgender(item.gender),
-        desiredPay: item.desiredPay,
-        phone: item.user.phone,
+        desiredPay: formatPrice(item.desiredPay),
+        phone: formatPhoneNumber(item.user.phone),
         origin: item,
       }));
 
@@ -68,10 +76,6 @@ const UserManage = () => {
       console.error("유저 불러오기 실패", err);
     }
   };
-
-  useEffect(() => {
-    getUserList();
-  }, []);
 
   const handleHelperCancel = () => {
     setIsHelperDetailModal(false);
@@ -84,35 +88,34 @@ const UserManage = () => {
     if (sortKey === "created_at") {
       sorted.sort((a, b) =>
         userOrder === "DESC"
-          ? new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-          : new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+          ? b.origin.id - a.origin.id
+          : a.origin.id - b.origin.id
       );
     }
+
+    console.log("sord", sorted);
     setSortedUsers(sorted);
   };
 
-  // 유저정렬
-  useEffect(() => {
-    sortUsers();
-  }, [userOrder, sortKey, users]);
-
-  // 엑셀 다운 //**추후수정
+  // 엑셀 다운
   const handleDownloadExcel = () => {
+    //console.log("users", users);
     const excelData = users.map((user) => ({
-      보호자ID: user.id,
-      보호자_아이디: user.email,
-      보호자명: user.user,
-      보호자_전화번호: user.phone,
-      피보호자ID: user.patient_id,
-      피보호자명: user.patient_name,
-      피보호자_성별: user.patient_gender,
-      피보호자_생년월일: user.patient_birth,
-      피보호자_특이사항: user.patient_note,
+      이름: user.origin.user.name,
+      생년월일: user.origin.birth,
+      전화번호: user.phone,
+      이메일: user.origin.user.email,
+      성별: user.gender,
+      일급: user.desiredPay,
+      자격증1: user.origin.certificateName,
+      자격증2: user.origin.certificateName2,
+      자격증3: user.origin.certificateName3,
+      경력: user.origin.experience,
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(excelData);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "회원목록");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "도우미 목록");
 
     const excelBuffer = XLSX.write(workbook, {
       bookType: "xlsx",
@@ -120,7 +123,7 @@ const UserManage = () => {
     });
 
     const file = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(file, "회원목록.xlsx");
+    saveAs(file, "도우미목록.xlsx");
   };
 
   // 회원삭제(userId들 보냄)
@@ -140,7 +143,7 @@ const UserManage = () => {
       getUserList(); // 목록 다시 불러오기
       setSelectedRowKeys([]); // 선택 초기화
     } catch (e) {
-      console.error("회원 삭제 실패:", e);
+      //console.error("회원 삭제 실패:", e);
       notification.error({
         message: `선택한 회원 삭제 실패`,
         description: `선택한 회원 삭제에 실패했습니다.`,
@@ -191,7 +194,7 @@ const UserManage = () => {
           <ConfigProvider theme={AntdGlobalTheme}>
             <Button
               onClick={() => {
-                console.log("record", record);
+                //console.log("record", record);
 
                 setIsHelperDetailModal(true);
                 setHelperId(record.origin.user.id);
@@ -233,6 +236,7 @@ const UserManage = () => {
     },
   ];
 
+  //정렬 옵션
   const sortOption = [
     { value: "DESC", label: "최신순" },
     { value: "ASC", label: "오래된순" },
@@ -277,14 +281,12 @@ const UserManage = () => {
   return (
     <ConfigProvider theme={GreenTheme}>
       <UserManageStyled className={clsx("usermanage_wrap")}>
+        <TitleCompo title="도우미 관리" />
         <div className="usermanage_title_box">
-          <TitleCompo title="회원 관리" />
-          <div>
-            <Button className="usermanage_delete_button" onClick={WithdrawUser}>
-              회원삭제
-            </Button>
-            <Button onClick={handleDownloadExcel}>엑셀 다운로드</Button>
-          </div>
+          <Button className="usermanage_delete_button" onClick={WithdrawUser}>
+            회원삭제
+          </Button>
+          <Button onClick={handleDownloadExcel}>엑셀 다운로드</Button>
         </div>
 
         <div className="usermanage_info">

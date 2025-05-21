@@ -2,12 +2,12 @@ import styled from "styled-components";
 
 export const UserManageStyled = styled.div`
   &.usermanage_wrap {
-    padding: 24px;
     .usermanage_title_box {
       display: flex;
-      justify-content: space-between;
+      justify-content: end;
       margin-bottom: 10px;
     }
+
     .usermanage_search_select {
       margin-right: 3px;
       width: 130px;
@@ -16,12 +16,13 @@ export const UserManageStyled = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 3px;
+      margin-bottom: 5px;
+
       .usermanage_sort_box {
         display: flex;
         align-items: center;
         .usermanage_order {
-          width: 95px;
+          width: 140px;
         }
         .usermanage_total_num {
           font-weight: 600;
@@ -34,6 +35,10 @@ export const UserManageStyled = styled.div`
     }
     tr:hover {
       cursor: pointer;
+    }
+
+    .ant-table-cell {
+      text-align: center;
     }
   }
 `;
