@@ -191,10 +191,6 @@ const Programlist = () => {
     saveAs(file, "프로그램목록.xlsx");
   };
 
-  // const showModal = () => {
-  //   setIsModalOpen(true);
-  // };
-
   const handleOk = () => {
     setIsModalOpen(false);
   };

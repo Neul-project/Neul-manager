@@ -2,13 +2,13 @@ import TitleCompo from "@/components/TitleCompo";
 import { ApplicationMemberStyled, EllipsisText } from "./styled";
 
 import { useEffect, useState } from "react";
-import { AdminType, DataType, data } from "./tableinfo";
+import { DataType } from "./tableinfo";
 import { AntdGlobalTheme, GreenTheme } from "@/utill/antdtheme";
 import axiosInstance from "@/lib/axios";
 import { useRouter } from "next/router";
 
 //antd
-import { Button, ConfigProvider, Table, Modal } from "antd";
+import { Button, ConfigProvider, Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import AdminDetail from "../AdminDetail";
 import { matchgender } from "@/utill/dataformat";
@@ -94,10 +94,12 @@ const ApplicationMember = () => {
               footer={null}
               width={1000}
             >
-              <AdminDetail
-                id={helperId!}
-                setIsDetailModalOpen={setIsDetailModalOpen}
-              />
+              <div className="ActivityList_Modal">
+                <AdminDetail
+                  id={helperId!}
+                  setIsDetailModalOpen={setIsDetailModalOpen}
+                />
+              </div>
             </StyledModal>
           </>
         );

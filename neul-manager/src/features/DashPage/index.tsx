@@ -115,19 +115,40 @@ const DashBoard = () => {
         <TitleCompo title="대시보드" />
         <div className="DashPage_today">오늘 일자 : {formattedDate}</div>
       </div>
-      <div className="DashPage_content">
-        <div className="DashPage_age">
-          <p className="DashPage_title">피보호자 연령</p>
-          <Bar data={ageChartData} options={ageChartOptions} />
+
+      {/* 피보호자 성비 */}
+      <div className="DashPage_main_title">피보호자 성비</div>
+      <div className="DashPage_content_gender">
+        <div className="DashPage_gender">
+          <p className="DashPage_title">20대 성비</p>
+          <Pie data={genderdata} />
         </div>
         <div className="DashPage_gender">
-          <p className="DashPage_title">피보호자 성비</p>
+          <p className="DashPage_title">30대 성비</p>
+          <Pie data={genderdata} />
+        </div>
+        <div className="DashPage_gender">
+          <p className="DashPage_title">40대 성비</p>
+          <Pie data={genderdata} />
+        </div>
+        <div className="DashPage_gender">
+          <p className="DashPage_title">50대 이상 성비</p>
           <Pie data={genderdata} />
         </div>
       </div>
+
+      {/* 피보호자 연령 */}
+      <div className="DashPage_main_title">피보호자 연령</div>
+      <div className="DashPage_content_age">
+        <div className="DashPage_age">
+          <Bar data={ageChartData} options={ageChartOptions} />
+        </div>
+      </div>
+
+      {/* 월별 프로그램 등록 */}
+      <div className="DashPage_main_title">월별 프로그램 등록</div>
       <div className="DashPage_program_content">
         <div className="DashPage_program">
-          <p className="DashPage_title">월별 프로그램 등록</p>
           <Bar
             data={getProgramMonthlyChartData(
               programMonthlyData.labels,
@@ -151,9 +172,11 @@ const DashBoard = () => {
           />
         </div>
       </div>
+
+      {/* 프로그램 결제 건 수 */}
+      <div className="DashPage_main_title">프로그램 결제 건 수</div>
       <div className="DashPage_program_content">
         <div className="DashPage_program">
-          <p className="DashPage_title">프로그램 결제 건 수</p>
           <Line
             data={getPaymentLineChartData(
               programPaymentData.labels,
