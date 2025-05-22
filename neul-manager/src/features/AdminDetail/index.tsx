@@ -3,7 +3,7 @@ import { AdminDetailtStyled } from "./styled";
 import { useEffect, useState } from "react";
 import TitleCompo from "@/components/TitleCompo";
 import clsx from "clsx";
-import { Button, Modal, notification } from "antd";
+import { Button, Input, Modal, notification } from "antd";
 import StateModal from "../StateModal";
 import { matchgender } from "@/utill/dataformat";
 import {
@@ -26,6 +26,8 @@ const AdminDetail = (props: {
   const [isCanCleModalOpen, setIsCanCleModalOpen] = useState(false); //취소 모달
   const [isYesModalOpen, setIsYesModalOpen] = useState(false); //수락 모달
   const [resontext, setResonText] = useState(""); // 취소 모달 반려 이유
+  const [isPaychange, setIsPayChange] = useState(false); //변경하기 버튼 활성화 유무
+  const [pay, setPay] = useState<number>(); //일당금액
 
   //취소모달 yes 선택
   const handleCancleOk = () => {
@@ -47,7 +49,7 @@ const AdminDetail = (props: {
     });
     const data = res.data;
     //console.log("data", data);
-
+    setPay(data?.desiredPay);
     setInfo(data);
   };
 
@@ -123,6 +125,15 @@ const AdminDetail = (props: {
     }
   };
 
+  //일당 변경 버튼 클릭 함수
+  const handleEditClick = () => {
+    setIsPayChange(true);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPay(Number(e.target.value));
+  };
+
   return (
     <AdminDetailtStyled className={clsx("AdminDetail_main_wrap")}>
       <TitleCompo title={`이름 상세정보`} />
@@ -181,9 +192,43 @@ const AdminDetail = (props: {
             <div className="AdminDetail_title"></div> {info?.certificateName3}
           </div>
 
-          <div className="AdminDetail_text">
-            <div className="AdminDetail_title">일급</div>
-            {formatPrice(info?.desiredPay!)}
+          <div className="AdminDetail_text AdminDetail_pay">
+            <div className="AdminDetail_title">일당</div>
+            {state === "상세보기" ? (
+              <>
+                <div className="AdminDetail_payinput">
+                  <Input
+                    value={pay}
+                    disabled={!isPaychange}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="AdminDetail_paybtn">
+                  {!isPaychange ? (
+                    <Button onClick={handleEditClick}>변경하기</Button>
+                  ) : (
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        setIsPayChange(false);
+                        //서버로 값 전송하기
+                        //console.log("pay", pay, id);
+
+                        //도우미 일당 변경하기 (pay : 변경된 일당, id : 해당 도우미 아이디)
+                        axiosInstance.patch("/helper/changepay", {
+                          desiredPay: pay,
+                          userId: id,
+                        });
+                      }}
+                    >
+                      저장
+                    </Button>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div>{formatPrice(info?.desiredPay!)}</div>
+            )}
           </div>
           <div className="AdminDetail_text">
             <div className="AdminDetail_title">경력</div>

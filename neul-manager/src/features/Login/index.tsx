@@ -69,6 +69,8 @@ const Login = () => {
       <div className="Login_logo">
         <img src={logo.src} alt="logo" className="Login_imgstyle" />
       </div>
+      <div className="Login_title"></div>
+
       <form onSubmit={loginformik.handleSubmit}>
         <div className="Login_form">
           <input

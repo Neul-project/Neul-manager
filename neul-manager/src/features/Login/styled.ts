@@ -25,6 +25,11 @@ export const LoginStyled = styled.div`
         height: 100%;
       }
     }
+    .Login_title {
+      font-size: 20px;
+      margin-top: -30px;
+      margin-bottom: 10px;
+    }
 
     .Login_form {
       width: 100%;
@@ -58,6 +63,7 @@ export const LoginStyled = styled.div`
       color: #fff;
       font-weight: 700;
       font-size: 16px;
+      cursor: pointer;
     }
   }
 `;

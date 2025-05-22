@@ -128,7 +128,7 @@ const UserManage = () => {
       전화번호: user.phone,
       이메일: user.origin.user.email,
       성별: user.gender,
-      일급: user.desiredPay,
+      일당: user.desiredPay,
       자격증1: user.origin.certificateName,
       자격증2: user.origin.certificateName2,
       자격증3: user.origin.certificateName3,
@@ -205,7 +205,7 @@ const UserManage = () => {
     },
     {
       key: "desiredPay",
-      title: "일급",
+      title: "일당",
       dataIndex: "desiredPay",
     },
     {

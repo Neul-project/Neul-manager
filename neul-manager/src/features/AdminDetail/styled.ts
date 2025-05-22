@@ -30,6 +30,15 @@ export const AdminDetailtStyled = styled.div`
           width: 55%;
           justify-content: center;
 
+          .AdminDetail_pay {
+            display: flex;
+            width: 100%;
+
+            .AdminDetail_paybtn {
+              display: flex;
+              justify-content: end;
+            }
+          }
           .AdminDetail_text {
             font-size: 20px;
             display: flex;
@@ -39,6 +48,11 @@ export const AdminDetailtStyled = styled.div`
               width: 100px;
               //background-color: red;
             }
+
+            .AdminDetail_payinput {
+              width: 100%;
+            }
+
             .AdminDetail_sub_title {
               display: flex;
               align-items: center;
