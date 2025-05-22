@@ -302,6 +302,7 @@ const UserManage = () => {
           rowKey="key"
         />
 
+        {/* 도우미 상세 정보 모달 */}
         <StyledModal
           title=""
           closable={{ "aria-label": "Custom Close Button" }}
@@ -312,6 +313,8 @@ const UserManage = () => {
         >
           {HelperId && <AdminDetail id={HelperId} state="상세보기" />}
         </StyledModal>
+
+        {/* 담당 피보호자 정보 모달*/}
         <StyledModal
           title=""
           closable={{ "aria-label": "Custom Close Button" }}
