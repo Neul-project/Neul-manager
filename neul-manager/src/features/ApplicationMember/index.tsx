@@ -3,7 +3,7 @@ import { ApplicationMemberStyled, EllipsisText } from "./styled";
 
 import { useEffect, useState } from "react";
 import { AdminType, DataType, data } from "./tableinfo";
-import { AntdGlobalTheme } from "@/utill/antdtheme";
+import { AntdGlobalTheme, GreenTheme } from "@/utill/antdtheme";
 import axiosInstance from "@/lib/axios";
 import { useRouter } from "next/router";
 
@@ -85,6 +85,7 @@ const ApplicationMember = () => {
                 상세보기
               </Button>
             </ConfigProvider>
+            {/* 상세보기 클릭 모달 */}
             <StyledModal
               title=""
               closable={{ "aria-label": "Custom Close Button" }}
@@ -138,11 +139,13 @@ const ApplicationMember = () => {
     <ApplicationMemberStyled>
       <TitleCompo title="도우미 등록" />
       <div className="ApplicationMember_main_table">
-        <Table<DataType>
-          rowSelection={{ type: selectionType, ...rowSelection }}
-          columns={columns}
-          dataSource={dataSorce}
-        />
+        <ConfigProvider theme={GreenTheme}>
+          <Table<DataType>
+            rowSelection={{ type: selectionType, ...rowSelection }}
+            columns={columns}
+            dataSource={dataSorce}
+          />
+        </ConfigProvider>
       </div>
     </ApplicationMemberStyled>
   );

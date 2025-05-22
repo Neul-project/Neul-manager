@@ -5,6 +5,7 @@ export const AdminDetailtStyled = styled.div`
   max-height: 80vh;
   min-height: 350px;
   overflow-y: auto;
+  margin-top: -40px;
 
   &.AdminDetail_main_wrap {
     width: 100%;

@@ -117,7 +117,10 @@ const AdminDetail = (props: {
 
       const link = document.createElement("a");
       link.href = downloadUrl;
-      link.download = info?.certificate; // 다운로드 시 파일명
+      //link.download = info?.certificate;
+      link.download = decodeURIComponent(encodeURIComponent(info?.certificate));
+
+      //link.download = encodeURIComponent(info?.certificate); // 다운로드 시 파일명
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -291,13 +294,15 @@ const AdminDetail = (props: {
             footer={
               <>
                 <Button onClick={handleCancleModle}>아니요</Button>
-                <Button onClick={DeleteAdmin}>예</Button>
+                <Button onClick={DeleteAdmin} type="primary">
+                  예
+                </Button>
               </>
             }
           >
             <StateModal type={"취소"} setResonText={setResonText} />
           </Modal>
-          <Button className="AdminDetail_btn" onClick={AdminYes}>
+          <Button className="AdminDetail_btn" type="primary" onClick={AdminYes}>
             수락
           </Button>
           <Modal
@@ -309,7 +314,9 @@ const AdminDetail = (props: {
             footer={
               <>
                 <Button onClick={handleCancleModle}>아니요</Button>
-                <Button onClick={YesAdmin}>예</Button>
+                <Button onClick={YesAdmin} type="primary">
+                  예
+                </Button>
               </>
             }
           >
