@@ -263,8 +263,6 @@ const UserManage = () => {
   const onSearch: SearchProps["onSearch"] = async (value) => {
     console.log("검색 기준", selectSearch);
     console.log("검색 단어", value);
-    // const filteredUsers = allUsers.filter((user) => user.name.includes(value));
-    // setUsers(filteredUsers);
 
     try {
       const res = await axiosInstance.get("/matching/searchhelper", {
