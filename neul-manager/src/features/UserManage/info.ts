@@ -6,6 +6,6 @@ export const sortOption = [
 
 //검색 옵션 - 이름 / 자격증
 export const searchOption = [
-  { value: "name", label: "이름" },
+  { value: "id", label: "아이디" },
   { value: "license", label: "자격증" },
 ];

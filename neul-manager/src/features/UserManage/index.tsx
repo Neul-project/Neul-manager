@@ -42,7 +42,7 @@ const UserManage = () => {
   const [isTargetDetailModal, setIsTargetDetailModal] = useState(false); // 담당 피보호자 정보
   const [searchValue, setSearchValue] = useState(""); //search 검색 내용
   const [allUsers, setAllUsers] = useState<any[]>([]); //서치용 유저리스트
-  const [selectSearch, setSelectSearch] = useState<string>("name");
+  const [selectSearch, setSelectSearch] = useState<string>("id");
 
   const adminId = useAuthStore((state) => state.user?.id);
 
@@ -68,6 +68,7 @@ const UserManage = () => {
         key: item.user.id,
         number: index + 1,
         id: item.user.id,
+        helper_id: item.user.email,
         name: item.user.name,
         gender: matchgender(item.gender),
         desiredPay: formatPrice(item.desiredPay),
@@ -197,9 +198,9 @@ const UserManage = () => {
       dataIndex: "name",
     },
     {
-      key: "phone",
-      title: "전화번호",
-      dataIndex: "phone",
+      key: "helper_id",
+      title: "아이디",
+      dataIndex: "helper_id",
     },
     {
       key: "gender",
@@ -279,6 +280,7 @@ const UserManage = () => {
         key: item.user.id,
         number: index + 1,
         id: item.user.id,
+        helper_id: item.user.email,
         name: item.user.name,
         gender: matchgender(item.gender),
         desiredPay: formatPrice(item.desiredPay),
