@@ -20,10 +20,10 @@ export const DashStyled = styled.div`
   .DashPage_content_gender {
     display: flex;
     width: 100%;
-    height: 250px;
+    height: 350px;
     margin-top: 15px;
     justify-content: space-between;
-    gap: 10px;
+    //gap: 10px;
 
     .DashPage_gender {
       width: 100%;

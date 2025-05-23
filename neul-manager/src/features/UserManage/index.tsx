@@ -27,13 +27,14 @@ import {
   notification,
   ConfigProvider,
 } from "antd";
+import { searchOption, sortOption } from "./info";
 const { Search } = Input;
 
 //전체 도우미 정보 컴포넌트
 const UserManage = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [userOrder, setUserOrder] = useState("ASC");
+  const [userOrder, setUserOrder] = useState("ASC"); // 내림차순/오름차순 정렬
   const [sortKey, setSortKey] = useState("created_at");
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
   const [HelperId, setHelperId] = useState(); //클릭한 행의 도우미 아이디
@@ -41,6 +42,8 @@ const UserManage = () => {
   const [isTargetDetailModal, setIsTargetDetailModal] = useState(false); // 담당 피보호자 정보
   const [searchValue, setSearchValue] = useState(""); //search 검색 내용
   const [allUsers, setAllUsers] = useState<any[]>([]); //서치용 유저리스트
+  const [selectSearch, setSelectSearch] = useState<string>("name");
+
   const adminId = useAuthStore((state) => state.user?.id);
 
   //useEffect
@@ -59,7 +62,7 @@ const UserManage = () => {
       //상태가 승인 완료인 모든 도우미 유저 모든 정보 불러오기
       const res = await axiosInstance.get("/helper/approveduser");
       const data = res.data;
-      //console.log(data);
+      console.log(data);
 
       const mapped = data.map((item: any, index: number) => ({
         key: item.user.id,
@@ -250,17 +253,46 @@ const UserManage = () => {
     },
   ];
 
-  //정렬 옵션
-  const sortOption = [
-    { value: "DESC", label: "최신순" },
-    { value: "ASC", label: "오래된순" },
-  ];
+  const handleChange = (value: string) => {
+    // 선택된 검색 셀렉트
+    setSelectSearch(value);
+  };
 
   //검색 함수
   const onSearch: SearchProps["onSearch"] = async (value) => {
-    const filteredUsers = allUsers.filter((user) => user.name.includes(value));
-    setUsers(filteredUsers);
-    setSearchValue("");
+    console.log("검색 기준", selectSearch);
+    console.log("검색 단어", value);
+    // const filteredUsers = allUsers.filter((user) => user.name.includes(value));
+    // setUsers(filteredUsers);
+
+    try {
+      const res = await axiosInstance.get("/matching/searchhelper", {
+        params: {
+          // 어떤 기준으로 검색하는지(name : 도우미 이름, license : 자격증(자격증1,자격증2,자격증3포함))
+          search: selectSearch,
+          word: value, // 검색 단어
+        },
+      });
+      const searchData = res.data;
+      console.log("검색된 유저들", searchData);
+      const mapped = searchData.map((item: any, index: number) => ({
+        key: item.user.id,
+        number: index + 1,
+        id: item.user.id,
+        name: item.user.name,
+        gender: matchgender(item.gender),
+        desiredPay: formatPrice(item.desiredPay),
+        phone: formatPhoneNumber(item.user.phone),
+        origin: item,
+      }));
+      setUsers(mapped);
+    } catch (e) {
+      console.error("검색 실패: ", e);
+      notification.error({
+        message: `검색 실패`,
+        description: `검색에 실패하였습니다.`,
+      });
+    }
   };
 
   return (
@@ -281,13 +313,18 @@ const UserManage = () => {
             />
           </div>
           <div className="usermanage_right">
+            <Select
+              className="usermanage_order"
+              style={{ width: 100 }}
+              value={selectSearch}
+              options={searchOption}
+              onChange={handleChange}
+            />
             <Search
-              placeholder="이름을 입력해 주세요"
+              placeholder="검색할 내용을 입력해주세요."
               allowClear
               onSearch={onSearch}
-              style={{ width: 220 }}
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
+              style={{ width: 250 }}
             />
             <Button onClick={handleDownloadExcel}>엑셀 다운로드</Button>
             <Button className="usermanage_delete_button" onClick={WithdrawUser}>
