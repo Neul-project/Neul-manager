@@ -269,7 +269,7 @@ const UserManage = () => {
     try {
       const res = await axiosInstance.get("/matching/searchhelper", {
         params: {
-          // 어떤 기준으로 검색하는지(name : 도우미 이름, license : 자격증(자격증1,자격증2,자격증3포함))
+          // 어떤 기준으로 검색하는지(id : 아이디(이메일), license : 자격증(자격증1,자격증2,자격증3포함))
           search: selectSearch,
           word: value, // 검색 단어
         },
