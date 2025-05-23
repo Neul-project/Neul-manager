@@ -53,7 +53,7 @@ const UserList = () => {
         patient_birth: x.patient_birth || "없음",
         patient_note: x.patient_note || "없음",
         dates: x.dates,
-        matcing_at: x.matcing_at, // 매칭된 날짜
+        matcing_at: x.user_create, // 매칭된 날짜
       }));
       setUsers(mapped);
     } catch (err) {
@@ -118,6 +118,7 @@ const UserList = () => {
       return;
     }
     try {
+      console.log("selectedRowKeys", selectedRowKeys);
       await axiosInstance.delete("/matching/userdelete", {
         data: { ids: selectedRowKeys },
       });
@@ -238,7 +239,7 @@ const UserList = () => {
         patient_note: x.patient_note || "없음",
         availableFrom: x.availableFrom, // 'YYYY-MM-DD'
         availableTo: x.availableTo, // 'YYYY-MM-DD'
-        matcing_at: x.matcing_at, // 매칭된 날짜
+        matcing_at: x.user_create, // 매칭된 날짜
       }));
 
       setUsers(mapped);
@@ -255,7 +256,7 @@ const UserList = () => {
     <ConfigProvider theme={GreenTheme}>
       <UserManageStyled className={clsx("usermanage_wrap")}>
         <div className="usermanage_title_box">
-          <TitleCompo title="담당 회원" />
+          <TitleCompo title="사용자 관리" />
           <div>
             <Button className="usermanage_delete_button" onClick={WithdrawUser}>
               회원삭제

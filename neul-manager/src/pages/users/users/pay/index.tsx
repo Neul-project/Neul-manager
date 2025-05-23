@@ -1,7 +1,7 @@
-import UserManage from "@/features/UserManage";
+import Paylist from "@/features/Paylist";
 
 const ManagePage = () => {
-  return <UserManage />;
+  return <Paylist />;
 };
 
 export default ManagePage;

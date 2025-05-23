@@ -1,24 +1,20 @@
-import { PaymentStyled } from "./styled";
+import { Payliststyled } from "./styled";
 import { useEffect, useState } from "react";
-import { Button, Table, Modal, message } from "antd";
+import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import axiosInstance from "@/lib/axios";
-import { formatPhoneNumber } from "@/utill/formatter";
 import dayjs from "dayjs";
 import TitleCompo from "@/components/TitleCompo";
 
 interface PaymentItem {
   id: number;
-  programId: number;
-  programName: string;
-  programManager: string;
-  payer: string;
+  name: string;
+  helper: string;
   price: number;
-  phone: string;
   create_at: string;
 }
 
-const PaymentPage = () => {
+const Paylist = () => {
   const [data, setData] = useState<PaymentItem[]>([]);
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
 
@@ -34,19 +30,14 @@ const PaymentPage = () => {
         (pagination.current - 1) * pagination.pageSize + index + 1,
     },
     {
-      title: "프로그램명",
-      dataIndex: "programName",
-      key: "programName",
+      title: "피보호자",
+      dataIndex: "name",
+      key: "name",
     },
     {
-      title: "강사명",
-      dataIndex: "programManager",
-      key: "programManager",
-    },
-    {
-      title: "결제자",
-      dataIndex: "payer",
-      key: "payer",
+      title: "도우미",
+      dataIndex: "helper",
+      key: "helper",
     },
     {
       title: "결제금액",
@@ -67,7 +58,7 @@ const PaymentPage = () => {
     const fetchPaymentList = async () => {
       try {
         const res = await axiosInstance.get<PaymentItem[]>(
-          "/program/payment-list"
+          "/user/payment-list"
         );
 
         setData(res.data);
@@ -80,7 +71,7 @@ const PaymentPage = () => {
   }, []);
 
   return (
-    <PaymentStyled>
+    <Payliststyled>
       <TitleCompo title="결제 목록" />
       <Table
         columns={columns}
@@ -94,8 +85,8 @@ const PaymentPage = () => {
             setPagination({ current: page, pageSize }),
         }}
       />
-    </PaymentStyled>
+    </Payliststyled>
   );
 };
 
-export default PaymentPage;
+export default Paylist;
