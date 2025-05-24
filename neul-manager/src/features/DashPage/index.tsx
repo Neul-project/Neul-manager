@@ -113,7 +113,7 @@ const DashBoard = () => {
   return (
     <DashStyled className={clsx("DashPage_main_wrap")}>
       <div className="DashPage_top">
-        <TitleCompo title="대시보드" />
+        {/* <TitleCompo title="대시보드" /> */}
         <div className="DashPage_today">오늘 일자 : {formattedDate}</div>
       </div>
 

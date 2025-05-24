@@ -87,18 +87,48 @@ const UserList = () => {
   // 엑셀 다운
   const handleDownloadExcel = () => {
     const excelData = users.map((user) => ({
-      보호자ID: user.id,
-      보호자_아이디: user.email,
-      보호자명: user.user,
-      보호자_전화번호: user.phone,
-      피보호자ID: user.patient_id,
-      피보호자명: user.patient_name,
-      피보호자_성별: user.patient_gender,
-      피보호자_생년월일: user.patient_birth,
-      피보호자_특이사항: user.patient_note,
+      guardianId: user.id,
+      guardianEmail: user.email,
+      guardianName: user.user,
+      guardianPhone: user.phone,
+      patientId: user.patient_id,
+      patientName: user.patient_name,
+      patientGender: user.patient_gender,
+      patientBirth: user.patient_birth,
+      patientNote: user.patient_note,
     }));
 
-    const worksheet = XLSX.utils.json_to_sheet(excelData);
+    // 영문 키 순서대로 지정 (엑셀 데이터 필드 순서 설정)
+    const keys = [
+      "guardianId",
+      "guardianEmail",
+      "guardianName",
+      "guardianPhone",
+      "patientId",
+      "patientName",
+      "patientGender",
+      "patientBirth",
+      "patientNote",
+    ];
+
+    // 실제 엑셀에 출력될 헤더 (한글)
+    const header = [
+      "보호자ID",
+      "보호자_아이디",
+      "보호자명",
+      "보호자_전화번호",
+      "피보호자ID",
+      "피보호자명",
+      "피보호자_성별",
+      "피보호자_생년월일",
+      "피보호자_특이사항",
+    ];
+
+    const worksheet = XLSX.utils.json_to_sheet(excelData, { header: keys });
+
+    // A1부터 한글 헤더 삽입
+    XLSX.utils.sheet_add_aoa(worksheet, [header], { origin: "A1" });
+
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "회원목록");
 

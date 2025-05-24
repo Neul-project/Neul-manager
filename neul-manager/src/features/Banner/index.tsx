@@ -1,9 +1,8 @@
 import clsx from "clsx";
 import { BannerStyled } from "./styled";
-import { getMimeType } from "@/utill/imagemimetype";
 import { useFormik } from "formik";
 import axiosInstance from "@/lib/axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AntdGlobalTheme } from "@/utill/antdtheme";
 
 // antd
@@ -16,19 +15,6 @@ import { bannerValidationSchema } from "@/utill/bannerValidation";
 const Banner = () => {
   //useState
   const [arr, setArr] = useState([]);
-  // const [url, setUrl] = useState([]);
-
-  useEffect(() => {
-    //axiosInstance.get("/banner/list").then((res) => {
-    //const datalist = res.data;
-    //console.log("datalist", datalist);
-    //const data = res.data[datalist.length - 1].img.split(",");
-    //const urldata = res.data[datalist.length - 1].url.split(",");
-    //setArr(data);
-    //setUrl(urldata);
-    //console.log("data", data);
-    //});
-  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -40,7 +26,6 @@ const Banner = () => {
     validationSchema: bannerValidationSchema,
     onSubmit: async (values) => {
       //console.log("values", values);
-
       const formData = new FormData();
 
       if (values.leftimg) formData.append("img", values.leftimg);
@@ -80,67 +65,69 @@ const Banner = () => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <BannerStyled className={clsx("Banner_main_wrap")}>
-        {/* 저장 버튼 */}
-        <div className="Banner_save">
-          <ConfigProvider theme={AntdGlobalTheme}>
+    <ConfigProvider theme={AntdGlobalTheme}>
+      <form onSubmit={formik.handleSubmit}>
+        <BannerStyled className={clsx("Banner_main_wrap")}>
+          {/* 저장 버튼 */}
+          <div className="Banner_save">
             <Button htmlType="submit" className="Banner_save_btn">
               저장하기
             </Button>
-          </ConfigProvider>
-        </div>
-
-        {/* 미리보기 */}
-        <div className="Banner_imgs">
-          <div className="Banner_left_img">
-            {formik.values.leftimg ? (
-              <img
-                className="Banner_imgstyle"
-                src={URL.createObjectURL(formik.values.leftimg)}
-                alt="banner-left"
-              />
-            ) : arr.length > 0 ? (
-              <div>
-                <img
-                  className="Banner_imgstyle"
-                  src={
-                    process.env.NEXT_PUBLIC_API_URL + "/uploads/image/" + arr[0]
-                  }
-                  alt="왼쪽 이미지"
-                />
-              </div>
-            ) : (
-              <div className="Banner_preview_text">미리보기 화면</div>
-            )}
           </div>
 
-          <div className="Banner_right_img">
-            {formik.values.rightimg ? (
-              <img
-                className="Banner_imgstyle"
-                src={URL.createObjectURL(formik.values.rightimg)}
-                alt="banner-right"
-              />
-            ) : arr.length > 0 ? (
-              <div>
+          {/* 미리보기 */}
+          <div className="Banner_imgs">
+            <div className="Banner_left_img">
+              {formik.values.leftimg ? (
                 <img
                   className="Banner_imgstyle"
-                  src={
-                    process.env.NEXT_PUBLIC_API_URL + "/uploads/image/" + arr[1]
-                  }
-                  alt="오른쪽 이미지"
+                  src={URL.createObjectURL(formik.values.leftimg)}
+                  alt="banner-left"
                 />
-              </div>
-            ) : (
-              <div className="Banner_preview_text">미리보기 화면</div>
-            )}
-          </div>
-        </div>
+              ) : arr.length > 0 ? (
+                <div>
+                  <img
+                    className="Banner_imgstyle"
+                    src={
+                      process.env.NEXT_PUBLIC_API_URL +
+                      "/uploads/image/" +
+                      arr[0]
+                    }
+                    alt="왼쪽 이미지"
+                  />
+                </div>
+              ) : (
+                <div className="Banner_preview_text">미리보기 화면</div>
+              )}
+            </div>
 
-        {/* 업로드 버튼 */}
-        <div className="Banner_btns">
-          <ConfigProvider theme={AntdGlobalTheme}>
+            <div className="Banner_right_img">
+              {formik.values.rightimg ? (
+                <img
+                  className="Banner_imgstyle"
+                  src={URL.createObjectURL(formik.values.rightimg)}
+                  alt="banner-right"
+                />
+              ) : arr.length > 0 ? (
+                <div>
+                  <img
+                    className="Banner_imgstyle"
+                    src={
+                      process.env.NEXT_PUBLIC_API_URL +
+                      "/uploads/image/" +
+                      arr[1]
+                    }
+                    alt="오른쪽 이미지"
+                  />
+                </div>
+              ) : (
+                <div className="Banner_preview_text">미리보기 화면</div>
+              )}
+            </div>
+          </div>
+
+          {/* 업로드 버튼 */}
+          <div className="Banner_btns">
             <div className="Banner_btn">
               <Upload {...handleUpload("leftimg")} showUploadList={false}>
                 <Button icon={<UploadOutlined />}>이미지 업로드</Button>
@@ -157,11 +144,9 @@ const Banner = () => {
                 <div className="Banner_error">{formik.errors.rightimg}</div>
               )}
             </div>
-          </ConfigProvider>
-        </div>
+          </div>
 
-        <div className="Banner_inputs">
-          <ConfigProvider theme={AntdGlobalTheme}>
+          <div className="Banner_inputs">
             <div className="Banner_input">
               <Input
                 name="lefturl"
@@ -190,10 +175,10 @@ const Banner = () => {
                 </div>
               )}
             </div>
-          </ConfigProvider>
-        </div>
-      </BannerStyled>
-    </form>
+          </div>
+        </BannerStyled>
+      </form>
+    </ConfigProvider>
   );
 };
 

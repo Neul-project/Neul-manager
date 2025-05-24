@@ -7,8 +7,10 @@ export const DashStyled = styled.div`
     .DashPage_top {
       display: flex;
       align-items: flex-end;
-      justify-content: space-between;
-
+      margin-top: 10px;
+      margin-bottom: 10px;
+      //justify-content: space-between;
+      justify-content: end;
       .DashPage_today {
         font-size: 15px;
       }
@@ -24,13 +26,15 @@ export const DashStyled = styled.div`
       width: 100%;
       display: flex;
       flex-direction: row-reverse;
-      //gap: 20px;
+      gap: 40px;
+      justify-content: left;
 
-      justify-content: space-between;
+      //justify-content: space-around;
 
       .DashPage_gender_div {
-        width: 30%;
-        padding-left: 10px;
+        width: 25%;
+        align-items: center;
+        //padding: 10px;
 
         .DashPage_content_gender {
           display: flex;
@@ -43,35 +47,37 @@ export const DashStyled = styled.div`
       }
 
       .DashPage_age_div {
-        width: 70%;
-        padding-right: 10px;
+        width: 60%;
+        //padding-right: 10px;
       }
     }
 
     .DashPage_program_and_count {
       width: 100%;
-      height: 100%;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      justify-content: left;
 
       .DashPage_program_div {
-        width: 90%;
+        width: 50%;
+        padding-right: 10px;
 
         .DashPage_program_content {
           display: flex;
           width: 100%;
-          height: 100%;
+          //height: 100%;
           margin-top: 30px;
         }
       }
 
       .DashPage_program_count_div {
-        width: 90%;
+        width: 50%;
+        padding-left: 10px;
 
         .DashPage_program_count {
           display: flex;
           width: 100%;
-          height: 100%;
+          //height: 100%;
           margin-top: 30px;
         }
       }

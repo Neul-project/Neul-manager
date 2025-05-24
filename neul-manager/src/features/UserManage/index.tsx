@@ -40,7 +40,6 @@ const UserManage = () => {
   const [HelperId, setHelperId] = useState(); //클릭한 행의 도우미 아이디
   const [isHelperDetailModal, setIsHelperDetailModal] = useState(false); //도우미 상세 정보 모달 오픈 여부
   const [isTargetDetailModal, setIsTargetDetailModal] = useState(false); // 담당 피보호자 정보
-  const [searchValue, setSearchValue] = useState(""); //search 검색 내용
   const [allUsers, setAllUsers] = useState<any[]>([]); //서치용 유저리스트
   const [selectSearch, setSelectSearch] = useState<string>("id");
 
@@ -109,37 +108,50 @@ const UserManage = () => {
 
   // 엑셀 다운
   const handleDownloadExcel = () => {
-    //console.log("users", users);
-    //console.log("selectedRowKeys", selectedRowKeys);
-
-    //선택한 도우미만 출력하기
-    const filteredUsers = users.filter((user) =>
-      selectedRowKeys.includes(user.origin.user.id)
-    );
-
-    if (filteredUsers.length === 0) {
-      notification.error({
-        message: "엑셀 다운로드",
-        description: "선택한 도우미가 없습니다.",
-      });
-
-      return;
-    }
-
-    const excelData = filteredUsers.map((user) => ({
-      이름: user.origin.user.name,
-      생년월일: user.origin.birth,
-      전화번호: user.phone,
-      이메일: user.origin.user.email,
-      성별: user.gender,
-      일당: user.desiredPay,
-      자격증1: user.origin.certificateName,
-      자격증2: user.origin.certificateName2,
-      자격증3: user.origin.certificateName3,
-      경력: user.origin.experience,
+    const excelData = users.map((user) => ({
+      name: user.origin.user.name,
+      birth: user.origin.birth,
+      phone: user.phone,
+      email: user.origin.user.email,
+      gender: user.gender,
+      desiredPay: user.desiredPay,
+      certificate1: user.origin.certificateName,
+      certificate2: user.origin.certificateName2,
+      certificate3: user.origin.certificateName3,
+      experience: user.origin.experience,
     }));
 
-    const worksheet = XLSX.utils.json_to_sheet(excelData);
+    const header = [
+      "이름",
+      "생년월일",
+      "전화번호",
+      "이메일",
+      "성별",
+      "일당",
+      "자격증1",
+      "자격증2",
+      "자격증3",
+      "경력",
+    ];
+
+    const worksheet = XLSX.utils.json_to_sheet(excelData, {
+      header: [
+        "name",
+        "birth",
+        "phone",
+        "email",
+        "gender",
+        "desiredPay",
+        "certificate1",
+        "certificate2",
+        "certificate3",
+        "experience",
+      ],
+    });
+
+    // 헤더 이름 한글로 설정
+    XLSX.utils.sheet_add_aoa(worksheet, [header], { origin: "A1" });
+
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "도우미 목록");
 
@@ -150,7 +162,8 @@ const UserManage = () => {
 
     const file = new Blob([excelBuffer], { type: "application/octet-stream" });
     saveAs(file, "도우미목록.xlsx");
-    setSelectedRowKeys([]);
+
+    //setSelectedRowKeys([]);
   };
 
   // 회원삭제(userId들 보냄)
