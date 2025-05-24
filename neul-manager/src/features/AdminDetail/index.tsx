@@ -223,52 +223,9 @@ const AdminDetail = (props: {
 
           <div className="AdminDetail_text AdminDetail_pay">
             <div className="AdminDetail_title">일당</div>
-            {state === "상세보기" ? (
-              <>
-                <div className="AdminDetail_payinput">
-                  <Input
-                    value={pay}
-                    disabled={!isPaychange}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="AdminDetail_paybtn">
-                  {!isPaychange ? (
-                    <Button onClick={handleEditClick}>변경하기</Button>
-                  ) : (
-                    <>
-                      <Button
-                        type="primary"
-                        onClick={() => {
-                          setIsChangePayModal(true);
-                          //서버로 값 전송하기
-                          //console.log("pay", pay, id);
-                        }}
-                      >
-                        저장하기
-                      </Button>
-                      <Modal
-                        title="일당 변경"
-                        closable={{ "aria-label": "Custom Close Button" }}
-                        open={isChangePayModal}
-                        onOk={handleOk}
-                        onCancel={handleCancel}
-                        footer={
-                          <>
-                            <Button onClick={handleCancel}>취소</Button>
-                            <Button onClick={handleOk}>수정</Button>
-                          </>
-                        }
-                      >
-                        <div>정말로 일당을 변경하시겠습니까?</div>
-                      </Modal>
-                    </>
-                  )}
-                </div>
-              </>
-            ) : (
-              <div>{formatPrice(info?.desiredPay!)}</div>
-            )}
+            <div className="AdminDetail_experience">
+              {formatPrice(info?.desiredPay!)}
+            </div>
           </div>
           <div className="AdminDetail_text">
             <div className="AdminDetail_title">경력</div>
