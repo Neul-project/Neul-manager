@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { BannerStyled } from "./styled";
 import { useFormik } from "formik";
 import axiosInstance from "@/lib/axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AntdGlobalTheme } from "@/utill/antdtheme";
 
 // antd
@@ -15,6 +15,13 @@ import { bannerValidationSchema } from "@/utill/bannerValidation";
 const Banner = () => {
   //useState
   const [arr, setArr] = useState([]);
+
+  useEffect(() => {
+    axiosInstance.get("/banner/list").then((res) => {
+      console.log("Res", res.data);
+      setArr(res.data);
+    });
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -35,6 +42,10 @@ const Banner = () => {
       formData.append("righturl", values.righturl);
 
       //console.log("FormData 내용:", Array.from(formData.entries()));
+
+      if (arr.length > 0) {
+        await axiosInstance.delete("/banner/delete");
+      }
 
       try {
         await axiosInstance.post("/banner/registration", formData, {
@@ -84,18 +95,6 @@ const Banner = () => {
                   src={URL.createObjectURL(formik.values.leftimg)}
                   alt="banner-left"
                 />
-              ) : arr.length > 0 ? (
-                <div>
-                  <img
-                    className="Banner_imgstyle"
-                    src={
-                      process.env.NEXT_PUBLIC_API_URL +
-                      "/uploads/image/" +
-                      arr[0]
-                    }
-                    alt="왼쪽 이미지"
-                  />
-                </div>
               ) : (
                 <div className="Banner_preview_text">미리보기 화면</div>
               )}
@@ -108,18 +107,6 @@ const Banner = () => {
                   src={URL.createObjectURL(formik.values.rightimg)}
                   alt="banner-right"
                 />
-              ) : arr.length > 0 ? (
-                <div>
-                  <img
-                    className="Banner_imgstyle"
-                    src={
-                      process.env.NEXT_PUBLIC_API_URL +
-                      "/uploads/image/" +
-                      arr[1]
-                    }
-                    alt="오른쪽 이미지"
-                  />
-                </div>
               ) : (
                 <div className="Banner_preview_text">미리보기 화면</div>
               )}
