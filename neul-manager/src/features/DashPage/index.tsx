@@ -29,6 +29,7 @@ import {
   BarElement,
   Title,
 } from "chart.js";
+import clsx from "clsx";
 ChartJS.register(
   ArcElement,
   Tooltip,
@@ -110,99 +111,86 @@ const DashBoard = () => {
   );
 
   return (
-    <DashStyled>
+    <DashStyled className={clsx("DashPage_main_wrap")}>
       <div className="DashPage_top">
         <TitleCompo title="대시보드" />
         <div className="DashPage_today">오늘 일자 : {formattedDate}</div>
       </div>
 
-      {/* 피보호자 성비 */}
-      <div className="DashPage_main_title">피보호자 성비</div>
-      <div className="DashPage_content_gender">
-        <div className="DashPage_gender">
-          <p className="DashPage_title">20대 성비</p>
+      <div className="DashPage_gender_age">
+        {/* 피보호자 성비 */}
+        <div className="DashPage_gender_div">
+          <div className="DashPage_main_title">피보호자 성비</div>
           <Pie data={genderdata} />
         </div>
-        <div className="DashPage_gender">
-          <p className="DashPage_title">30대 성비</p>
-          <Pie data={genderdata} />
-        </div>
-        <div className="DashPage_gender">
-          <p className="DashPage_title">40대 성비</p>
-          <Pie data={genderdata} />
-        </div>
-        <div className="DashPage_gender">
-          <p className="DashPage_title">50대 이상 성비</p>
-          <Pie data={genderdata} />
-        </div>
-      </div>
 
-      {/* 피보호자 연령 */}
-      <div className="DashPage_main_title">피보호자 연령</div>
-      <div className="DashPage_content_age">
-        <div className="DashPage_age">
+        {/* 피보호자 연령 */}
+        <div className="DashPage_age_div">
+          <div className="DashPage_main_title">피보호자 연령</div>
           <Bar data={ageChartData} options={ageChartOptions} />
         </div>
       </div>
 
-      {/* 월별 프로그램 등록 */}
-      <div className="DashPage_main_title">월별 프로그램 등록</div>
-      <div className="DashPage_program_content">
-        <div className="DashPage_program">
-          <Bar
-            data={getProgramMonthlyChartData(
-              programMonthlyData.labels,
-              programMonthlyData.data
-            )}
-            options={{
-              responsive: true,
-              plugins: {
-                legend: { display: false },
-              },
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  ticks: {
-                    stepSize: 10, // 세로 간격
-                    precision: 0, // 소수점 없게
+      <div className="DashPage_program_and_count">
+        {/* 월별 프로그램 등록 */}
+        <div className="DashPage_program_div">
+          <div className="DashPage_main_title">월별 프로그램 등록</div>
+          <div className="DashPage_program_content">
+            <Bar
+              data={getProgramMonthlyChartData(
+                programMonthlyData.labels,
+                programMonthlyData.data
+              )}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: { display: false },
+                },
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    ticks: {
+                      stepSize: 10, // 세로 간격
+                      precision: 0, // 소수점 없게
+                    },
                   },
                 },
-              },
-            }}
-          />
+              }}
+            />
+          </div>
         </div>
-      </div>
 
-      {/* 프로그램 결제 건 수 */}
-      <div className="DashPage_main_title">프로그램 결제 건 수</div>
-      <div className="DashPage_program_content">
-        <div className="DashPage_program">
-          <Line
-            data={getPaymentLineChartData(
-              programPaymentData.labels,
-              programPaymentData.data
-            )}
-            options={{
-              responsive: true,
-              plugins: {
-                legend: { display: false },
-              },
-              scales: {
-                x: {
-                  ticks: {
-                    maxTicksLimit: 10, // 최대 라벨 조절
+        {/* 프로그램 결제 건 수 */}
+        <div className="DashPage_program_count_div">
+          <div className="DashPage_main_title">프로그램 결제 건 수</div>
+          <div className="DashPage_program_count">
+            <Line
+              data={getPaymentLineChartData(
+                programPaymentData.labels,
+                programPaymentData.data
+              )}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: { display: false },
+                },
+                scales: {
+                  x: {
+                    ticks: {
+                      maxTicksLimit: 10, // 최대 라벨 조절
+                    },
+                  },
+                  y: {
+                    beginAtZero: true,
+                    ticks: {
+                      stepSize: 10, // 세로 간격
+                      precision: 0, // 소수점 없게
+                    },
                   },
                 },
-                y: {
-                  beginAtZero: true,
-                  ticks: {
-                    stepSize: 10, // 세로 간격
-                    precision: 0, // 소수점 없게
-                  },
-                },
-              },
-            }}
-          />
+              }}
+            />
+          </div>
         </div>
       </div>
     </DashStyled>
