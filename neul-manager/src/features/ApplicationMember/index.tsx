@@ -2,7 +2,6 @@ import TitleCompo from "@/components/TitleCompo";
 import { ApplicationMemberStyled, EllipsisText } from "./styled";
 
 import { useEffect, useState } from "react";
-import { DataType } from "./tableinfo";
 import { AntdGlobalTheme, GreenTheme } from "@/utill/antdtheme";
 import axiosInstance from "@/lib/axios";
 import { useRouter } from "next/router";
@@ -14,6 +13,29 @@ import AdminDetail from "../AdminDetail";
 import { matchgender } from "@/utill/dataformat";
 import { StyledModal } from "../Programlist/styled";
 import { formatPrice } from "@/utill/formatter";
+
+interface DataType {
+  key: number;
+  name: string; //이름
+  gender: string; //성별
+  desiredPay: number; //일당
+  experience: string; //경력
+}
+
+interface AdminType {
+  id: number; //해당 userid
+  desiredPay: number; //일당
+  experience: string; //경력 사항
+  birth: string; //생년월일
+  gender: string; //성별
+  certificateName: string; //자격증 이름
+  certificateName2: string; //자격증 이름2
+  certificateName3: string; //자격증 이름3
+  profileImage: string; //이미지 파일
+  certificate: string; //자격증 합본 파일
+  status: string; //승인 상태
+  origin?: any;
+}
 
 //행 선택 함수
 const rowSelection: TableProps<DataType>["rowSelection"] = {
@@ -68,18 +90,9 @@ const ApplicationMember = () => {
             <ConfigProvider theme={AntdGlobalTheme}>
               <Button
                 onClick={() => {
-                  //클릭 시 상세 내용 나옴
-                  /*
-                1.선택된 도우미 정보를 변수에 넣기
-                2.페이지 이동 후 상세 내역 확인
-                3.등록하기 
-                */
-                  //console.log("record", record);
                   setIsDetailModalOpen(true); //상세보기 모달 열기
                   setHelperName(record.name);
                   setHelperId(record.origin.user.id);
-                  //setAdminContent(record.origin);
-                  //router.push(`/users/appli/detail/${record.origin.id}`);
                 }}
               >
                 상세보기
@@ -132,10 +145,6 @@ const ApplicationMember = () => {
   useEffect(() => {
     FilterTableAdmin();
   }, []);
-
-  useEffect(() => {
-    FilterTableAdmin();
-  }, [dataSorce]);
 
   return (
     <ApplicationMemberStyled>

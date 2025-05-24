@@ -1,7 +1,7 @@
 import { NotPcStyled } from "./styled";
 import React from "react";
-import { CloseCircleOutlined } from "@ant-design/icons";
-import { Button, Result, Typography } from "antd";
+import CloseCircleOutlined from "@ant-design/icons/CloseCircleOutlined";
+import { Result, Typography } from "antd";
 
 const { Paragraph, Text } = Typography;
 const NotPc = () => {

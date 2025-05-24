@@ -179,7 +179,7 @@ const ProgramWrite = (props: ProgramType) => {
               message: `수정 완료`,
               description: `성공적으로 수정이 완료 되었습니다.`,
             });
-            getprogramlist();
+            getprogramlist("");
 
             if (setIsModalOpen) {
               setIsModalOpen(false);

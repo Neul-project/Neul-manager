@@ -10,14 +10,15 @@ import {
   notification,
   Input,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axiosInstance from "@/lib/axios";
 import ProgramWrite from "../ProgramWrite";
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
+//import * as XLSX from "xlsx";
+//import { saveAs } from "file-saver";
 import { AntdGlobalTheme, GreenTheme } from "@/utill/antdtheme";
 import { formatPrice } from "@/utill/programcategory";
 import { SearchProps } from "antd/es/input";
+import { excelDownload, ExcelItem } from "@/utill/excelDownload";
 
 type TableRowSelection<T extends object = object> =
   TableProps<T>["rowSelection"];
@@ -33,9 +34,7 @@ interface DataType {
 //프로그램 리스트 컴포넌트
 const Programlist = () => {
   const router = useRouter();
-
   const [list, setList] = useState<DataType[]>();
-  //const [filterlst, setFilterlst] = useState();
   const [title, setTitle] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -96,30 +95,35 @@ const Programlist = () => {
   ];
 
   //프로그램명 검색
-  const onSearch: SearchProps["onSearch"] = (value, _e, info) => {
-    //console.log("value", value);
+  const onSearch: SearchProps["onSearch"] = useCallback(
+    (value: any, _e: any) => {
+      //console.log("value", value);
 
-    //프로그램명 키워드 검색으로 내용 전체 반환 요청
-    axiosInstance
-      .get("/program/search", { params: { data: value } })
-      .then((res) => {
-        //console.log("res", res.data);
-        const data = res.data;
+      //프로그램명 키워드 검색으로 내용 전체 반환 요청
+      axiosInstance
+        .get("/program/search", { params: { data: value } })
+        .then((res) => {
+          //console.log("res", res.data);
+          const data = res.data;
 
-        const programList = data.reverse().map((item: any, index: number) => ({
-          num: index + 1,
-          key: item.id,
-          title: item.name,
-          manager: item.manager,
-          target: item.target,
-          price: formatPrice(item.price),
-          origin: item,
-        }));
+          const programList = data
+            .reverse()
+            .map((item: any, index: number) => ({
+              num: index + 1,
+              key: item.id,
+              title: item.name,
+              manager: item.manager,
+              target: item.target,
+              price: formatPrice(item.price),
+              origin: item,
+            }));
 
-        setList(programList);
-        setSearchValue("");
-      });
-  };
+          setList(programList);
+          setSearchValue("");
+        });
+    },
+    []
+  );
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     //console.log("selectedRowKeys changed: ", newSelectedRowKeys);
@@ -164,31 +168,20 @@ const Programlist = () => {
   };
 
   //엑셀로 다운받기 클릭
-  const execelDowonload = () => {
-    //console.log("re", list);
-    const excelData =
+  const execelDownload = () => {
+    const excelData: ExcelItem[] =
       list?.map((item) => ({
-        프로그램명: item.origin.name,
-        카테고리: item.origin.category,
-        진행기간: item.origin.progress,
-        모집기간: item.origin.recruitment,
-        수강료: item.price,
-        담당자명: item.origin.manager,
-        문의전화: item.origin.call,
-        등록일자: item.origin.registration_at,
+        name: item.origin.name,
+        category: item.origin.category,
+        progress: item.origin.progress,
+        recruitment: item.origin.recruitment,
+        price: item.price,
+        manager: item.origin.manager,
+        call: item.origin.call,
+        registration: item.origin.registration_at,
       })) ?? [];
 
-    const worksheet = XLSX.utils.json_to_sheet(excelData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "프로그램목록");
-
-    const excelBuffer = XLSX.write(workbook, {
-      bookType: "xlsx",
-      type: "array",
-    });
-
-    const file = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(file, "프로그램목록.xlsx");
+    excelDownload(excelData);
   };
 
   const handleOk = () => {
@@ -199,29 +192,9 @@ const Programlist = () => {
     setIsModalOpen(false);
   };
 
-  //프로그램 리스트
-  const getprogramlist = () => {
-    axiosInstance.get("/program/list").then((res) => {
-      //console.log("res", res.data);
-      const programList = res.data
-        .reverse()
-        .map((item: any, index: number) => ({
-          num: index + 1,
-          key: item.id,
-          title: item.name,
-          manager: item.manager,
-          target: item.target,
-          price: formatPrice(item.price),
-          origin: item,
-        }));
-
-      setList(programList);
-    });
-  };
-
   useEffect(() => {
-    getprogramlist();
-  }, []);
+    onSearch("");
+  }, [onSearch]);
 
   return (
     <ProgramlistStyled className={clsx("Programlist_main_wrap")}>
@@ -256,7 +229,7 @@ const Programlist = () => {
           </Modal>
         </ConfigProvider>
         <ConfigProvider theme={AntdGlobalTheme}>
-          <Button onClick={execelDowonload}>엑셀 다운로드</Button>
+          <Button onClick={execelDownload}>엑셀 다운로드</Button>
         </ConfigProvider>
       </div>
       <div>
@@ -279,7 +252,7 @@ const Programlist = () => {
               modify={"modify"}
               list={originlist}
               setIsModalOpen={setIsModalOpen}
-              getprogramlist={getprogramlist}
+              getprogramlist={onSearch}
             />
           </div>
         </StyledModal>
