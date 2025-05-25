@@ -9,7 +9,6 @@ import {
   Input,
   Select,
   Upload,
-  message,
   notification,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
@@ -20,10 +19,9 @@ const { TextArea } = Input;
 import {
   categorylist,
   getCategoryLabel,
-  targetlist,
   getParticipationLabel,
 } from "@/utill/programcategory";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import axiosInstance from "@/lib/axios";
 import clsx from "clsx";
 import { useRouter } from "next/router";
@@ -55,6 +53,11 @@ const ProgramWrite = (props: ProgramType) => {
   const [registation, setRegistation] = useState("");
   const [target, setTarget] = useState("");
   const [note, setNote] = useState("");
+
+  const categoryLabel = useMemo(
+    () => getCategoryLabel(list?.category || ""),
+    [list?.category]
+  );
 
   //useState
   useEffect(() => {
@@ -88,13 +91,7 @@ const ProgramWrite = (props: ProgramType) => {
 
       setImg(fileList);
     }
-  }, [list]);
-
-  //antd selects handleChange 함수
-  // const handleChange = (value: string) => {
-  //   console.log(`selected ${value}`);
-  //   programformik.setFieldValue("category", value);
-  // };
+  }, [list, categoryLabel]);
 
   const imageprops: UploadProps = {
     beforeUpload: (file) => {
@@ -159,14 +156,6 @@ const ProgramWrite = (props: ProgramType) => {
 
       if (modify === "modify") {
         //프로그램 수정 요청
-        //console.log("values", values);
-        //console.log("id", programId);
-
-        // for (let [key, value] of formData.entries()) {
-        //   console.log(`${key}: ${value}`);
-        // }
-
-        //return;
 
         axiosInstance
           .patch(`program/update/${programId}`, formData, {

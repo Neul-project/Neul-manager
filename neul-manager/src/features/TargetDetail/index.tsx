@@ -8,6 +8,7 @@ import { Button, ConfigProvider, Modal, Table } from "antd";
 import type { TableProps } from "antd";
 import { DataType } from "./tableinfo";
 import { AntdGlobalTheme } from "@/utill/antdtheme";
+import { matchgender } from "@/utill/dataformat";
 
 //담당 피보호자 정보 모달
 const TargetDetail = (props: { id: number }) => {
@@ -87,7 +88,7 @@ const TargetDetail = (props: { id: number }) => {
           key: item.id,
           name: item.name,
           birth: item.birth,
-          gender: item.gender,
+          gender: matchgender(item.gender),
           note: item.note,
         }));
 
