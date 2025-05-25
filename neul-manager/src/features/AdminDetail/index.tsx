@@ -12,20 +12,24 @@ import {
   getKoreanAge,
 } from "@/utill/formatter";
 
-//어드민 상세 페이지
-const AdminDetail = (props: {
+interface PropsType {
   id: number;
   state?: string;
   setIsDetailModalOpen?: any;
-}) => {
-  //변수 선언
-  const { id, state, setIsDetailModalOpen } = props;
+  FilterTableAdmin?: any;
+}
 
+//어드민 상세 페이지
+const AdminDetail = ({
+  id,
+  state,
+  setIsDetailModalOpen,
+  FilterTableAdmin,
+}: PropsType) => {
   //useState
   const [info, setInfo] = useState<AdminUser | undefined>(); //어드민id에 해당하는 유저 정보
   const [isCanCleModalOpen, setIsCanCleModalOpen] = useState(false); //취소 모달
   const [isYesModalOpen, setIsYesModalOpen] = useState(false); //수락 모달
-  const [isChangePayModal, setIsChangePayModal] = useState(false); //일당 변경 모달
   const [resontext, setResonText] = useState(""); // 취소 모달 반려 이유
   const [isPaychange, setIsPayChange] = useState(false); //변경하기 버튼 활성화 유무 - input 활성화유무
   const [pay, setPay] = useState<number>(); //일당금액
@@ -96,6 +100,7 @@ const AdminDetail = (props: {
       });
       setIsYesModalOpen(false);
       setIsDetailModalOpen(false);
+      FilterTableAdmin();
     });
   };
 
@@ -140,28 +145,28 @@ const AdminDetail = (props: {
   };
 
   //일당 변경 모달 확인 버튼
-  const handleOk = () => {
-    //도우미 일당 변경하기 (pay : 변경된 일당, id : 해당 도우미 아이디)
-    axiosInstance
-      .patch("/helper/changepay", {
-        desiredPay: pay,
-        userId: id,
-      })
-      .then((res) => {
-        notification.success({
-          message: `도우미 일당 변경`,
-          description: "성공적으로 도우미 일당이 변경되었습니다.",
-        });
-        setIsChangePayModal(false);
-        setIsPayChange(false);
-      });
-  };
+  // const handleOk = () => {
+  //   //도우미 일당 변경하기 (pay : 변경된 일당, id : 해당 도우미 아이디)
+  //   axiosInstance
+  //     .patch("/helper/changepay", {
+  //       desiredPay: pay,
+  //       userId: id,
+  //     })
+  //     .then((res) => {
+  //       notification.success({
+  //         message: `도우미 일당 변경`,
+  //         description: "성공적으로 도우미 일당이 변경되었습니다.",
+  //       });
+  //       setIsChangePayModal(false);
+  //       setIsPayChange(false);
+  //     });
+  // };
 
-  const handleCancel = () => {
-    setIsChangePayModal(false);
-    setPay(info?.desiredPay);
-    setIsPayChange(false);
-  };
+  // const handleCancel = () => {
+  //   setIsChangePayModal(false);
+  //   setPay(info?.desiredPay);
+  //   setIsPayChange(false);
+  // };
 
   return (
     <AdminDetailtStyled className={clsx("AdminDetail_main_wrap")}>

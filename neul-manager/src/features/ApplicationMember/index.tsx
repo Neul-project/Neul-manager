@@ -56,7 +56,6 @@ const ApplicationMember = () => {
   //useState
   const [selectionType, setSelectionType] = useState<"checkbox">("checkbox"); //테이블 체크박스
   const [dataSorce, setDataSorce] = useState<DataType[]>(); //도우미 승인 대기 유저 리스트
-  const [admincontent, setAdminContent] = useState(); //선택한 어드민 정보
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false); //상세 모달
   const [helperId, setHelperId] = useState();
   const [helperName, setHelperName] = useState(""); //도우미 이름
@@ -111,6 +110,7 @@ const ApplicationMember = () => {
                 <AdminDetail
                   id={helperId!}
                   setIsDetailModalOpen={setIsDetailModalOpen}
+                  FilterTableAdmin={FilterTableAdmin}
                 />
               </div>
             </StyledModal>

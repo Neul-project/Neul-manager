@@ -24,7 +24,7 @@ const Banner = () => {
 
   useEffect(() => {
     axiosInstance.get("/banner/list").then((res) => {
-      console.log("Res", res.data);
+      //console.log("Res", res.data);
       setArr(res.data);
     });
   }, []);
