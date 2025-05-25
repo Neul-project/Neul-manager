@@ -56,11 +56,13 @@ const UserManage = () => {
   }, [userOrder, sortKey, users]);
 
   //도우미 정보 가지고 오기 요청
-  const getUserList = async () => {
+  const getUserList = async (value?: any, selectSearch?: any) => {
+    console.log(value, selectSearch);
     try {
       //상태가 승인 완료인 모든 도우미 유저 모든 정보 불러오기
+      //search : 검색 내용, search_value : 검색 종류(id : 도우미 유저 아이디, name :도우미 유저 이름)
       const res = await axiosInstance.get("/helper/info", {
-        params: { type: "approve" },
+        params: { type: "approve", search: value, search_value: selectSearch },
       });
       const data = res.data;
       console.log(data);
@@ -278,36 +280,7 @@ const UserManage = () => {
   const onSearch: SearchProps["onSearch"] = async (value) => {
     console.log("검색 기준", selectSearch);
     console.log("검색 단어", value);
-
-    try {
-      const res = await axiosInstance.get("/matching/searchhelper", {
-        params: {
-          // 어떤 기준으로 검색하는지(id : 아이디(이메일), license : 자격증(자격증1,자격증2,자격증3포함))
-          search: selectSearch,
-          word: value, // 검색 단어
-        },
-      });
-      const searchData = res.data;
-      console.log("검색된 유저들", searchData);
-      const mapped = searchData.map((item: any, index: number) => ({
-        key: item.user.id,
-        number: index + 1,
-        id: item.user.id,
-        helper_id: item.user.email,
-        name: item.user.name,
-        gender: matchgender(item.gender),
-        desiredPay: formatPrice(item.desiredPay),
-        phone: formatPhoneNumber(item.user.phone),
-        origin: item,
-      }));
-      setUsers(mapped);
-    } catch (e) {
-      console.error("검색 실패: ", e);
-      notification.error({
-        message: `검색 실패`,
-        description: `검색에 실패하였습니다.`,
-      });
-    }
+    getUserList(value, selectSearch);
   };
 
   return (

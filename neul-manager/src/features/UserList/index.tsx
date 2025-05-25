@@ -148,7 +148,7 @@ const UserList = () => {
       return;
     }
     try {
-      console.log("selectedRowKeys", selectedRowKeys);
+      //console.log("selectedRowKeys", selectedRowKeys);
       await axiosInstance.delete("/matching/userdelete", {
         data: { ids: selectedRowKeys },
       });
@@ -159,7 +159,7 @@ const UserList = () => {
       getUserList(); // 목록 다시 불러오기
       setSelectedRowKeys([]); // 선택 초기화
     } catch (e) {
-      console.error("회원 삭제 실패:", e);
+      //console.error("회원 삭제 실패:", e);
       notification.error({
         message: `선택한 회원 삭제 실패`,
         description: `선택한 회원 삭제에 실패했습니다.`,
