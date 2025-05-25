@@ -24,6 +24,7 @@ import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 dayjs.extend(isSameOrBefore);
 const { Search } = Input;
 
+//회원관리 > 사용자 관리 > 사용자 관리 탭
 const UserList = () => {
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -44,22 +45,27 @@ const UserList = () => {
         },
       });
       const searchData = res.data;
-      //console.log("검색된 유저들", searchData);
+      // console.log("검색된 유저들", searchData);
 
-      const mapped = searchData.map((x: any) => ({
-        key: x.user_id,
-        id: x.user_id,
-        email: x.user_email,
-        name: x.user_name,
-        phone: x.user_phone,
-        patient_id: x.patient_id,
-        patient_name: x.patient_name,
-        patient_gender: x.patient_gender === "male" ? "남" : "여",
-        patient_birth: x.patient_birth || "없음",
-        patient_note: x.patient_note || "없음",
-        availableFrom: x.availableFrom, // 'YYYY-MM-DD'
-        availableTo: x.availableTo, // 'YYYY-MM-DD'
-        matcing_at: x.user_create, // 매칭된 날짜
+      const mapped = searchData.map((item: any) => ({
+        key: item.user.id,
+        id: item.user.id,
+        email: item.user.email,
+        name: item.user.name,
+        phone: item.user.phone,
+        patient_id: item.patient?.id || "",
+        patient_name: item.patient?.name || "",
+        patient_gender:
+          item.patient?.gender === "male"
+            ? "남"
+            : item.patient?.gender === "female"
+            ? "여"
+            : "-",
+        patient_birth: item.patient?.birth || "-",
+        patient_note: item.patient?.note || "",
+        availableFrom: item?.availableFrom || "", // 'YYYY-MM-DD'
+        availableTo: item?.availableTo || "", // 'YYYY-MM-DD'
+        matcing_at: item?.user_create || "", // 매칭된 날짜
       }));
 
       setUsers(mapped);
@@ -212,11 +218,11 @@ const UserList = () => {
     },
     {
       key: "patient_name",
-      title: "피보호자명 (ID)",
+      title: "피보호자명(ID)",
       render: (record: any) =>
         record.patient_name
-          ? `${record.patient_name} (${record.patient_id})`
-          : `없음 (${record.patient_id || "없음"})`,
+          ? `${record.patient_name}(${record.patient_id})`
+          : `-`,
     },
     {
       key: "patient_gender",
@@ -225,7 +231,7 @@ const UserList = () => {
     },
     {
       key: "patient_birth",
-      title: "생년월일",
+      title: "피보호자 생년월일",
       dataIndex: "patient_birth",
     },
     {

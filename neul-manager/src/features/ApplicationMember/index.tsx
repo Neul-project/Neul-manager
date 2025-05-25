@@ -132,7 +132,7 @@ const ApplicationMember = () => {
     const res = await axiosInstance.get("/helper/info", {
       params: { type: "wait" },
     });
-    console.log("res", res.data);
+    //console.log("res", res.data);
     const adminlist = res.data;
     const mapped = adminlist.map((item: any, index: number) => ({
       key: index,

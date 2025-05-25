@@ -58,7 +58,8 @@ const Paylist = () => {
     const fetchPaymentList = async () => {
       try {
         const res = await axiosInstance.get<PaymentItem[]>(
-          "/user/payment-list"
+          "/program/payment-list",
+          { params: { type: "user" } }
         );
 
         setData(res.data);

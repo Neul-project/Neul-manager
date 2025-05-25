@@ -80,7 +80,7 @@ const TargetDetail = (props: { id: number }) => {
     axiosInstance
       .get("/status/patient", { params: { adminId: id } })
       .then((res: any) => {
-        console.log("Res", res.data);
+        //console.log("Res", res.data);
         const data = res.data;
 
         const mapped = data.map((item: any, index: number) => ({
