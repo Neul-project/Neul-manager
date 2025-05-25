@@ -65,7 +65,7 @@ export const DashStyled = styled.div`
         .DashPage_program_content {
           display: flex;
           width: 100%;
-          //height: 100%;
+          height: 350px;
           margin-top: 30px;
         }
       }
@@ -77,6 +77,7 @@ export const DashStyled = styled.div`
         .DashPage_program_count {
           display: flex;
           width: 100%;
+          height: 350px;
           //height: 100%;
           margin-top: 30px;
         }

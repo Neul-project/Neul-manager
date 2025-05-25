@@ -99,7 +99,7 @@ const Programlist = () => {
 
       //프로그램명 키워드 검색으로 내용 전체 반환 요청
       axiosInstance
-        .get("/program/search", { params: { data: value } })
+        .get("/program/list", { params: { search: value } })
         .then((res) => {
           //console.log("res", res.data);
           const data = res.data;
