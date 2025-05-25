@@ -72,7 +72,7 @@ const UserManage = () => {
         number: index + 1,
         id: item.user.id,
         helper_id: item.user.email,
-        name: item.user.name,
+        name: `${item.user.name}(${item.user.id})`,
         gender: matchgender(item.gender),
         desiredPay: formatPrice(item.desiredPay),
         phone: formatPhoneNumber(item.user.phone),
@@ -211,7 +211,7 @@ const UserManage = () => {
     },
     {
       key: "name",
-      title: "이름",
+      title: "이름(ID)",
       dataIndex: "name",
     },
     {
