@@ -5,6 +5,7 @@ import type { ColumnsType } from "antd/es/table";
 import axiosInstance from "@/lib/axios";
 import { formatPhoneNumber } from "@/utill/formatter";
 import dayjs from "dayjs";
+import TitleCompo from "@/components/TitleCompo";
 
 interface RefundItem {
   // key: number;
@@ -34,7 +35,7 @@ const RefundPage = () => {
           "/program/refund-list"
         );
 
-        console.log("환불 리스트 응답", res.data);
+        //console.log("환불 리스트 응답", res.data);
         setDataSource(res.data);
       } catch (error) {
         console.error("환불 리스트 불러오기 실패:", error);
@@ -82,7 +83,7 @@ const RefundPage = () => {
       }
     } catch (error) {
       message.error("환불 처리 중 오류가 발생했습니다.");
-      console.error("환불 완료 요청 실패:", error);
+      //console.error("환불 완료 요청 실패:", error);
     } finally {
       setIsModalVisible(false); // 모달 닫기
     }
@@ -135,7 +136,7 @@ const RefundPage = () => {
 
   return (
     <RefundStyled>
-      <div className="Refund_title">환불 목록</div>
+      <TitleCompo title="환불 목록" />
 
       <Table
         columns={columns}

@@ -43,8 +43,6 @@ const UserManage = () => {
   const [allUsers, setAllUsers] = useState<any[]>([]); //서치용 유저리스트
   const [selectSearch, setSelectSearch] = useState<string>("id");
 
-  const adminId = useAuthStore((state) => state.user?.id);
-
   //useEffect
   useEffect(() => {
     getUserList();
@@ -57,7 +55,7 @@ const UserManage = () => {
 
   //도우미 정보 가지고 오기 요청
   const getUserList = async (value?: any, selectSearch?: any) => {
-    console.log(value, selectSearch);
+    //console.log(value, selectSearch);
     try {
       //상태가 승인 완료인 모든 도우미 유저 모든 정보 불러오기
       //search : 검색 내용, search_value : 검색 종류(id : 도우미 유저 아이디, name :도우미 유저 이름)
@@ -82,7 +80,7 @@ const UserManage = () => {
       setUsers(mapped);
       setAllUsers(mapped);
     } catch (err) {
-      console.error("유저 불러오기 실패", err);
+      //console.error("유저 불러오기 실패", err);
     }
   };
 
@@ -208,6 +206,7 @@ const UserManage = () => {
       key: "number",
       title: "번호",
       dataIndex: "number",
+      render: (_: any, __: any, index: number) => index + 1,
     },
     {
       key: "name",
@@ -278,8 +277,8 @@ const UserManage = () => {
 
   //검색 함수
   const onSearch: SearchProps["onSearch"] = async (value) => {
-    console.log("검색 기준", selectSearch);
-    console.log("검색 단어", value);
+    //console.log("검색 기준", selectSearch);
+    //console.log("검색 단어", value);
     getUserList(value, selectSearch);
   };
 

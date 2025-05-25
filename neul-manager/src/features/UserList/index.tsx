@@ -44,7 +44,7 @@ const UserList = () => {
         },
       });
       const searchData = res.data;
-      console.log("검색된 유저들", searchData);
+      //console.log("검색된 유저들", searchData);
 
       const mapped = searchData.map((x: any) => ({
         key: x.user_id,
@@ -64,7 +64,7 @@ const UserList = () => {
 
       setUsers(mapped);
     } catch (e) {
-      console.error("검색 실패: ", e);
+      //console.error("검색 실패: ", e);
       notification.error({
         message: `검색 실패`,
         description: `검색에 실패하였습니다.`,
