@@ -65,7 +65,7 @@ const UserManage = () => {
         params: { type: "approve", search: value, search_value: selectSearch },
       });
       const data = res.data;
-      console.log(data);
+      //console.log(data);
 
       const mapped = data.map((item: any, index: number) => ({
         key: item.user.id,

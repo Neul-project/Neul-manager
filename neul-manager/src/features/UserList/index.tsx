@@ -34,14 +34,19 @@ const UserList = () => {
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
   const [selectSearch, setSelectSearch] = useState<string>("user_id");
 
-  const getUserList = async () => {
+  const getUserList = async (value?: any) => {
+    //console.log("d", value, selectSearch);
     try {
-      // 매칭된 user불러오기
-      const res = await axiosInstance.get("/matching/alluser");
+      const res = await axiosInstance.get("/matching/searchuser", {
+        params: {
+          search: selectSearch, // 어떤 기준으로 검색하는지(user_id->보호자ID, user_name->보호자 이름, patient_name->피보호자 이름)
+          word: value, // 검색 단어
+        },
+      });
+      const searchData = res.data;
+      console.log("검색된 유저들", searchData);
 
-      const data = res.data;
-      //console.log(data);
-      const mapped = data.map((x: any) => ({
+      const mapped = searchData.map((x: any) => ({
         key: x.user_id,
         id: x.user_id,
         email: x.user_email,
@@ -52,17 +57,23 @@ const UserList = () => {
         patient_gender: x.patient_gender === "male" ? "남" : "여",
         patient_birth: x.patient_birth || "없음",
         patient_note: x.patient_note || "없음",
-        dates: x.dates,
+        availableFrom: x.availableFrom, // 'YYYY-MM-DD'
+        availableTo: x.availableTo, // 'YYYY-MM-DD'
         matcing_at: x.user_create, // 매칭된 날짜
       }));
+
       setUsers(mapped);
-    } catch (err) {
-      console.error("담당 유저 불러오기 실패", err);
+    } catch (e) {
+      console.error("검색 실패: ", e);
+      notification.error({
+        message: `검색 실패`,
+        description: `검색에 실패하였습니다.`,
+      });
     }
   };
 
   useEffect(() => {
-    getUserList();
+    getUserList("");
   }, []);
 
   // 유저 정렬하기
@@ -156,7 +167,7 @@ const UserList = () => {
         message: `선택한 회원 삭제 성공`,
         description: `선택한 회원을 완전히 삭제했습니다.`,
       });
-      getUserList(); // 목록 다시 불러오기
+      getUserList(""); // 목록 다시 불러오기
       setSelectedRowKeys([]); // 선택 초기화
     } catch (e) {
       //console.error("회원 삭제 실패:", e);
