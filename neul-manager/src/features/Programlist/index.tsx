@@ -13,8 +13,6 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import axiosInstance from "@/lib/axios";
 import ProgramWrite from "../ProgramWrite";
-//import * as XLSX from "xlsx";
-//import { saveAs } from "file-saver";
 import { AntdGlobalTheme, GreenTheme } from "@/utill/antdtheme";
 import { formatPrice } from "@/utill/programcategory";
 import { SearchProps } from "antd/es/input";
@@ -106,17 +104,15 @@ const Programlist = () => {
           //console.log("res", res.data);
           const data = res.data;
 
-          const programList = data
-            .reverse()
-            .map((item: any, index: number) => ({
-              num: index + 1,
-              key: item.id,
-              title: item.name,
-              manager: item.manager,
-              target: item.target,
-              price: formatPrice(item.price),
-              origin: item,
-            }));
+          const programList = data.map((item: any, index: number) => ({
+            num: index + 1,
+            key: item.id,
+            title: item.name,
+            manager: item.manager,
+            target: item.target,
+            price: formatPrice(item.price),
+            origin: item,
+          }));
 
           setList(programList);
           setSearchValue("");
