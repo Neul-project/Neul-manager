@@ -78,7 +78,7 @@ const TargetDetail = (props: { id: number }) => {
 
   useEffect(() => {
     axiosInstance
-      .get("/activity/targetlist", { params: { adminId: id } })
+      .get("/status/patient", { params: { adminId: id } })
       .then((res: any) => {
         console.log("Res", res.data);
         const data = res.data;
