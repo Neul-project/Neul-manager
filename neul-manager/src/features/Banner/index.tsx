@@ -11,10 +11,16 @@ import { UploadOutlined } from "@ant-design/icons";
 import { UploadProps } from "antd";
 import { bannerValidationSchema } from "@/utill/bannerValidation";
 
+interface arrTpye {
+  id: number;
+  img: string;
+  url: string;
+}
+
 //배너 등록 컴포넌트
 const Banner = () => {
   //useState
-  const [arr, setArr] = useState([]);
+  const [arr, setArr] = useState<arrTpye[]>([]);
 
   useEffect(() => {
     axiosInstance.get("/banner/list").then((res) => {
@@ -44,7 +50,9 @@ const Banner = () => {
       //console.log("FormData 내용:", Array.from(formData.entries()));
 
       if (arr.length > 0) {
-        await axiosInstance.delete("/banner/delete");
+        await axiosInstance.delete("/banner/delete", {
+          data: { id: arr[0].id },
+        });
       }
 
       try {
