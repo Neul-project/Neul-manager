@@ -193,9 +193,9 @@ const Programlist = () => {
   }, [onSearch]);
 
   return (
-    <ProgramlistStyled className={clsx("Programlist_main_wrap")}>
-      <div className="Programlist_btns">
-        <ConfigProvider theme={GreenTheme}>
+    <ConfigProvider theme={AntdGlobalTheme}>
+      <ProgramlistStyled className={clsx("Programlist_main_wrap")}>
+        <div className="Programlist_btns">
           <Search
             placeholder="프로그램명 검색"
             onSearch={onSearch}
@@ -203,57 +203,57 @@ const Programlist = () => {
             onChange={(e) => setSearchValue(e.target.value)}
             className="Programlist_search"
           />
-        </ConfigProvider>
-        <ConfigProvider theme={AntdGlobalTheme}>
-          <Button onClick={ProgramPost}>등록하기</Button>
-        </ConfigProvider>
 
-        <ConfigProvider theme={AntdGlobalTheme}>
+          <Button onClick={ProgramPost}>등록하기</Button>
+
           <Button onClick={ProgramDelete}>삭제하기</Button>
-          <Modal
-            title="프로그램 삭제"
-            open={isDeleteModalOpen}
-            onCancel={() => setIsDeleteModalOpen(false)}
-            footer={
-              <Button key="back" onClick={FooterDelete}>
-                삭제하기
-              </Button>
-            }
-            className="Delete_Modal"
-          >
-            <div>정말로 삭제하시겠습니까?</div>
-          </Modal>
-        </ConfigProvider>
-        <ConfigProvider theme={AntdGlobalTheme}>
+          {isDeleteModalOpen && (
+            <Modal
+              title="프로그램 삭제"
+              open={isDeleteModalOpen}
+              onCancel={() => setIsDeleteModalOpen(false)}
+              footer={
+                <Button key="back" onClick={FooterDelete}>
+                  삭제하기
+                </Button>
+              }
+              className="Delete_Modal"
+            >
+              <div>정말로 삭제하시겠습니까?</div>
+            </Modal>
+          )}
+
           <Button onClick={execelDownload}>엑셀 다운로드</Button>
-        </ConfigProvider>
-      </div>
-      <div>
-        <Table<DataType>
-          rowSelection={rowSelection}
-          columns={columns}
-          dataSource={list}
-        />
-        <StyledModal
-          title={`${title}`}
-          key={isModalOpen ? id : "closed"}
-          width={600}
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
-          footer={null}
-        >
-          <div className="ProgramWrite_Modal">
-            <ProgramWrite
-              modify={"modify"}
-              list={originlist}
-              setIsModalOpen={setIsModalOpen}
-              getprogramlist={onSearch}
-            />
-          </div>
-        </StyledModal>
-      </div>
-    </ProgramlistStyled>
+        </div>
+        <div>
+          <Table<DataType>
+            rowSelection={rowSelection}
+            columns={columns}
+            dataSource={list}
+          />
+          {isModalOpen && (
+            <StyledModal
+              title={`${title}`}
+              key={isModalOpen ? id : "closed"}
+              width={600}
+              open={isModalOpen}
+              onOk={handleOk}
+              onCancel={handleCancel}
+              footer={null}
+            >
+              <div className="ProgramWrite_Modal">
+                <ProgramWrite
+                  modify={"modify"}
+                  list={originlist}
+                  setIsModalOpen={setIsModalOpen}
+                  getprogramlist={onSearch}
+                />
+              </div>
+            </StyledModal>
+          )}
+        </div>
+      </ProgramlistStyled>
+    </ConfigProvider>
   );
 };
 

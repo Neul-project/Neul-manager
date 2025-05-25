@@ -244,9 +244,9 @@ const UserList = () => {
   ];
 
   const searchOption = [
-    { value: "user_id", label: "보호자 ID" },
-    { value: "user_name", label: "보호자 이름" },
-    { value: "patient_name", label: "피보호자 이름" },
+    { value: "user_id", label: "아이디" },
+    { value: "user_name", label: "보호자명" },
+    { value: "patient_name", label: "피보호자명" },
   ];
 
   const handleChange = (value: string) => {
@@ -255,8 +255,8 @@ const UserList = () => {
   };
 
   const onSearch: SearchProps["onSearch"] = async (value) => {
-    console.log("검색 기준", selectSearch);
-    console.log("검색 단어", value);
+    // console.log("검색 기준", selectSearch);
+    // console.log("검색 단어", value);
     try {
       const res = await axiosInstance.get("/matching/search", {
         params: {
@@ -265,7 +265,7 @@ const UserList = () => {
         },
       });
       const searchData = res.data;
-      console.log("검색된 유저들", searchData);
+      //console.log("검색된 유저들", searchData);
 
       const mapped = searchData.map((x: any) => ({
         key: x.user_id,
@@ -285,7 +285,7 @@ const UserList = () => {
 
       setUsers(mapped);
     } catch (e) {
-      console.error("검색 실패: ", e);
+      //console.error("검색 실패: ", e);
       notification.error({
         message: `검색 실패`,
         description: `검색에 실패하였습니다.`,
