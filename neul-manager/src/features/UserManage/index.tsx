@@ -6,7 +6,6 @@ import axiosInstance from "@/lib/axios";
 
 //component & files
 import { formatPhoneNumber, formatPrice } from "@/utill/formatter";
-import { useAuthStore } from "@/stores/useAuthStore";
 import AdminDetail from "../AdminDetail";
 import { matchgender } from "@/utill/dataformat";
 import TargetDetail from "../TargetDetail";
