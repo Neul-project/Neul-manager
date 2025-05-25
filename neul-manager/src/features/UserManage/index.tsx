@@ -59,7 +59,9 @@ const UserManage = () => {
   const getUserList = async () => {
     try {
       //상태가 승인 완료인 모든 도우미 유저 모든 정보 불러오기
-      const res = await axiosInstance.get("/helper/approveduser");
+      const res = await axiosInstance.get("/helper/info", {
+        params: { type: "approve" },
+      });
       const data = res.data;
       console.log(data);
 

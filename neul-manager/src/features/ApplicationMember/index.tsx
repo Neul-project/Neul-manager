@@ -59,6 +59,7 @@ const ApplicationMember = () => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false); //상세 모달
   const [helperId, setHelperId] = useState();
   const [helperName, setHelperName] = useState(""); //도우미 이름
+
   //테이블 열
   const columns: TableColumnsType<DataType> = [
     {
@@ -128,8 +129,10 @@ const ApplicationMember = () => {
   //테이블 행에 맞춘 필터링 함수
   const FilterTableAdmin = async () => {
     //도우미 승인 대기 유저만 가져오기 요청 - 행 전체
-    const res = await axiosInstance.get("/helper/applylist");
-    //console.log("res", res.data);
+    const res = await axiosInstance.get("/helper/info", {
+      params: { type: "wait" },
+    });
+    console.log("res", res.data);
     const adminlist = res.data;
     const mapped = adminlist.map((item: any, index: number) => ({
       key: index,
