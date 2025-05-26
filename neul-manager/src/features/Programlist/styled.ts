@@ -59,7 +59,8 @@ export const StyledModal = styled(Modal)`
     margin-left: -50px;
   } */
 
-  .ProgramWrite_Modal {
+  .ProgramWrite_Modal,
+  .Userlist_Modal {
     max-height: 70vh;
     min-height: 300px;
     overflow-y: auto;

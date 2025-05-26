@@ -102,7 +102,7 @@ const Programlist = () => {
         .get("/program/list", { params: { search: value } })
         .then((res) => {
           //console.log("res", res.data);
-          const data = res.data;
+          const data = res.data.reverse();
 
           const programList = data.map((item: any, index: number) => ({
             num: index + 1,

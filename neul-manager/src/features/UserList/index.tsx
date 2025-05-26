@@ -20,6 +20,7 @@ import { GreenTheme } from "@/utill/antdtheme";
 import { formatPhoneNumber } from "@/utill/formatter";
 import dayjs, { Dayjs } from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import { StyledModal } from "../Programlist/styled";
 dayjs.extend(isSameOrBefore);
 const { Search } = Input;
 
@@ -314,19 +315,21 @@ const UserList = () => {
             },
           })}
         />
-        <Modal
+        <StyledModal
           open={modalOpen}
           onCancel={() => setModalOpen(false)}
           footer={null}
           centered
         >
-          <h3>특이사항</h3>
-          {selectedUser && (
-            <div>
-              <p>{selectedUser.patient_note}</p>
-            </div>
-          )}
-        </Modal>
+          <div className="Userlist_Modal">
+            <h3>특이사항</h3>
+            {selectedUser && (
+              <div>
+                <p>{selectedUser.patient_note}</p>
+              </div>
+            )}
+          </div>
+        </StyledModal>
       </UserManageStyled>
     </ConfigProvider>
   );
