@@ -97,7 +97,7 @@ const UserList = () => {
 
   // 엑셀 다운
   const handleDownloadExcel = () => {
-    console.log("users", users);
+    //console.log("users", users);
     const excelData = users.map((user) => ({
       guardianId: user.id,
       guardianEmail: user.email,
