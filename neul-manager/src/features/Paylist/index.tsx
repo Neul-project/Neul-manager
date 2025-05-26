@@ -18,7 +18,7 @@ const Paylist = () => {
   const [data, setData] = useState<PaymentItem[]>([]);
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
 
-  console.log("결제 리스트 응답", data);
+  //console.log("결제 리스트 응답", data);
 
   // 테이블 헤더
   const columns: ColumnsType<PaymentItem> = [
@@ -61,7 +61,7 @@ const Paylist = () => {
           "/program/payment-list",
           { params: { type: "user" } }
         );
-        //console.log("Da", res.data);
+        console.log("Da", res.data);
         setData(res.data);
       } catch (error) {
         console.error("결제 리스트 불러오기 실패:", error);

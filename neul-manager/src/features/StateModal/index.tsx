@@ -17,7 +17,7 @@ const StateModal = (props: {
     <StateModaltStyled>
       {type === "취소" ? (
         <>
-          <div>정말로 해당 유저를 도우미 등록을 취소하시겠습니까?</div>
+          <div>해당 유저의 도우미 등록을 정말로 취소하시겠습니까?</div>
           <div>사유를 입력해 주세요.</div>
           <TextArea
             rows={4}
@@ -27,7 +27,7 @@ const StateModal = (props: {
           />
         </>
       ) : (
-        <>정말로 해당 유저를 도우미 등록 하시겠습니까?</>
+        <>해당 유저를 정말로 도우미로 등록하시겠습니까?</>
       )}
     </StateModaltStyled>
   );

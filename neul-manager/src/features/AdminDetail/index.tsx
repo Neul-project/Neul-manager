@@ -248,7 +248,7 @@ const AdminDetail = ({
             반려
           </Button>
           <Modal
-            title="취소 모달"
+            title="반려하기"
             closable={{ "aria-label": "Custom Close Button" }}
             open={isCanCleModalOpen}
             onOk={handleCancleOk}
@@ -268,7 +268,7 @@ const AdminDetail = ({
             수락
           </Button>
           <Modal
-            title="수락 모달"
+            title="수락하기"
             closable={{ "aria-label": "Custom Close Button" }}
             open={isYesModalOpen}
             onOk={handleCancleOk}

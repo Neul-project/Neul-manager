@@ -8,7 +8,6 @@ import {
   Input,
   notification,
   ConfigProvider,
-  Calendar,
 } from "antd";
 import clsx from "clsx";
 import * as XLSX from "xlsx";
@@ -53,19 +52,12 @@ const UserList = () => {
         email: item.user.email,
         name: item.user.name,
         phone: item.user.phone,
-        patient_id: item.patient?.id || "",
-        patient_name: item.patient?.name || "",
-        patient_gender:
-          item.patient?.gender === "male"
-            ? "남"
-            : item.patient?.gender === "female"
-            ? "여"
-            : "-",
+        patient_id: item.patient?.id,
+        patient_name: item.patient?.name,
+        patient_gender: item.patient?.gender === "male" ? "남" : "여",
         patient_birth: item.patient?.birth || "-",
         patient_note: item.patient?.note || "",
-        availableFrom: item?.availableFrom || "", // 'YYYY-MM-DD'
-        availableTo: item?.availableTo || "", // 'YYYY-MM-DD'
-        matcing_at: item?.user_create || "", // 매칭된 날짜
+        matcing_at: item?.match.matching_at || "", // 매칭된 날짜
       }));
 
       setUsers(mapped);
@@ -234,14 +226,6 @@ const UserList = () => {
       title: "피보호자 생년월일",
       dataIndex: "patient_birth",
     },
-    {
-      key: "matching",
-      title: "배정일",
-      render: (record: any) =>
-        record.availableFrom && record.availableTo
-          ? `${record.availableFrom} - ${record.availableTo}`
-          : `없음`,
-    },
   ];
 
   const sortOption = [
@@ -271,7 +255,7 @@ const UserList = () => {
         },
       });
       const searchData = res.data;
-      //console.log("검색된 유저들", searchData);
+      console.log("검색된 유저들", searchData);
 
       const mapped = searchData.map((x: any) => ({
         key: x.user_id,
@@ -364,34 +348,6 @@ const UserList = () => {
               <p>{selectedUser.patient_note}</p>
             </div>
           )}
-          <br />
-          <h3>배정일</h3>
-          <Calendar
-            fullscreen={false}
-            cellRender={(value: Dayjs) => {
-              const datesArray =
-                selectedUser?.dates?.split(",").flatMap((range: string) => {
-                  const [startStr, endStr] = range.trim().split("/");
-                  const start = dayjs(startStr);
-                  const end = endStr ? dayjs(endStr) : start;
-                  const result = [];
-                  let curr = start;
-
-                  while (curr.isSameOrBefore(end)) {
-                    result.push(curr.format("YYYY-MM-DD"));
-                    curr = curr.add(1, "day");
-                  }
-
-                  return result;
-                }) || [];
-
-              const isMatched = datesArray.includes(value.format("YYYY-MM-DD"));
-
-              return isMatched ? (
-                <div style={{ color: "#79b79d" }}>배정일</div>
-              ) : null;
-            }}
-          />
         </Modal>
       </UserManageStyled>
     </ConfigProvider>
