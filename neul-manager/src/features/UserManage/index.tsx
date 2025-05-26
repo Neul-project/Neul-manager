@@ -214,7 +214,7 @@ const UserManage = () => {
     },
     {
       key: "helper_id",
-      title: "아이디",
+      title: "이메일",
       dataIndex: "helper_id",
     },
     {

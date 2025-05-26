@@ -75,8 +75,6 @@ const TargetDetail = (props: { id: number }) => {
   };
 
   //console.log("id", id);
-  //**백엔드에서 요청하기
-
   useEffect(() => {
     axiosInstance
       .get("/status/patient", { params: { adminId: id } })
@@ -85,8 +83,8 @@ const TargetDetail = (props: { id: number }) => {
         const data = res.data;
 
         const mapped = data.map((item: any, index: number) => ({
-          key: item.id,
-          name: item.name,
+          key: index + 1,
+          name: `${item.name}(${item.id})`,
           birth: item.birth,
           gender: matchgender(item.gender),
           note: item.note,
