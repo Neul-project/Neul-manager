@@ -77,7 +77,7 @@ const UserList = () => {
   // 유저 정렬하기
   const sortUsers = () => {
     let sorted = [...users];
-
+    console.log("sor", sorted);
     if (sortKey === "matcing_at") {
       sorted.sort((a, b) =>
         userOrder === "DESC"

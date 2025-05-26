@@ -27,8 +27,10 @@ export const LoginStyled = styled.div`
       }
     }
     .Login_title {
+      font-weight: 500;
+      color: #333;
       font-size: 20px;
-      margin-top: -30px;
+      margin-top: -15px;
       margin-bottom: 10px;
     }
 
