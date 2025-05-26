@@ -4,6 +4,14 @@ export const RefundStyled = styled.div`
   .Refund_title {
     margin-bottom: 13px;
   }
+
+  .ant-table-thead > tr > th {
+    text-align: center;
+  }
+
+  .ant-table-cell {
+    text-align: center;
+  }
 `;
 
 export const Divider = styled.div`

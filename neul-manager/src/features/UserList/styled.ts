@@ -17,12 +17,15 @@ export const UserManageStyled = styled.div`
       justify-content: space-between;
       align-items: center;
       margin-bottom: 3px;
+
       .usermanage_sort_box {
         display: flex;
         align-items: center;
+
         .usermanage_order {
           width: 95px;
         }
+
         .usermanage_total_num {
           font-weight: 600;
           margin-right: 10px;
@@ -34,6 +37,14 @@ export const UserManageStyled = styled.div`
     }
     tr:hover {
       cursor: pointer;
+    }
+
+    .ant-table-thead > tr > th {
+      text-align: center;
+    }
+
+    .ant-table-cell {
+      text-align: center;
     }
   }
 `;

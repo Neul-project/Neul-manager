@@ -1,6 +1,6 @@
 import { PaymentStyled } from "./styled";
 import { useEffect, useState } from "react";
-import { Button, Table, Modal, message } from "antd";
+import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import axiosInstance from "@/lib/axios";
 import dayjs from "dayjs";

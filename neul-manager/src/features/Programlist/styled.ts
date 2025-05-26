@@ -39,6 +39,14 @@ export const ProgramlistStyled = styled.div`
       background-color: #5da487 !important;
       color: #fff !important;
     }
+
+    .ant-table-thead > tr > th {
+      text-align: center;
+    }
+
+    .ant-table-cell {
+      text-align: center;
+    }
   }
 `;
 
