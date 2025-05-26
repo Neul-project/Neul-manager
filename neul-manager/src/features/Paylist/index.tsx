@@ -8,10 +8,11 @@ import TitleCompo from "@/components/TitleCompo";
 
 interface PaymentItem {
   id: number;
-  name: string;
-  helper: string;
+  userName: string;
+  adminName: string;
   price: number;
   create_at: string;
+  orderId: string;
 }
 
 const Paylist = () => {
@@ -30,14 +31,19 @@ const Paylist = () => {
         (pagination.current - 1) * pagination.pageSize + index + 1,
     },
     {
+      title: "주문번호",
+      dataIndex: "orderId",
+      key: "orderId",
+    },
+    {
       title: "피보호자",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "userName",
+      key: "userName",
     },
     {
       title: "도우미",
-      dataIndex: "helper",
-      key: "helper",
+      dataIndex: "adminName",
+      key: "adminName",
     },
     {
       title: "결제금액",
