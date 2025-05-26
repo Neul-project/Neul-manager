@@ -27,9 +27,9 @@ export const LoginStyled = styled.div`
       }
     }
     .Login_title {
-      font-weight: 500;
+      font-weight: 400;
       color: #333;
-      font-size: 20px;
+      font-size: 16px;
       margin-top: -15px;
       margin-bottom: 10px;
     }

@@ -44,21 +44,23 @@ const UserList = () => {
         },
       });
       const searchData = res.data;
-      // console.log("검색된 유저들", searchData);
+      //console.log("검색된 유저들", searchData);
 
-      const mapped = searchData.map((item: any) => ({
-        key: item.user.id,
-        id: item.user.id,
-        email: item.user.email,
-        name: item.user.name,
-        phone: item.user.phone,
-        patient_id: item.patient?.id,
-        patient_name: item.patient?.name,
-        patient_gender: item.patient?.gender === "male" ? "남" : "여",
-        patient_birth: item.patient?.birth || "-",
-        patient_note: item.patient?.note || "",
-        matcing_at: item?.match.matching_at || "", // 매칭된 날짜
-      }));
+      const mapped = searchData
+        .filter((item: any) => item.patient !== null)
+        .map((item: any) => ({
+          key: item.user.id,
+          id: item.user.id,
+          email: item.user.email,
+          name: item.user.name,
+          phone: item.user.phone,
+          patient_id: item.patient?.id,
+          patient_name: item.patient?.name,
+          patient_gender: item.patient?.gender === "male" ? "남" : "여",
+          patient_birth: item.patient?.birth || "-",
+          patient_note: item.patient?.note || "",
+          matcing_at: item?.match.matching_at || "", // 매칭된 날짜
+        }));
 
       setUsers(mapped);
     } catch (e) {
@@ -77,7 +79,7 @@ const UserList = () => {
   // 유저 정렬하기
   const sortUsers = () => {
     let sorted = [...users];
-    console.log("sor", sorted);
+    //console.log("sor", sorted);
     if (sortKey === "matcing_at") {
       sorted.sort((a, b) =>
         userOrder === "DESC"
@@ -218,7 +220,7 @@ const UserList = () => {
     },
     {
       key: "patient_gender",
-      title: "성별",
+      title: "피보호자 성별",
       dataIndex: "patient_gender",
     },
     {
@@ -248,32 +250,7 @@ const UserList = () => {
     // console.log("검색 기준", selectSearch);
     // console.log("검색 단어", value);
     try {
-      const res = await axiosInstance.get("/matching/search", {
-        params: {
-          search: selectSearch, // 어떤 기준으로 검색하는지(user_id->보호자ID, user_name->보호자 이름, patient_name->피보호자 이름)
-          word: value, // 검색 단어
-        },
-      });
-      const searchData = res.data;
-      console.log("검색된 유저들", searchData);
-
-      const mapped = searchData.map((x: any) => ({
-        key: x.user_id,
-        id: x.user_id,
-        email: x.user_email,
-        name: x.user_name,
-        phone: x.user_phone,
-        patient_id: x.patient_id,
-        patient_name: x.patient_name,
-        patient_gender: x.patient_gender === "male" ? "남" : "여",
-        patient_birth: x.patient_birth || "없음",
-        patient_note: x.patient_note || "없음",
-        availableFrom: x.availableFrom, // 'YYYY-MM-DD'
-        availableTo: x.availableTo, // 'YYYY-MM-DD'
-        matcing_at: x.user_create, // 매칭된 날짜
-      }));
-
-      setUsers(mapped);
+      getUserList(value);
     } catch (e) {
       //console.error("검색 실패: ", e);
       notification.error({
