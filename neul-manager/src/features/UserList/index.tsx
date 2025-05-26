@@ -97,10 +97,11 @@ const UserList = () => {
 
   // 엑셀 다운
   const handleDownloadExcel = () => {
+    console.log("users", users);
     const excelData = users.map((user) => ({
       guardianId: user.id,
       guardianEmail: user.email,
-      guardianName: user.user,
+      guardianName: user.name,
       guardianPhone: user.phone,
       patientId: user.patient_id,
       patientName: user.patient_name,
@@ -125,7 +126,7 @@ const UserList = () => {
     // 실제 엑셀에 출력될 헤더 (한글)
     const header = [
       "보호자ID",
-      "보호자_아이디",
+      "보호자_이메일",
       "보호자명",
       "보호자_전화번호",
       "피보호자ID",
@@ -141,7 +142,7 @@ const UserList = () => {
     XLSX.utils.sheet_add_aoa(worksheet, [header], { origin: "A1" });
 
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "회원목록");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "사용자목록");
 
     const excelBuffer = XLSX.write(workbook, {
       bookType: "xlsx",
@@ -149,7 +150,7 @@ const UserList = () => {
     });
 
     const file = new Blob([excelBuffer], { type: "application/octet-stream" });
-    saveAs(file, "회원목록.xlsx");
+    saveAs(file, "사용자목록.xlsx");
   };
 
   // 회원삭제(userId들 보냄)
