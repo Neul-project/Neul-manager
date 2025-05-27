@@ -2,71 +2,73 @@ import styled from "styled-components";
 
 export const LoginStyled = styled.div`
   &.Login_main_wrap {
-    max-width: 1280px;
+    max-width: 400px;
     display: flex;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     justify-content: center;
     flex-direction: column;
     text-align: center;
-
     margin: 0px auto;
-    margin-top: 130px;
+    //margin: 238px auto;
     gap: 15px;
 
-    .Login_logo {
-      width: 70px;
-      height: 60px;
-      display: flex;
-      margin: 0px auto;
-      margin-bottom: 15px;
+    .Login_main_box {
+      width: 400px;
+      padding: 20px;
+      border: 1px solid rgb(189, 189, 189);
+      border-radius: 8px;
 
-      .Login_imgstyle {
-        width: 100%;
-        height: 100%;
-      }
-    }
-    .Login_title {
-      font-weight: 400;
-      color: #333;
-      font-size: 16px;
-      margin-top: -15px;
-      margin-bottom: 10px;
-    }
+      .Login_logo {
+        width: 130px;
+        margin: 0px auto 23px;
 
-    .Login_form {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-      gap: 10px;
-      text-align: center;
-
-      .Login_input {
-        width: 300px;
-        height: 50px;
-        padding: 10px;
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        margin: 0px auto;
-
-        &:focus {
-          border: 1px solid #5da487;
-          outline: none;
+        .Login_imgstyle {
+          width: 100%;
+          height: 100%;
         }
       }
-    }
-    .Login_btn {
-      width: 200px;
-      height: 42px;
-      margin-top: 20px;
-      border: none;
-      border-radius: 8px;
-      background-color: #5da487;
-      color: #fff;
-      font-weight: 700;
-      font-size: 16px;
-      cursor: pointer;
+      .Login_title {
+        font-weight: 400;
+        color: #333;
+        font-size: 16px;
+        margin-top: -15px;
+        margin-bottom: 18px;
+      }
+
+      .Login_form {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+
+        .Login_input {
+          width: 100%;
+          padding: 10px 14px;
+          border: 1px solid rgb(189, 189, 189);
+          border-radius: 8px;
+          margin-bottom: 10px;
+          font-size: 14px;
+
+          &:focus {
+            border: 1px solid #5da487;
+            outline: none;
+          }
+        }
+      }
+      .Login_btn {
+        cursor: pointer;
+        width: 100%;
+        height: 47px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 8px;
+        background-color: rgb(93, 164, 135);
+        color: rgb(255, 255, 255);
+        font-weight: 700;
+        font-size: 16px;
+      }
     }
   }
 `;
