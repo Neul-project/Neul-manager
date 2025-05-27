@@ -161,6 +161,7 @@ const Programlist = () => {
       message: "삭제되었습니다.",
     });
     setIsDeleteModalOpen(false);
+    onSearch("");
   };
 
   //엑셀로 다운받기 클릭

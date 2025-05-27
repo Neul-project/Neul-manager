@@ -84,12 +84,7 @@ const UserList = () => {
     //console.log("sor", sorted);
     if (sortKey === "matcing_at") {
       sorted.sort(
-        (a, b) =>
-          userOrder === "DESC"
-            ? new Date(b.matcing_at).getTime() -
-              new Date(a.matcing_at).getTime()
-            : new Date(a.matcing_at).getTime() -
-              new Date(b.matcing_at).getTime()
+        (a, b) => (userOrder === "DESC" ? a.key - b.key : b.key - a.key) //키는 오름차순이므로 반대로 작성
         //userOrder === "DESC" ? b.id - a.id : a.id - b.id
       );
     }
