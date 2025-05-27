@@ -205,7 +205,6 @@ const UserManage = () => {
       key: "number",
       title: "번호",
       dataIndex: "number",
-      render: (_: any, __: any, index: number) => index + 1,
     },
     {
       key: "name",

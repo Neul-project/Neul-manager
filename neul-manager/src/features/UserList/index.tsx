@@ -49,8 +49,9 @@ const UserList = () => {
 
       const mapped = searchData
         .filter((item: any) => item.patient !== null)
-        .map((item: any) => ({
+        .map((item: any, index: number) => ({
           key: item.user.id,
+          number: index + 1,
           id: item.user.id,
           email: item.user.email,
           name: item.user.name,
@@ -80,13 +81,16 @@ const UserList = () => {
   // 유저 정렬하기
   const sortUsers = () => {
     let sorted = [...users];
-    console.log("sor", sorted);
+    //console.log("sor", sorted);
     if (sortKey === "matcing_at") {
-      sorted.sort((a, b) =>
-        // userOrder === "DESC"
-        //   ? new Date(b.matcing_at).getTime() - new Date(a.matcing_at).getTime()
-        //   : new Date(a.matcing_at).getTime() - new Date(b.matcing_at).getTime()
-        userOrder === "DESC" ? b.id - a.id : a.id - b.id
+      sorted.sort(
+        (a, b) =>
+          userOrder === "DESC"
+            ? new Date(b.matcing_at).getTime() -
+              new Date(a.matcing_at).getTime()
+            : new Date(a.matcing_at).getTime() -
+              new Date(b.matcing_at).getTime()
+        //userOrder === "DESC" ? b.id - a.id : a.id - b.id
       );
     }
     setSortedUsers(sorted);
@@ -193,7 +197,7 @@ const UserList = () => {
     {
       key: "number",
       title: "번호",
-      render: (_: any, __: any, index: number) => index + 1,
+      dataIndex: "number",
     },
     {
       key: "email",

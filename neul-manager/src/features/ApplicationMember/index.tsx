@@ -63,6 +63,10 @@ const ApplicationMember = () => {
   //테이블 열
   const columns: TableColumnsType<DataType> = [
     {
+      title: "번호",
+      dataIndex: "number",
+    },
+    {
       title: "이름",
       dataIndex: "name",
     },
@@ -136,6 +140,7 @@ const ApplicationMember = () => {
     const adminlist = res.data;
     const mapped = adminlist.map((item: any, index: number) => ({
       key: index,
+      number: index + 1,
       name: item.user.name,
       gender: matchgender(item.gender),
       desiredPay: formatPrice(item.desiredPay),
