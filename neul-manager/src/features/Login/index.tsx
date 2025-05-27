@@ -11,6 +11,8 @@ import { useRouter } from "next/router";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { loginSchema } from "@/utill/joinValidation";
 
+import { ManagerEmailList } from "@/utill/emaillist";
+
 //login 컴포넌트
 const Login = () => {
   const router = useRouter();
@@ -25,40 +27,40 @@ const Login = () => {
 
       const val_email = values.email;
 
-      if (val_email.split("@")[1] === "neul.com") {
-        try {
-          const res = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/auth/local`,
-            values,
-            {
-              withCredentials: true,
-            }
-          );
-
-          //console.log("로그인 응답 데이터", res.data);
-
-          const { user, token } = res.data;
-
-          // 1. access_token 쿠키 저장
-          Cookies.set("access_token", token);
-
-          // 2. 토큰 기반 유저 정보 요청
-          const meRes = await axiosInstance.get("/auth/me");
-
-          //console.log("유저 정보:", meRes.data);
-
-          // 3. zustand에 로그인 상태 저장
-          login(meRes.data); // user: { id }
-
-          // 4. 메인페이지 이동
-          router.push("/");
-        } catch (error) {
-          console.error("로그인 실패:", error);
-          alert("로그인 정보가 일치하지 않습니다.");
-        }
-      } else {
+      if (!ManagerEmailList.includes(val_email)) {
         alert("유효하지 않은 계정입니다.");
         return;
+      }
+
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/local`,
+          values,
+          {
+            withCredentials: true,
+          }
+        );
+
+        //console.log("로그인 응답 데이터", res.data);
+
+        const { user, token } = res.data;
+
+        // 1. access_token 쿠키 저장
+        Cookies.set("access_token", token);
+
+        // 2. 토큰 기반 유저 정보 요청
+        const meRes = await axiosInstance.get("/auth/me");
+
+        //console.log("유저 정보:", meRes.data);
+
+        // 3. zustand에 로그인 상태 저장
+        login(meRes.data); // user: { id }
+
+        // 4. 메인페이지 이동
+        router.push("/");
+      } catch (error) {
+        console.error("로그인 실패:", error);
+        alert("로그인 정보가 일치하지 않습니다.");
       }
     },
     validationSchema: loginSchema,
