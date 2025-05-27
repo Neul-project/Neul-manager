@@ -162,7 +162,7 @@ const UserList = () => {
     }
     try {
       //console.log("selectedRowKeys", selectedRowKeys);
-      await axiosInstance.delete("/matching/userdelete", {
+      await axiosInstance.delete("/helper/userdelete", {
         data: { ids: selectedRowKeys },
       });
       notification.success({
