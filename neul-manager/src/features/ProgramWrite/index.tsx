@@ -228,12 +228,15 @@ const ProgramWrite = (props: ProgramType) => {
               <Select
                 options={categorylist}
                 value={
-                  modify === "modify" ? category : programformik.values.category
+                  modify === "modify"
+                    ? category || undefined
+                    : programformik.values.category || undefined
                 }
                 onChange={(value) => {
                   setCategory(value);
                   programformik.setFieldValue("category", value);
                 }}
+                placeholder="카테고리를 입력해 주세요."
               />
               {programformik.touched.category &&
                 programformik.errors.category && (
@@ -251,7 +254,7 @@ const ProgramWrite = (props: ProgramType) => {
               <Input
                 type="text"
                 name="target"
-                placeholder="참여대상을 입력해 주세요"
+                placeholder="참여대상을 입력해 주세요."
                 value={
                   modify === "modify" ? target : programformik.values.target
                 }
