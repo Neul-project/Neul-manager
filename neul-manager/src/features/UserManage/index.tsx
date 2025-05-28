@@ -25,8 +25,10 @@ import {
   Input,
   notification,
   ConfigProvider,
+  Modal,
 } from "antd";
 import { searchOption, sortOption } from "./info";
+import { kMaxLength } from "buffer";
 const { Search } = Input;
 
 //전체 도우미 정보 컴포넌트
@@ -41,6 +43,7 @@ const UserManage = () => {
   const [isTargetDetailModal, setIsTargetDetailModal] = useState(false); // 담당 피보호자 정보
   const [allUsers, setAllUsers] = useState<any[]>([]); //서치용 유저리스트
   const [selectSearch, setSelectSearch] = useState<string>("id");
+  const [isDeleteModal, setIsDeleteModal] = useState(false); //삭제하기 모달
 
   //useEffect
   useEffect(() => {
@@ -85,9 +88,7 @@ const UserManage = () => {
 
   const handleHelperCancel = () => {
     setIsHelperDetailModal(false);
-  };
-
-  const hadleTargetCancel = () => {
+    setIsDeleteModal(false);
     setIsTargetDetailModal(false);
   };
 
@@ -167,31 +168,6 @@ const UserManage = () => {
     //setSelectedRowKeys([]);
   };
 
-  // 회원삭제(userId들 보냄)
-  const WithdrawUser = async () => {
-    if (selectedRowKeys.length === 0) {
-      message.warning("삭제할 회원을 선택해주세요.");
-      return;
-    }
-    try {
-      await axiosInstance.delete("/helper/userdelete", {
-        data: { ids: selectedRowKeys },
-      });
-      notification.success({
-        message: `선택한 회원 삭제 성공`,
-        description: `선택한 회원을 완전히 삭제했습니다.`,
-      });
-      getUserList(); // 목록 다시 불러오기
-      setSelectedRowKeys([]); // 선택 초기화
-    } catch (e) {
-      //console.error("회원 삭제 실패:", e);
-      notification.error({
-        message: `선택한 회원 삭제 실패`,
-        description: `선택한 회원 삭제에 실패했습니다.`,
-      });
-    }
-  };
-
   // 테이블 rowSelection 설정
   const rowSelection = {
     selectedRowKeys,
@@ -246,7 +222,6 @@ const UserManage = () => {
         );
       },
     },
-
     {
       key: "detail",
       title: "담당 피보호자 정보",
@@ -266,7 +241,54 @@ const UserManage = () => {
         );
       },
     },
+    {
+      key: "delete",
+      title: "관리",
+      dataIndex: "delete",
+      render: (_: any, record: any) => {
+        return (
+          <ConfigProvider theme={AntdGlobalTheme}>
+            <Button
+              onClick={() => {
+                //console.log("re", record.id);
+                setIsDeleteModal(true);
+                setHelperId(record.origin.user.id);
+              }}
+            >
+              삭제하기
+            </Button>
+          </ConfigProvider>
+        );
+      },
+    },
   ];
+
+  //삭제하기 버튼 클릭
+  const deleteMember = async () => {
+    //삭제하기 요청
+    //console.log("HelperId", HelperId);
+
+    const res = await axiosInstance.delete("/user/withdraw", {
+      data: { userId: HelperId },
+    });
+    //console.log("re", res);
+    if (res.data.ok) {
+      //매칭이 되어 있지 않은 경우
+      notification.success({
+        message: `도우미 삭제 성공`,
+        description: `도우미를 완전히 삭제했습니다.`,
+      });
+    } else {
+      //매칭되어 있는 경우
+      notification.error({
+        message: `도우미 삭제 실패`,
+        description: `매칭된 사용자가 있어 도우미를 삭제할 수 없습니다.`,
+      });
+    }
+    setIsDeleteModal(false); //삭제 모달 닫기
+    getUserList(); // 목록 다시 불러오기
+    setSelectedRowKeys([]); // 선택 초기화
+  };
 
   const handleChange = (value: string) => {
     // 선택된 검색 셀렉트
@@ -312,9 +334,6 @@ const UserManage = () => {
               style={{ width: 250 }}
             />
             <Button onClick={handleDownloadExcel}>엑셀 다운로드</Button>
-            <Button className="usermanage_delete_button" onClick={WithdrawUser}>
-              회원삭제
-            </Button>
           </div>
         </div>
         <Table
@@ -341,12 +360,31 @@ const UserManage = () => {
           title=""
           closable={{ "aria-label": "Custom Close Button" }}
           open={isTargetDetailModal}
-          onCancel={hadleTargetCancel}
+          onCancel={handleHelperCancel}
           footer={null}
           width={1000}
         >
           {HelperId && <TargetDetail id={HelperId!} />}
         </StyledModal>
+
+        {/* 삭제하기 모달 */}
+        <Modal
+          title="도우미 삭제"
+          closable={{ "aria-label": "Custom Close Button" }}
+          open={isDeleteModal}
+          onCancel={handleHelperCancel}
+          footer={
+            <>
+              <Button onClick={handleHelperCancel}>취소하기</Button>
+              <Button type="primary" onClick={deleteMember}>
+                삭제하기
+              </Button>
+            </>
+          }
+          width={600}
+        >
+          <div>정말로 해당 도우미를 삭제하시겠습니까?</div>
+        </Modal>
       </UserManageStyled>
     </ConfigProvider>
   );

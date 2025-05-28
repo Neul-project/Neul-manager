@@ -67,7 +67,7 @@ const Paylist = () => {
           "/program/payment-list",
           { params: { type: "user" } }
         );
-        console.log("Da", res.data);
+        //console.log("Da", res.data);
 
         const resdata = res.data;
         const filterdata = resdata.filter(

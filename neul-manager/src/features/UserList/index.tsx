@@ -7,6 +7,7 @@ import {
   Input,
   notification,
   ConfigProvider,
+  Modal,
 } from "antd";
 import clsx from "clsx";
 import * as XLSX from "xlsx";
@@ -15,7 +16,7 @@ import TitleCompo from "@/components/TitleCompo";
 import axiosInstance from "@/lib/axios";
 import { UserManageStyled } from "./styled";
 import type { SearchProps } from "antd/es/input";
-import { GreenTheme } from "@/utill/antdtheme";
+import { AntdGlobalTheme, GreenTheme } from "@/utill/antdtheme";
 import { formatPhoneNumber } from "@/utill/formatter";
 import dayjs, { Dayjs } from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
@@ -26,13 +27,15 @@ const { Search } = Input;
 //회원관리 > 사용자 관리 > 사용자 관리 탭
 const UserList = () => {
   const [selectedUser, setSelectedUser] = useState<any>(null);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false); //특이사항 모달
   const [users, setUsers] = useState<any[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [userOrder, setUserOrder] = useState("DESC");
   const [sortKey, setSortKey] = useState("matcing_at");
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
   const [selectSearch, setSelectSearch] = useState<string>("user_id");
+  const [isDeleteModal, setIsDeleteModal] = useState(false); //삭제하기 모달
+  const [userId, setUserId] = useState(); //클릭한 사용자의 아이디
 
   const getUserList = async (value?: any) => {
     //console.log("d", value, selectSearch);
@@ -153,32 +156,6 @@ const UserList = () => {
     saveAs(file, "사용자목록.xlsx");
   };
 
-  // 회원삭제(userId들 보냄)
-  const WithdrawUser = async () => {
-    if (selectedRowKeys.length === 0) {
-      message.warning("삭제할 회원을 선택해주세요.");
-      return;
-    }
-    try {
-      //console.log("selectedRowKeys", selectedRowKeys);
-      await axiosInstance.delete("/helper/userdelete", {
-        data: { ids: selectedRowKeys },
-      });
-      notification.success({
-        message: `선택한 회원 삭제 성공`,
-        description: `선택한 회원을 완전히 삭제했습니다.`,
-      });
-      getUserList(""); // 목록 다시 불러오기
-      setSelectedRowKeys([]); // 선택 초기화
-    } catch (e) {
-      //console.error("회원 삭제 실패:", e);
-      notification.error({
-        message: `선택한 회원 삭제 실패`,
-        description: `선택한 회원 삭제에 실패했습니다.`,
-      });
-    }
-  };
-
   // 테이블 rowSelection 설정
   const rowSelection = {
     selectedRowKeys,
@@ -187,6 +164,7 @@ const UserList = () => {
     },
   };
 
+  //테이블 열
   const columns = [
     {
       key: "number",
@@ -229,6 +207,28 @@ const UserList = () => {
       title: "피보호자 생년월일",
       dataIndex: "patient_birth",
     },
+    {
+      key: "delete",
+      title: "관리",
+      dataIndex: "delete",
+      render: (_: any, record: any) => {
+        return (
+          <ConfigProvider theme={AntdGlobalTheme}>
+            <Button
+              onClick={(e) => {
+                //console.log("re", record);
+                e.stopPropagation(); //모달 이중 열림 방지
+                setModalOpen(false); //특이사항 모달 닫기
+                setIsDeleteModal(true); //삭제모달 열기
+                setUserId(record.id);
+              }}
+            >
+              삭제하기
+            </Button>
+          </ConfigProvider>
+        );
+      },
+    },
   ];
 
   const sortOption = [
@@ -261,15 +261,43 @@ const UserList = () => {
     }
   };
 
+  //삭제하기 버튼 클릭
+  const deleteMember = async () => {
+    //삭제하기 요청
+    //console.log("HelperId", HelperId);
+
+    const res = await axiosInstance.delete("/user/withdraw", {
+      data: { userId: userId },
+    });
+    //console.log("re", res);
+    if (res.data.ok) {
+      //매칭이 되어 있지 않은 경우
+      notification.success({
+        message: `사용자 삭제 성공`,
+        description: `사용자를 완전히 삭제했습니다.`,
+      });
+    } else {
+      //매칭되어 있는 경우
+      notification.error({
+        message: `사용자 삭제 실패`,
+        description: `사용자 삭제에 실패하였습니다.`,
+      });
+    }
+    setIsDeleteModal(false); //삭제 모달 닫기
+    getUserList(""); // 목록 다시 불러오기
+    setSelectedRowKeys([]); // 선택 초기화
+  };
+
+  const handleCancel = () => {
+    setIsDeleteModal(false);
+  };
+
   return (
     <ConfigProvider theme={GreenTheme}>
       <UserManageStyled className={clsx("usermanage_wrap")}>
         <div className="usermanage_title_box">
           <TitleCompo title="사용자 관리" />
           <div>
-            <Button className="usermanage_delete_button" onClick={WithdrawUser}>
-              회원삭제
-            </Button>
             <Button onClick={handleDownloadExcel}>엑셀 다운로드</Button>
           </div>
         </div>
@@ -314,6 +342,8 @@ const UserList = () => {
             },
           })}
         />
+
+        {/* 특이사항 모달 */}
         <StyledModal
           open={modalOpen}
           onCancel={() => setModalOpen(false)}
@@ -329,6 +359,25 @@ const UserList = () => {
             )}
           </div>
         </StyledModal>
+
+        {/* 삭제하기 모달 */}
+        <Modal
+          title="도우미 삭제"
+          closable={{ "aria-label": "Custom Close Button" }}
+          open={isDeleteModal}
+          onCancel={handleCancel}
+          footer={
+            <>
+              <Button onClick={handleCancel}>취소하기</Button>
+              <Button type="primary" onClick={deleteMember}>
+                삭제하기
+              </Button>
+            </>
+          }
+          width={600}
+        >
+          <div>정말로 해당 도우미를 삭제하시겠습니까?</div>
+        </Modal>
       </UserManageStyled>
     </ConfigProvider>
   );
