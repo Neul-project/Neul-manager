@@ -95,9 +95,14 @@ const ProgramWrite = (props: ProgramType) => {
 
   const imageprops: UploadProps = {
     beforeUpload: (file) => {
-      // 업로드를 막고, formik에만 넣기
-      //programformik.setFieldValue("img", [file, file]);
-      return false;
+      const isLt500KB = file.size <= 500 * 1024;
+      if (!isLt500KB) {
+        notification.error({
+          message: "파일 크기 초과",
+          description: "이미지 크기는 500KB 이하만 업로드할 수 있습니다.",
+        });
+      }
+      return isLt500KB ? false : Upload.LIST_IGNORE; // 조건 만족 시 업로드는 막지만 리스트에는 추가 / 조건 미달은 리스트에도 추가 안됨
     },
 
     onChange({ fileList }) {
