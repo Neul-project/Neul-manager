@@ -74,6 +74,6 @@ export const sidebarMenus = createSidebarMenus([
   },
   {
     key: "/banner",
-    label: "광고 등록",
+    label: "광고 관리",
   },
 ]);

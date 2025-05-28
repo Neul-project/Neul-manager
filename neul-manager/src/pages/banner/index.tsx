@@ -1,7 +1,7 @@
-import Banner from "@/features/Banner";
+import Bannerlist from "@/features/Bannerlist";
 
 const BannerPage = () => {
-  return <Banner />;
+  return <Bannerlist />;
 };
 
 export default BannerPage;
