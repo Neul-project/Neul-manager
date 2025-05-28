@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
 export const RefundStyled = styled.div`
+  .ant-table-wrapper .ant-table-pagination-right {
+    justify-content: center;
+  }
+
   .Refund_title {
     margin-bottom: 13px;
   }
