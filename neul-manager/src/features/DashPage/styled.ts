@@ -59,7 +59,7 @@ export const DashStyled = styled.div`
       justify-content: left;
 
       .DashPage_program_div {
-        width: 50%;
+        width: 60%;
         padding-right: 10px;
 
         .DashPage_program_content {

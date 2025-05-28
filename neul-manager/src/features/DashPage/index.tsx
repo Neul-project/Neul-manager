@@ -160,7 +160,7 @@ const DashBoard = () => {
         </div>
 
         {/* 프로그램 결제 건 수 */}
-        <div className="DashPage_program_count_div">
+        {/* <div className="DashPage_program_count_div">
           <div className="DashPage_main_title">프로그램 결제 건 수</div>
           <div className="DashPage_program_count">
             <Line
@@ -190,7 +190,7 @@ const DashBoard = () => {
               }}
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </DashStyled>
   );
