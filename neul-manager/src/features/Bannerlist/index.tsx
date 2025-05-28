@@ -7,7 +7,14 @@ import { useEffect, useState } from "react";
 
 //style
 import { BannerlistStyled } from "./styled";
-import { Button, ConfigProvider, Table, TableProps } from "antd";
+import {
+  Button,
+  ConfigProvider,
+  Table,
+  TableProps,
+  Modal,
+  notification,
+} from "antd";
 import { StyledModal } from "../Programlist/styled";
 import Banner from "../Banner";
 
@@ -28,8 +35,11 @@ const Bannerlist = () => {
   const router = useRouter();
   const [arr, setArr] = useState<DataType[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); //모달 클릭 여부
+  const [isModalOpen, setIsModalOpen] = useState(false); //상세 모달 클릭 여부
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false); //삭제하기 모달
+
   const [arrid, setArrId] = useState(); //클릭한 아이디
+
   //생성하기 버튼 클릭
   const SubmitBanner = () => {
     router.push("/banner/write");
@@ -37,8 +47,29 @@ const Bannerlist = () => {
 
   //삭제하기 버튼 클릭
   const deleteBanner = () => {
+    if (selectedRowKeys.length < 1) {
+      notification.error({
+        message: "광고 삭제하기",
+        description: "삭제할 행을 먼저 선택해주세요.",
+      });
+      return;
+    }
+    setDeleteModalOpen(true);
+  };
+
+  //모달에서 삭제하기 버튼 클릭
+  const modalDelete = () => {
     //console.log("selectedRowKeys", selectedRowKeys);
-    axiosInstance.delete("/banner/delete", { data: { ids: selectedRowKeys } });
+    axiosInstance
+      .delete("/banner/delete", { data: { ids: selectedRowKeys } })
+      .then((res) => {
+        notification.success({
+          message: `광고 삭제하기`,
+          description: "광고가 성공적으로 삭제되었습니다.",
+        });
+        setDeleteModalOpen(false);
+        getBannerlist();
+      });
   };
 
   //모달 닫기
@@ -46,29 +77,24 @@ const Bannerlist = () => {
     setIsModalOpen(false);
   };
 
-  //등록하기 버튼
-  const RegistrationBanner = () => {
-    console.log("selectedRowKeys", selectedRowKeys[0]);
-
-    //메인 등록용 요청 - id는 PK값이 들어감
-    axiosInstance.post("/banner/mainpost", { id: selectedRowKeys[0] });
-  };
-
-  //화면 렌더링 시 해당 배너 리스트 가지고 옴
-  useEffect(() => {
+  //배너 리스트 가져오기 요청
+  const getBannerlist = () => {
     axiosInstance.get("/banner/list").then((res: any) => {
       //console.log("Res", res.data);
-
-      const data = res.data.map((item: any, index: number) => ({
+      const data = res.data.reverse().map((item: any, index: number) => ({
         key: item.id,
         id: item.id,
         num: index + 1,
         img: item.img,
         url: item.url,
       }));
-
       setArr(data);
     });
+  };
+
+  //화면 렌더링 시 해당 배너 리스트 가지고 옴
+  useEffect(() => {
+    getBannerlist();
   }, []);
 
   const columns = [
@@ -84,7 +110,7 @@ const Bannerlist = () => {
       ellipsis: true,
     },
     {
-      title: "이미지URL",
+      title: "URL",
       dataIndex: "url",
       key: "url",
       ellipsis: true,
@@ -112,7 +138,7 @@ const Bannerlist = () => {
   ];
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
+    //console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -121,12 +147,20 @@ const Bannerlist = () => {
     onChange: onSelectChange,
   };
 
+  //모달 확인 버튼
+  const handleOk = () => {
+    setDeleteModalOpen(false);
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteModalOpen(false);
+  };
+
   return (
     <BannerlistStyled className={clsx("Bannerlist_main_wrap")}>
       <TitleCompo title={"광고 관리"} />
       <div className="Bannerlist_btns">
         <ConfigProvider theme={GreenTheme}>
-          <Button onClick={RegistrationBanner}>광고 등록하기</Button>
           <Button onClick={SubmitBanner}>생성하기</Button>
           <Button onClick={deleteBanner}>삭제하기</Button>
         </ConfigProvider>
@@ -134,8 +168,8 @@ const Bannerlist = () => {
       {/* 하단 테이블 */}
       <Table rowSelection={rowSelection} dataSource={arr} columns={columns} />
       <StyledModal
-        width={600}
-        title={""}
+        width={1000}
+        title={"광고 이미지 미리보기"}
         open={isModalOpen}
         onCancel={handleCancel}
         footer={null}
@@ -144,6 +178,25 @@ const Bannerlist = () => {
           <Banner route={"detail"} arrid={arrid} />
         </div>
       </StyledModal>
+
+      {/* 삭제하기 모달 */}
+      <Modal
+        title="광고 삭제하기"
+        closable={{ "aria-label": "Custom Close Button" }}
+        open={deleteModalOpen}
+        onOk={handleOk}
+        onCancel={handleDeleteCancel}
+        footer={
+          <ConfigProvider theme={GreenTheme}>
+            <Button key="no">취소하기</Button>
+            <Button key="yes" type="primary" onClick={modalDelete}>
+              삭제하기
+            </Button>
+          </ConfigProvider>
+        }
+      >
+        <div>정말로 삭제하실 건가요?</div>
+      </Modal>
     </BannerlistStyled>
   );
 };

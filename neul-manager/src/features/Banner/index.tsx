@@ -10,6 +10,7 @@ import { Button, Input, Upload, notification, ConfigProvider } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { UploadProps } from "antd";
 import { bannerValidationSchema } from "@/utill/bannerValidation";
+import { useRouter } from "next/router";
 
 interface arrTpye {
   id: number;
@@ -24,8 +25,12 @@ interface bannerType {
 
 //배너 등록 컴포넌트
 const Banner = ({ route, arrid }: bannerType) => {
+  //변수 선언
+  const router = useRouter();
   //useState
   const [arr, setArr] = useState<arrTpye[]>([]);
+  const [leftimg, setLeftImg] = useState();
+  const [rightimg, setRightImg] = useState();
 
   useEffect(() => {
     //console.log("ar", arrid);
@@ -35,10 +40,19 @@ const Banner = ({ route, arrid }: bannerType) => {
       const data = res.data;
       const filterdata = data.filter((item: any) => item.id === arrid);
       setArr(filterdata);
-    });
-  }, []);
 
-  //console.log("arr", arr);
+      if (filterdata.length > 0) {
+        setLeftImg(filterdata[0].img.split(",")[0]);
+        setRightImg(filterdata[0].img.split(",")[1]);
+        formik.setValues({
+          leftimg: null,
+          rightimg: null,
+          lefturl: filterdata[0].url.split(",")[0],
+          righturl: filterdata[0].url.split(",")[1],
+        });
+      }
+    });
+  }, [arrid]);
 
   const formik = useFormik({
     initialValues: {
@@ -60,12 +74,6 @@ const Banner = ({ route, arrid }: bannerType) => {
 
       //console.log("FormData 내용:", Array.from(formData.entries()));
 
-      // if (arr.length > 0) {
-      //   await axiosInstance.delete("/banner/delete", {
-      //     data: { id: arr[0].id },
-      //   });
-      // }
-
       try {
         await axiosInstance.post("/banner/registration", formData, {
           headers: {
@@ -77,6 +85,8 @@ const Banner = ({ route, arrid }: bannerType) => {
           message: "등록 완료",
           description: "광고가 정상적으로 등록되었습니다.",
         });
+
+        router.push("/banner");
       } catch (error) {
         notification.error({
           message: "에러",
@@ -93,7 +103,6 @@ const Banner = ({ route, arrid }: bannerType) => {
     },
     maxCount: 1,
   });
-
   return (
     <ConfigProvider theme={AntdGlobalTheme}>
       <form onSubmit={formik.handleSubmit}>
@@ -118,6 +127,12 @@ const Banner = ({ route, arrid }: bannerType) => {
                   src={URL.createObjectURL(formik.values.leftimg)}
                   alt="banner-left"
                 />
+              ) : leftimg ? (
+                <img
+                  className="Banner_imgstyle"
+                  src={`${process.env.NEXT_PUBLIC_API_URL}/uploads/image/${leftimg}`}
+                  alt="banner-left-server"
+                />
               ) : (
                 <div className="Banner_preview_text">미리보기 화면</div>
               )}
@@ -127,6 +142,12 @@ const Banner = ({ route, arrid }: bannerType) => {
                 <img
                   className="Banner_imgstyle"
                   src={URL.createObjectURL(formik.values.rightimg)}
+                  alt="banner-right"
+                />
+              ) : rightimg ? (
+                <img
+                  className="Banner_imgstyle"
+                  src={`${process.env.NEXT_PUBLIC_API_URL}/uploads/image/${rightimg}`}
                   alt="banner-right"
                 />
               ) : (
@@ -170,6 +191,7 @@ const Banner = ({ route, arrid }: bannerType) => {
                 className="Banner_title"
                 value={formik.values.lefturl}
                 onChange={formik.handleChange}
+                disabled={route === "detail"}
               />
               {formik.touched.lefturl && formik.errors.lefturl && (
                 <div style={{ color: "red", marginTop: 4 }}>
@@ -184,6 +206,7 @@ const Banner = ({ route, arrid }: bannerType) => {
                 className="Banner_title"
                 value={formik.values.righturl}
                 onChange={formik.handleChange}
+                disabled={route === "detail"}
               />
               {formik.touched.righturl && formik.errors.righturl && (
                 <div style={{ color: "red", marginTop: 4 }}>
