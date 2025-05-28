@@ -17,17 +17,28 @@ interface arrTpye {
   url: string;
 }
 
+interface bannerType {
+  route?: string;
+  arrid?: number;
+}
+
 //배너 등록 컴포넌트
-const Banner = () => {
+const Banner = ({ route, arrid }: bannerType) => {
   //useState
   const [arr, setArr] = useState<arrTpye[]>([]);
 
   useEffect(() => {
+    //console.log("ar", arrid);
     axiosInstance.get("/banner/list").then((res) => {
       //console.log("Res", res.data);
-      setArr(res.data);
+
+      const data = res.data;
+      const filterdata = data.filter((item: any) => item.id === arrid);
+      setArr(filterdata);
     });
   }, []);
+
+  //console.log("arr", arr);
 
   const formik = useFormik({
     initialValues: {
@@ -49,11 +60,11 @@ const Banner = () => {
 
       //console.log("FormData 내용:", Array.from(formData.entries()));
 
-      if (arr.length > 0) {
-        await axiosInstance.delete("/banner/delete", {
-          data: { id: arr[0].id },
-        });
-      }
+      // if (arr.length > 0) {
+      //   await axiosInstance.delete("/banner/delete", {
+      //     data: { id: arr[0].id },
+      //   });
+      // }
 
       try {
         await axiosInstance.post("/banner/registration", formData, {
@@ -89,9 +100,13 @@ const Banner = () => {
         <BannerStyled className={clsx("Banner_main_wrap")}>
           {/* 저장 버튼 */}
           <div className="Banner_save">
-            <Button htmlType="submit" className="Banner_save_btn">
-              저장하기
-            </Button>
+            {route === "detail" ? (
+              <div></div>
+            ) : (
+              <Button htmlType="submit" className="Banner_save_btn">
+                저장하기
+              </Button>
+            )}
           </div>
 
           {/* 미리보기 */}
@@ -121,24 +136,32 @@ const Banner = () => {
           </div>
 
           {/* 업로드 버튼 */}
+
           <div className="Banner_btns">
-            <div className="Banner_btn">
-              <Upload {...handleUpload("leftimg")} showUploadList={false}>
-                <Button icon={<UploadOutlined />}>이미지 업로드</Button>
-              </Upload>
-              {formik.touched.leftimg && formik.errors.leftimg && (
-                <div className="Banner_error">{formik.errors.leftimg}</div>
-              )}
-            </div>
-            <div className="Banner_btn">
-              <Upload {...handleUpload("rightimg")} showUploadList={false}>
-                <Button icon={<UploadOutlined />}>이미지 업로드</Button>
-              </Upload>
-              {formik.touched.rightimg && formik.errors.rightimg && (
-                <div className="Banner_error">{formik.errors.rightimg}</div>
-              )}
-            </div>
+            {route === "detail" ? (
+              <div></div>
+            ) : (
+              <>
+                <div className="Banner_btn">
+                  <Upload {...handleUpload("leftimg")} showUploadList={false}>
+                    <Button icon={<UploadOutlined />}>이미지 업로드</Button>
+                  </Upload>
+                  {formik.touched.leftimg && formik.errors.leftimg && (
+                    <div className="Banner_error">{formik.errors.leftimg}</div>
+                  )}
+                </div>
+                <div className="Banner_btn">
+                  <Upload {...handleUpload("rightimg")} showUploadList={false}>
+                    <Button icon={<UploadOutlined />}>이미지 업로드</Button>
+                  </Upload>
+                  {formik.touched.rightimg && formik.errors.rightimg && (
+                    <div className="Banner_error">{formik.errors.rightimg}</div>
+                  )}
+                </div>
+              </>
+            )}
           </div>
+
           <div className="Banner_inputs">
             <div className="Banner_input">
               <Input
