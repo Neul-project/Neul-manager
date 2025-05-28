@@ -49,7 +49,7 @@ export const sidebarMenus = createSidebarMenus([
         label: "사용자 관리",
         children: [
           { key: "/users/users/manage", label: "사용자 관리" },
-          { key: "/users/users/pay", label: "결제 목록" },
+          { key: "/users/users/pay", label: "매칭 결제 목록" },
         ],
       },
     ],
@@ -64,11 +64,11 @@ export const sidebarMenus = createSidebarMenus([
       },
       {
         key: "/program/payment",
-        label: "결제 목록",
+        label: "프로그램 결제 목록",
       },
       {
         key: "/program/refund",
-        label: "환불 목록",
+        label: "프로그램 환불 목록",
       },
     ],
   },
