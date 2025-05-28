@@ -9,7 +9,7 @@ export const BannerlistStyled = styled.div`
   &.Bannerlist_main_wrap {
     display: flex;
     flex-direction: column;
-    gap: 13px;
+    gap: 5px;
 
     .Bannerlist_btns {
       display: flex;

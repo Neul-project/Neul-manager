@@ -2,8 +2,6 @@ import styled from "styled-components";
 
 export const UserManageStyled = styled.div`
   &.usermanage_wrap {
-    padding: 20px;
-
     //페이지네이션 가운데 맞춤
     .ant-table-wrapper .ant-table-pagination-right {
       justify-content: center;
@@ -15,15 +13,19 @@ export const UserManageStyled = styled.div`
       margin-bottom: 10px;
     }
     .usermanage_search_select {
-      margin-right: 3px;
       width: 130px;
     }
     .usermanage_info {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 3px;
+      margin-bottom: 5px;
+      margin-top: 15px;
 
+      .usermanage_right {
+        display: flex;
+        gap: 5px;
+      }
       .usermanage_sort_box {
         display: flex;
         align-items: center;
@@ -38,9 +40,7 @@ export const UserManageStyled = styled.div`
         }
       }
     }
-    .usermanage_delete_button {
-      margin-right: 3px;
-    }
+
     tr:hover {
       cursor: pointer;
     }

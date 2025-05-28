@@ -32,10 +32,6 @@ export const Payliststyled = styled.div`
     color: #fff !important;
   }
 
-  tr:hover {
-    cursor: pointer;
-  }
-
   .ant-table-thead > tr > th {
     text-align: center;
   }

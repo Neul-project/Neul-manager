@@ -17,6 +17,7 @@ import { AntdGlobalTheme } from "@/utill/antdtheme";
 import { formatPrice } from "@/utill/programcategory";
 import { SearchProps } from "antd/es/input";
 import { excelDownload, ExcelItem } from "@/utill/excelDownload";
+import TitleCompo from "@/components/TitleCompo";
 
 type TableRowSelection<T extends object = object> =
   TableProps<T>["rowSelection"];
@@ -196,6 +197,7 @@ const Programlist = () => {
   return (
     <ConfigProvider theme={AntdGlobalTheme}>
       <ProgramlistStyled className={clsx("Programlist_main_wrap")}>
+        <TitleCompo title="프로그램 등록" />
         <div className="Programlist_btns">
           <Search
             placeholder="프로그램명 검색"

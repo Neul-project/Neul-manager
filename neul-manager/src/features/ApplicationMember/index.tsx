@@ -54,7 +54,6 @@ const ApplicationMember = () => {
   const router = useRouter();
 
   //useState
-  const [selectionType, setSelectionType] = useState<"checkbox">("checkbox"); //테이블 체크박스
   const [dataSorce, setDataSorce] = useState<DataType[]>(); //도우미 승인 대기 유저 리스트
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false); //상세 모달
   const [helperId, setHelperId] = useState();
@@ -159,11 +158,7 @@ const ApplicationMember = () => {
       <TitleCompo title="도우미 등록" />
       <div className="ApplicationMember_main_table">
         <ConfigProvider theme={GreenTheme}>
-          <Table<DataType>
-            rowSelection={{ type: selectionType, ...rowSelection }}
-            columns={columns}
-            dataSource={dataSorce}
-          />
+          <Table<DataType> columns={columns} dataSource={dataSorce} />
         </ConfigProvider>
       </div>
     </ApplicationMemberStyled>

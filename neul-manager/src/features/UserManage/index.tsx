@@ -19,7 +19,6 @@ import { AntdGlobalTheme, GreenTheme } from "@/utill/antdtheme";
 import type { SearchProps } from "antd/es/input";
 import {
   Button,
-  message,
   Select,
   Table,
   Input,
@@ -28,13 +27,11 @@ import {
   Modal,
 } from "antd";
 import { searchOption, sortOption } from "./info";
-import { kMaxLength } from "buffer";
 const { Search } = Input;
 
 //전체 도우미 정보 컴포넌트
 const UserManage = () => {
   const [users, setUsers] = useState<any[]>([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [userOrder, setUserOrder] = useState("ASC"); // 내림차순/오름차순 정렬
   const [sortKey, setSortKey] = useState("created_at");
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
@@ -164,16 +161,6 @@ const UserManage = () => {
 
     const file = new Blob([excelBuffer], { type: "application/octet-stream" });
     saveAs(file, "도우미목록.xlsx");
-
-    //setSelectedRowKeys([]);
-  };
-
-  // 테이블 rowSelection 설정
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (keys: React.Key[]) => {
-      setSelectedRowKeys(keys);
-    },
   };
 
   const columns = [
@@ -287,7 +274,6 @@ const UserManage = () => {
     }
     setIsDeleteModal(false); //삭제 모달 닫기
     getUserList(); // 목록 다시 불러오기
-    setSelectedRowKeys([]); // 선택 초기화
   };
 
   const handleChange = (value: string) => {
@@ -336,12 +322,7 @@ const UserManage = () => {
             <Button onClick={handleDownloadExcel}>엑셀 다운로드</Button>
           </div>
         </div>
-        <Table
-          rowSelection={rowSelection}
-          columns={columns}
-          dataSource={sortedUsers}
-          rowKey="key"
-        />
+        <Table columns={columns} dataSource={sortedUsers} rowKey="key" />
 
         {/* 도우미 상세 정보 모달 */}
         <StyledModal

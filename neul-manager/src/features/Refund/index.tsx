@@ -173,7 +173,7 @@ const RefundPage = () => {
               <strong>이메일:</strong> {selectedRecord.email}
             </p>
             <p>
-              <strong>전화번호:</strong>{" "}
+              <strong>전화번호:</strong>
               {formatPhoneNumber(selectedRecord.phone)}
             </p>
 
@@ -189,7 +189,7 @@ const RefundPage = () => {
               <strong>입금자명:</strong> {selectedRecord.depositor}
             </p>
             <p>
-              <strong>환불 금액:</strong>{" "}
+              <strong>환불 금액:</strong>
               {selectedRecord.price.toLocaleString()}원
             </p>
             <p>

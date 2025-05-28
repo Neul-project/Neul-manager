@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
 export const RefundStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
   .ant-table-wrapper .ant-table-pagination-right {
     justify-content: center;
   }

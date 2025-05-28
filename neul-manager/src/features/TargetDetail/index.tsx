@@ -54,14 +54,13 @@ const TargetDetail = (props: { id: number }) => {
               </Button>
             </ConfigProvider>
             <Modal
-              title=""
+              title="특이사항"
               closable={{ "aria-label": "Custom Close Button" }}
               open={isDetailModalOpen}
               onCancel={handleCancel}
               footer={null}
               width={500}
             >
-              <div>특이사항</div>
               <div>{note}</div>
             </Modal>
           </>

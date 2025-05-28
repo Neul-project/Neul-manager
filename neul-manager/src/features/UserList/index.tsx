@@ -1,7 +1,24 @@
 import { useEffect, useState } from "react";
+import clsx from "clsx";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import TitleCompo from "@/components/TitleCompo";
+import axiosInstance from "@/lib/axios";
+import { formatPhoneNumber } from "@/utill/formatter";
+import dayjs, { Dayjs } from "dayjs";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+
+dayjs.extend(isSameOrBefore);
+
+//style
+import { StyledModal } from "../Programlist/styled";
+import { UserManageStyled } from "./styled";
+
+//antd
+import type { SearchProps } from "antd/es/input";
+import { AntdGlobalTheme, GreenTheme } from "@/utill/antdtheme";
 import {
   Button,
-  message,
   Select,
   Table,
   Input,
@@ -9,19 +26,6 @@ import {
   ConfigProvider,
   Modal,
 } from "antd";
-import clsx from "clsx";
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
-import TitleCompo from "@/components/TitleCompo";
-import axiosInstance from "@/lib/axios";
-import { UserManageStyled } from "./styled";
-import type { SearchProps } from "antd/es/input";
-import { AntdGlobalTheme, GreenTheme } from "@/utill/antdtheme";
-import { formatPhoneNumber } from "@/utill/formatter";
-import dayjs, { Dayjs } from "dayjs";
-import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
-import { StyledModal } from "../Programlist/styled";
-dayjs.extend(isSameOrBefore);
 const { Search } = Input;
 
 //회원관리 > 사용자 관리 > 사용자 관리 탭
@@ -29,7 +33,6 @@ const UserList = () => {
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [modalOpen, setModalOpen] = useState(false); //특이사항 모달
   const [users, setUsers] = useState<any[]>([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [userOrder, setUserOrder] = useState("DESC");
   const [sortKey, setSortKey] = useState("matcing_at");
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
@@ -156,14 +159,6 @@ const UserList = () => {
     saveAs(file, "사용자목록.xlsx");
   };
 
-  // 테이블 rowSelection 설정
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (keys: React.Key[]) => {
-      setSelectedRowKeys(keys);
-    },
-  };
-
   //테이블 열
   const columns = [
     {
@@ -173,7 +168,7 @@ const UserList = () => {
     },
     {
       key: "email",
-      title: "아이디",
+      title: "이메일",
       dataIndex: "email",
     },
     {
@@ -285,7 +280,6 @@ const UserList = () => {
     }
     setIsDeleteModal(false); //삭제 모달 닫기
     getUserList(""); // 목록 다시 불러오기
-    setSelectedRowKeys([]); // 선택 초기화
   };
 
   const handleCancel = () => {
@@ -295,12 +289,7 @@ const UserList = () => {
   return (
     <ConfigProvider theme={GreenTheme}>
       <UserManageStyled className={clsx("usermanage_wrap")}>
-        <div className="usermanage_title_box">
-          <TitleCompo title="사용자 관리" />
-          <div>
-            <Button onClick={handleDownloadExcel}>엑셀 다운로드</Button>
-          </div>
-        </div>
+        <TitleCompo title="사용자 관리" />
 
         <div className="usermanage_info">
           <div className="usermanage_sort_box">
@@ -315,7 +304,7 @@ const UserList = () => {
               }}
             />
           </div>
-          <div>
+          <div className="usermanage_right">
             <Select
               className="usermanage_search_select"
               value={selectSearch}
@@ -328,10 +317,10 @@ const UserList = () => {
               onSearch={onSearch}
               style={{ width: 200 }}
             />
+            <Button onClick={handleDownloadExcel}>엑셀 다운로드</Button>
           </div>
         </div>
         <Table
-          rowSelection={rowSelection}
           columns={columns}
           dataSource={sortedUsers}
           rowKey="key"
