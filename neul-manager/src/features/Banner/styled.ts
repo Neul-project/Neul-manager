@@ -13,8 +13,9 @@ export const BannerStyled = styled.div`
       width: 100%;
       gap: 20px;
 
-      .Banner_left_img {
-        width: 100%;
+      .Banner_left_img,
+      .Banner_right_img {
+        width: 50%;
         height: 350px;
         border: 1px solid #ccc;
         border-radius: 15px;
@@ -59,7 +60,7 @@ export const BannerStyled = styled.div`
       gap: 20px;
 
       .Banner_input {
-        width: 100%;
+        width: 50%;
       }
     }
   }

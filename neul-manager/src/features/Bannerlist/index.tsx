@@ -27,7 +27,7 @@ const Bannerlist = () => {
   const [arr, setArr] = useState<DataType[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
-  //등록하기 버튼 클릭
+  //생성하기 버튼 클릭
   const SubmitBanner = () => {
     router.push("/banner/write");
   };
@@ -35,9 +35,11 @@ const Bannerlist = () => {
   //삭제하기 버튼 클릭
   const deleteBanner = () => {
     //console.log("selectedRowKeys", selectedRowKeys);
-
     axiosInstance.delete("/banner/delete", { data: { ids: selectedRowKeys } });
   };
+
+  //등록하기 버튼
+  const RegistrationBanner = () => {};
 
   //화면 렌더링 시 해당 배너 리스트 가지고 옴
   useEffect(() => {
@@ -89,7 +91,7 @@ const Bannerlist = () => {
       <TitleCompo title={"광고 관리"} />
       <div className="Bannerlist_btns">
         <ConfigProvider theme={GreenTheme}>
-          <Button onClick={SubmitBanner}>광고 등록하기</Button>
+          <Button onClick={RegistrationBanner}>광고 등록하기</Button>
           <Button onClick={SubmitBanner}>생성하기</Button>
           <Button onClick={deleteBanner}>삭제하기</Button>
         </ConfigProvider>
