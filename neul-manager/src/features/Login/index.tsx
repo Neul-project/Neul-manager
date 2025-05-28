@@ -21,8 +21,8 @@ const Login = () => {
   const { login } = useAuthStore();
   const loginformik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      email: "manage@neul.com",
+      password: "adminqwe123",
     },
     onSubmit: async (values) => {
       //console.log("value", values);
