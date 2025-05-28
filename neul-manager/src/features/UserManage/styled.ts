@@ -6,6 +6,11 @@ export const UserManageStyled = styled.div`
     .ant-table-cell {
       text-align: center;
     }
+
+    //페이지네이션 가운데 맞춤
+    .ant-table-wrapper .ant-table-pagination-right {
+      justify-content: center;
+    }
     .usermanage_title_box {
       display: flex;
       justify-content: end;

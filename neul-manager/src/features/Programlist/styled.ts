@@ -2,6 +2,11 @@ import { Modal } from "antd";
 import styled from "styled-components";
 
 export const ProgramlistStyled = styled.div`
+  //페이지네이션 가운데 맞춤
+  .ant-table-wrapper .ant-table-pagination-right {
+    justify-content: center;
+  }
+
   &.Programlist_main_wrap {
     display: flex;
     flex-direction: column;

@@ -3,6 +3,12 @@ import styled from "styled-components";
 export const UserManageStyled = styled.div`
   &.usermanage_wrap {
     padding: 20px;
+
+    //페이지네이션 가운데 맞춤
+    .ant-table-wrapper .ant-table-pagination-right {
+      justify-content: center;
+    }
+
     .usermanage_title_box {
       display: flex;
       justify-content: space-between;

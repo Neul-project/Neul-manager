@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   Button,
   message,
-  Modal,
   Select,
   Table,
   Input,

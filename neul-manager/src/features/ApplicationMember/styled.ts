@@ -8,6 +8,11 @@ export const ApplicationMemberStyled = styled.div`
       text-align: center;
     }
 
+    //페이지네이션 가운데 맞춤
+    .ant-table-wrapper .ant-table-pagination-right {
+      justify-content: center;
+    }
+
     .ant-pagination-item {
       border-color: #5da487 !important;
       color: #5da487 !important;
