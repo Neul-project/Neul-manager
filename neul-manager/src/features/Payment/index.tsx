@@ -15,13 +15,14 @@ interface PaymentItem {
   price: number;
   phone: string;
   create_at: string;
+  paymentKey: string;
 }
 
 const PaymentPage = () => {
   const [data, setData] = useState<PaymentItem[]>([]);
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
 
-  console.log("결제 리스트 응답", data);
+  //console.log("결제 리스트 응답", data);
 
   // 테이블 헤더
   const columns: ColumnsType<PaymentItem> = [
@@ -65,11 +66,15 @@ const PaymentPage = () => {
   useEffect(() => {
     const fetchPaymentList = async () => {
       try {
-        const res = await axiosInstance.get<PaymentItem[]>(
-          "/program/payment-list"
-        );
+        const res = await axiosInstance.get("/program/payment-list");
 
-        setData(res.data);
+        const resdata = res.data;
+
+        const filterdata = resdata.filter(
+          (item: any) => item.paymentKey !== null
+        );
+        //console.log("er", filterdata);
+        setData(filterdata);
       } catch (error) {
         console.error("결제 리스트 불러오기 실패:", error);
       }

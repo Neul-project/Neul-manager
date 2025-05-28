@@ -68,7 +68,13 @@ const Paylist = () => {
           { params: { type: "user" } }
         );
         //console.log("Da", res.data);
-        setData(res.data);
+
+        const resdata = res.data;
+        const filterdata = resdata.filter(
+          (item: any) => item.paymentKey !== null
+        );
+
+        setData(filterdata);
       } catch (error) {
         console.error("결제 리스트 불러오기 실패:", error);
       }
