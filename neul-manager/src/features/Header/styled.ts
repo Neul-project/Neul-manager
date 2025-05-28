@@ -24,4 +24,9 @@ export const HeaderStyled = styled.div`
   .username {
     cursor: pointer;
   }
+
+  .header_userinfo {
+    cursor: pointer;
+    margin-left: 12px;
+  }
 `;

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { HeaderStyled } from "./styled";
 import clsx from "clsx";
-import { Button, ConfigProvider, Dropdown, MenuProps, Modal } from "antd";
+import { Button, ConfigProvider, MenuProps, Modal } from "antd";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { GreenTheme } from "@/utill/antdtheme";
 
@@ -74,20 +74,17 @@ const Header = ({ className }: HeaderProps) => {
         <div className="left">
           <Link href="/">관리자 페이지</Link>
         </div>
-        <Dropdown
-          menu={{ items, onClick: handleMenuClick }}
-          trigger={["click"]}
-        >
-          <a className="username" onClick={(e) => e.preventDefault()}>
-            {user?.name}님
-          </a>
-        </Dropdown>
+        <div className="right">
+          <span>{user?.name}님</span>
+          <span className="header_userinfo" onClick={showModal}>
+            로그아웃
+          </span>
+        </div>
+
         <Modal
           title="로그아웃"
-          closable={{ "aria-label": "Custom Close Button" }}
           open={isModalOpen}
-          // onOk={handleOk}
-          //onCancel={handleCancel}
+          closable={false}
           footer={[
             <ConfigProvider key="close" theme={GreenTheme}>
               <Button onClick={handleCancel}>취소</Button>
