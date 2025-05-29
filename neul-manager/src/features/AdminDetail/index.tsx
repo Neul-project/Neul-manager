@@ -88,6 +88,7 @@ const AdminDetail = ({
         setIsCanCleModalOpen(false);
         setIsDetailModalOpen(false);
         setResonText("");
+        FilterTableAdmin();
       });
   };
 
