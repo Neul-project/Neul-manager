@@ -39,6 +39,10 @@ const UserList = () => {
   const [selectSearch, setSelectSearch] = useState<string>("user_id");
   const [isDeleteModal, setIsDeleteModal] = useState(false); //삭제하기 모달
   const [userId, setUserId] = useState(); //클릭한 사용자의 아이디
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+  });
 
   const getUserList = async (value?: any) => {
     //console.log("d", value, selectSearch);
@@ -164,7 +168,10 @@ const UserList = () => {
     {
       key: "number",
       title: "번호",
-      dataIndex: "number",
+      render: (_: any, __: any, index: number) => {
+        // 페이지네이션 기준 계산
+        return (pagination.current - 1) * pagination.pageSize + index + 1;
+      },
     },
     {
       key: "email",

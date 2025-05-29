@@ -41,6 +41,10 @@ const UserManage = () => {
   const [allUsers, setAllUsers] = useState<any[]>([]); //서치용 유저리스트
   const [selectSearch, setSelectSearch] = useState<string>("id");
   const [isDeleteModal, setIsDeleteModal] = useState(false); //삭제하기 모달
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+  });
 
   //useEffect
   useEffect(() => {
@@ -165,7 +169,10 @@ const UserManage = () => {
     {
       key: "number",
       title: "번호",
-      dataIndex: "number",
+      render: (_: any, __: any, index: number) => {
+        // 페이지네이션 기준 계산
+        return (pagination.current - 1) * pagination.pageSize + index + 1;
+      },
     },
     {
       key: "name",
