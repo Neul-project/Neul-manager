@@ -26,8 +26,8 @@ export const DashStyled = styled.div`
       width: 100%;
       display: flex;
       flex-direction: row-reverse;
-      gap: 40px;
-      justify-content: left;
+      gap: 85px;
+      justify-content: center;
 
       //justify-content: space-around;
 
@@ -56,8 +56,24 @@ export const DashStyled = styled.div`
       width: 100%;
       display: flex;
       flex-direction: row;
-      justify-content: left;
+      gap: 85px;
+      justify-content: center;
 
+      .DashPage_gender_div {
+        width: 25%;
+        align-items: center;
+        visibility: hidden;
+        //padding: 10px;
+
+        .DashPage_content_gender {
+          display: flex;
+          width: 100%;
+          height: 100%;
+          margin-top: 15px;
+          //justify-content: space-between;
+          //gap: 10px;
+        }
+      }
       .DashPage_program_div {
         width: 60%;
         padding-right: 10px;

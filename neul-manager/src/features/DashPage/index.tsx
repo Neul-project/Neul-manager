@@ -159,6 +159,11 @@ const DashBoard = () => {
           </div>
         </div>
 
+        <div className="DashPage_gender_div">
+          <div className="DashPage_main_title">피보호자 성비</div>
+          <Pie data={genderdata} />
+        </div>
+
         {/* 프로그램 결제 건 수 */}
         {/* <div className="DashPage_program_count_div">
           <div className="DashPage_main_title">프로그램 결제 건 수</div>
