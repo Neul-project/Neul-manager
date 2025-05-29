@@ -32,7 +32,7 @@ const { Search } = Input;
 //전체 도우미 정보 컴포넌트
 const UserManage = () => {
   const [users, setUsers] = useState<any[]>([]);
-  const [userOrder, setUserOrder] = useState("ASC"); // 내림차순/오름차순 정렬
+  const [userOrder, setUserOrder] = useState("DESC"); // 내림차순/오름차순 정렬
   const [sortKey, setSortKey] = useState("created_at");
   const [sortedUsers, setSortedUsers] = useState<any[]>([]);
   const [HelperId, setHelperId] = useState(); //클릭한 행의 도우미 아이디
@@ -61,7 +61,7 @@ const UserManage = () => {
       const res = await axiosInstance.get("/helper/info", {
         params: { type: "approve", search: value, search_value: selectSearch },
       });
-      const data = res.data;
+      const data = res.data.reverse();
       //console.log(data);
 
       const mapped = data.map((item: any, index: number) => ({
@@ -92,12 +92,10 @@ const UserManage = () => {
   //유저 정렬하기
   const sortUsers = () => {
     let sorted = [...users];
-
+    //console.log("sortd", sorted);
     if (sortKey === "created_at") {
       sorted.sort((a, b) =>
-        userOrder === "DESC"
-          ? b.origin.id - a.origin.id
-          : a.origin.id - b.origin.id
+        userOrder === "DESC" ? b.key - a.key : a.key - b.key
       );
     }
 
