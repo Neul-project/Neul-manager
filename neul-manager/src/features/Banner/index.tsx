@@ -98,6 +98,13 @@ const Banner = ({ route, arrid }: bannerType) => {
 
   const handleUpload = (side: "leftimg" | "rightimg"): UploadProps => ({
     beforeUpload: (file) => {
+      const isLt500KB = file.size <= 512000;
+
+      if (!isLt500KB) {
+        alert("파일 크기는 500KB 이하만 업로드할 수 있습니다.");
+        return Upload.LIST_IGNORE; // 업로드 무시
+      }
+
       formik.setFieldValue(side, file);
       return false;
     },
