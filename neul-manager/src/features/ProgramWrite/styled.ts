@@ -6,6 +6,12 @@ export const ProgramWriteStyled = styled.div`
     flex-direction: column;
     width: 100%;
 
+    .ProgramWrite_imgmax {
+      font-size: 12px;
+      //margin-top: 5px;
+      color: rgb(93, 164, 135);
+    }
+
     .ProgramWrite_submit_btn {
       width: 100%;
     }

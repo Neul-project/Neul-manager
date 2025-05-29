@@ -224,6 +224,9 @@ const ProgramWrite = (props: ProgramType) => {
                 <Button icon={<UploadOutlined />} />
               </Upload>
             </ConfigProvider>
+            <p className="ProgramWrite_imgmax">
+              이미지는 최대 3개까지 선택 가능합니다.
+            </p>
           </div>
 
           {/* 카테고리 */}
