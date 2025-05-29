@@ -9,9 +9,8 @@ export const Payliststyled = styled.div`
   .ant-table-wrapper .ant-table-pagination-right {
     justify-content: center;
   }
-
   .ant-pagination-item {
-    border-color: #5da487 !important;
+    border-color: none !important;
     color: #5da487 !important;
   }
 
