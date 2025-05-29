@@ -351,7 +351,7 @@ const UserList = () => {
 
         {/* 삭제하기 모달 */}
         <Modal
-          title="도우미 삭제"
+          title="사용자 삭제"
           closable={{ "aria-label": "Custom Close Button" }}
           open={isDeleteModal}
           onCancel={handleCancel}
@@ -365,7 +365,7 @@ const UserList = () => {
           }
           width={600}
         >
-          <div>정말로 해당 도우미를 삭제하시겠습니까?</div>
+          <div>정말로 해당 사용자를 삭제하시겠습니까?</div>
         </Modal>
       </UserManageStyled>
     </ConfigProvider>
