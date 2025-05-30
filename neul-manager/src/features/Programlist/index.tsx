@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { ProgramlistStyled, StyledModal } from "./styled";
+import { ProgramlistStyled, StyledModal, StyledProgramModal } from "./styled";
 import clsx from "clsx";
 import {
   Button,
@@ -211,7 +211,7 @@ const Programlist = () => {
 
           <Button onClick={ProgramDelete}>삭제하기</Button>
           {isDeleteModalOpen && (
-            <Modal
+            <StyledProgramModal
               title="프로그램 삭제"
               open={isDeleteModalOpen}
               onCancel={() => setIsDeleteModalOpen(false)}
@@ -223,7 +223,7 @@ const Programlist = () => {
               className="Delete_Modal"
             >
               <div>정말로 삭제하시겠습니까?</div>
-            </Modal>
+            </StyledProgramModal>
           )}
 
           <Button onClick={execelDownload}>엑셀 다운로드</Button>
@@ -235,7 +235,7 @@ const Programlist = () => {
             dataSource={list}
           />
           {isModalOpen && (
-            <StyledModal
+            <StyledProgramModal
               title={`${title}`}
               key={isModalOpen ? id : "closed"}
               width={600}
@@ -252,7 +252,7 @@ const Programlist = () => {
                   getprogramlist={onSearch}
                 />
               </div>
-            </StyledModal>
+            </StyledProgramModal>
           )}
         </div>
       </ProgramlistStyled>

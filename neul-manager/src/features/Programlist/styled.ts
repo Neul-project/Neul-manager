@@ -59,11 +59,36 @@ export const StyledModal = styled(Modal)`
   .ant-modal-content {
     padding: 0px 10px 20px 20px;
   }
+
+  .ant-modal-title {
+    padding-top: 10px;
+  }
   /* .ant-modal-close-x {
     margin-top: 10px;
     margin-left: -50px;
   } */
 
+  .ProgramWrite_Modal,
+  .Userlist_Modal {
+    max-height: 70vh;
+    min-height: 300px;
+    overflow-y: auto;
+    margin-top: 24px;
+    padding-right: 10px;
+  }
+`;
+
+export const StyledProgramModal = styled(Modal)`
+  .ant-modal-content {
+    padding: 0px 10px 20px 20px;
+  }
+  /* .ant-modal-close-x {
+    margin-top: 10px;
+    margin-left: -50px;
+  } */
+  .ant-modal-title {
+    padding-top: 10px;
+  }
   .ProgramWrite_Modal,
   .Userlist_Modal {
     max-height: 70vh;
